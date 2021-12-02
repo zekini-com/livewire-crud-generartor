@@ -1,0 +1,14 @@
+{
+    "name": "zekini/livewire-crud-generator",
+    "description": "This helps in scafolding the necessary CRUD and admin panel for applications",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Keania Niate Eric",
+            "email": "keaniaeric@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
