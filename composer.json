@@ -3,12 +3,35 @@
     "description": "This helps in scafolding the necessary CRUD and admin panel for applications",
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Keania Niate Eric",
-            "email": "keaniaeric@gmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "Keania Niate Eric",
+        "email": "keaniaeric@gmail.com"
+    }],
     "minimum-stability": "dev",
-    "require": {}
+
+    "autoload": {
+        "psr-4": {
+            "Zekini\\CrudGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zekini\\CrudGenerator\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "6.x-dev",
+        "nunomaduro/collision": "dev-stable",
+        "phpunit/phpunit": "9.5.x-dev"
+    },
+    "require": {
+        "spatie/laravel-permission": "5.x-dev"
+    }
 }
