@@ -4,6 +4,7 @@ namespace Zekini\CrudGenerator;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
@@ -18,7 +19,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     {
 
         $this->commands([
-            Commands\AdminScafold::class
+            Commands\AdminScafold::class,
         ]);
 
         $this->loadViewsFrom(__DIR__.'./../resources/views', 'zekini/livewire-crud-generator');
@@ -26,9 +27,22 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
         // register commands
         if ($this->app->runningInConsole()) {
+           $this->publishConfig();
            $this->publishMigrations();
         }
         
+    }
+    
+    /**
+     * publishConfig
+     *
+     * @return void
+     */
+    protected function publishConfig()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/zekini-admin.php' => config_path('zekini-admin.php'),
+        ], 'config');
     }
 
     
@@ -74,6 +88,9 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
     public function register()
     {
-
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/zekini-admin.php',
+            'zekini-admin'
+        );
     }
 }

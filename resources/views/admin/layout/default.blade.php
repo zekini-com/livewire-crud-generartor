@@ -29,7 +29,7 @@
 @endsection
 
 @section('footer')
-    @include('brackets/admin-ui::admin.partials.footer')
+    @include('zekini/livewire-crud-generator::admin.partials.footer')
 @endsection
 
 @section('bottom-scripts')

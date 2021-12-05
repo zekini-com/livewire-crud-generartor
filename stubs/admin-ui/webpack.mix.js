@@ -1,0 +1,1 @@
+mix.sass("resources/admin/scss/admin.scss", "public/css")

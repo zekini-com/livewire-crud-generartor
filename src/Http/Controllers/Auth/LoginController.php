@@ -22,7 +22,7 @@ class LoginController extends Controller
     |
     */
 
-    //use AuthenticatesUsers;
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -43,7 +43,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $guard = 'admin';
+    protected $guard = 'zekini-admin';
 
     /**
      * Create a new controller instance.
@@ -52,9 +52,9 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->guard = config('admin-auth.defaults.guard');
-        $this->redirectTo = config('admin-auth.login_redirect');
-        $this->redirectToAfterLogout = config('admin-auth.logout_redirect');
+        $this->guard = config('zekini-admin.defaults.guard');
+        $this->redirectTo = config('zekini-admin.auth_routes.login_redirect');
+        $this->redirectToAfterLogout = config('zekini-admin.auth_routes.logout_redirect');
     }
 
     /**
@@ -82,24 +82,6 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         return redirect($this->redirectToAfterLogout);
-    }
-
-    /**
-     * Get the needed authorization credentials from the request.
-     *
-     * @param Request $request
-     * @return array
-     */
-    protected function credentials(Request $request): array
-    {
-        $conditions = [];
-        if (config('admin-auth.check_forbidden')) {
-            $conditions['forbidden'] = false;
-        }
-        if (config('admin-auth.activation_enabled')) {
-            $conditions['activated'] = true;
-        }
-        return array_merge($request->only($this->username(), 'password'), $conditions);
     }
 
     /**

@@ -17,7 +17,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider"
+                "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider",
+                "Spatie\\Permission\\PermissionServiceProvider"
             ]
         }
     },

@@ -14,6 +14,6 @@ class MissingRoutesController extends Controller
      */
     public function redirect(): RedirectResponse
     {
-        return Redirect::route('brackets/admin-auth::admin/login');
+        return Redirect::route('brackets/zekini-admin::admin/login');
     }
 }

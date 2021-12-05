@@ -2,6 +2,10 @@
 
 return [
 
+    'defaults'=> [
+        'guard'=> 'zekini-admin'
+    ],
+
     'guards'=> [
         'zekini-admin'=> [
             'driver'=> 'session',
@@ -23,5 +27,10 @@ return [
             'expire'=> 60,
             'throttle'=> 60
         ]
+        ],
+
+    'auth_routes'=> [
+        'login_redirect'=> '/admin',
+        'logout_redirect'=> '/admin/login'
     ]
 ];
