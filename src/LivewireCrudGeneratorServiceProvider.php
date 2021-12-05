@@ -3,8 +3,10 @@ namespace Zekini\CrudGenerator;
 
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
+use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
@@ -31,6 +33,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
            $this->publishMigrations();
         }
         
+        $this->setupMiddlewares();
     }
     
     /**
@@ -86,11 +89,21 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             ->first();
     }
 
+    
+    /**
+     * Setup Middlewares
+     *
+     * @return void
+     */
+    protected function setupMiddlewares()
+    {
+        $router = $this->app->make(Router::class);
+        $guard = config('zekini-admin.defaults.guard');
+        $router->aliasMiddleware('guest.'.$guard, RedirectIfAuthenticated::class);
+    }
+
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/zekini-admin.php',
-            'zekini-admin'
-        );
+        
     }
 }

@@ -121,15 +121,15 @@ class AdminScafold extends Command
 
         $find = '\'guards\' => [';
         $replaceWith = '\'guards\' => [
-        \'zekini-admin\'=> [
+        \'zekini_admin\'=> [
             \'driver\' => \'session\',
-            \'provider\' => \'zekini-admins\'
+            \'provider\' => \'zekini_admins\'
         ],';
         Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
 
         $find = '\'providers\' => [';
         $replaceWith = '\'providers\' => [
-        \'zekini-admins\'=> [
+        \'zekini_admins\'=> [
             \'driver\' => \'eloquent\',
             \'model\' => Zekini\CrudGenerator\Models\ZekiniAdmin::class
         ],';
@@ -137,8 +137,8 @@ class AdminScafold extends Command
 
         $find = '\'passwords\' => [';
         $replaceWith = '\'passwords\' => [
-        \'zekini-admins\' => [
-            \'provider\' => \'zekini-admins\',
+        \'zekini_admins\' => [
+            \'provider\' => \'zekini_admins\',
             \'table\' => \'zekini_admin_password_resets\',
             \'expire\' => 60,
             \'throttle\' => 60
