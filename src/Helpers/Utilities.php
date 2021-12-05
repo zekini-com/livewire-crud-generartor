@@ -18,7 +18,11 @@ class Utilities
     public static function strReplaceInFile($pathToFile, $find, $replaceWith)
     {
         $content = File::get($pathToFile);
-
-        File::put($pathToFile, str_replace($find, $replaceWith, $content));
+        
+        // only replace when the replacement string is not there
+        if (strpos($content, $replaceWith) == false ){
+            File::put($pathToFile, str_replace($find, $replaceWith, $content));
+        }
+        
     }
 }

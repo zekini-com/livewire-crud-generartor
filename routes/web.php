@@ -27,7 +27,7 @@ Route::middleware(['web'])->group(static function () {
     });
 });
 
-Route::middleware(['web', 'admin', 'auth:' . config('admin-auth.defaults.guard')])->group(static function () {
+Route::middleware(['web', 'auth:' . config('zekini-admin.defaults.guard')])->group(static function () {
     Route::namespace('Zekini\CrudGenerator\Http\Controllers')->group(static function () {
         Route::get('/admin', 'AdminHomepageController@index')->name('zekini/livewire-crud-generator::admin');
     });

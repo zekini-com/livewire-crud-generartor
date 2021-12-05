@@ -48,12 +48,7 @@ class AdminScafold extends Command
         // Create file migration for the default admin user
         $this->publishVendors();
 
-        // Setup login and logout routes for this admin user
-        // Setup password reset routes and email verification
-        // Setup Create admin user routes
-        // Setup Admin UI
-        
-        
+
         return Command::SUCCESS;
     }
 
@@ -77,15 +72,19 @@ class AdminScafold extends Command
      */
     protected function publishSpatieVendors()
     {
+        
          //Spatie Permission
          $this->call('vendor:publish', [
             '--provider' => 'Spatie\\Permission\\PermissionServiceProvider',
             '--tag' => 'migrations'
         ]);
+       
         $this->call('vendor:publish', [
             '--provider' => 'Spatie\\Permission\\PermissionServiceProvider',
             '--tag' => 'config'
         ]);
+
+       
 
     }
     
@@ -98,9 +97,16 @@ class AdminScafold extends Command
     {
 
         $this->call('vendor:publish', [
-            '--provider'=> "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider",
+            '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
             '--tag'=> 'migrations'
         ]);
+
+        $this->call('vendor:publish', [
+            '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
+            '--tag'=> 'config'
+        ]);
+
+       
     }
 
     
@@ -112,30 +118,31 @@ class AdminScafold extends Command
     protected function setupAdminAuthGuard()
     {
         $pathToFile = config_path('auth.php');
-        $find = '\'guards\'=>[';
-        $replaceWith = '\'guards\'=>[
-            \'zekini-admin\'=> [
-                \'driver\'=> \'session\',
-                \'provider\'=> \'zekini-admins\'
-            ]';
+
+        $find = '\'guards\' => [';
+        $replaceWith = '\'guards\' => [
+        \'zekini-admin\'=> [
+            \'driver\' => \'session\',
+            \'provider\' => \'zekini-admins\'
+        ],';
         Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
 
-        $find = '\'providers\'=>[';
-        $replaceWith = '\'providers\'=>[
-            \'zekini-admins\'=> [
-                \'driver\'=> \'eloquent\',
-                \'model\'=> Zekini\CrudGenerator\Models\ZekiniAdmin::class
-            ]';
+        $find = '\'providers\' => [';
+        $replaceWith = '\'providers\' => [
+        \'zekini-admins\'=> [
+            \'driver\' => \'eloquent\',
+            \'model\' => Zekini\CrudGenerator\Models\ZekiniAdmin::class
+        ],';
         Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
 
-        $find = '\'passwords\'=>[';
-        $replaceWith = '\'passwords\'=>[
-            \'zekini-admins\'=> [
-                \'provider\'=> \'zekini-admins\',
-                \'table\'=> \'zekini_admin_password_resets\',
-                \'expire\'=> 60,
-                \'throttle\'=> 60
-            ]';
+        $find = '\'passwords\' => [';
+        $replaceWith = '\'passwords\' => [
+        \'zekini-admins\' => [
+            \'provider\' => \'zekini-admins\',
+            \'table\' => \'zekini_admin_password_resets\',
+            \'expire\' => 60,
+            \'throttle\' => 60
+        ],';
         Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
     }
 }

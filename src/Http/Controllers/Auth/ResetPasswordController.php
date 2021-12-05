@@ -60,9 +60,9 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->guard = config('admin-auth.defaults.guard');
-        $this->passwordBroker = config('admin-auth.defaults.passwords');
-        $this->redirectTo = config('admin-auth.password_reset_redirect');
+        $this->guard = config('zekini-admin.defaults.guard');
+        $this->passwordBroker = config('zekini-admin.defaults.passwords');
+        $this->redirectTo = config('zekini-admin.password_reset_redirect');
         $this->middleware('guest.admin:' . $this->guard);
     }
 
@@ -77,7 +77,7 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('brackets/admin-auth::admin.auth.passwords.reset')->with(
+        return view('brackets/zekini-admin::admin.auth.passwords.reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }
@@ -141,7 +141,7 @@ class ResetPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::PASSWORD_RESET) {
-            $message = trans('brackets/admin-auth::admin.passwords.reset');
+            $message = trans('brackets/zekini-admin::admin.passwords.reset');
         }
         return redirect($this->redirectPath())
             ->with('status', $message);
@@ -159,10 +159,10 @@ class ResetPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::INVALID_TOKEN) {
-            $message = trans('brackets/admin-auth::admin.passwords.invalid_token');
+            $message = trans('brackets/zekini-admin::admin.passwords.invalid_token');
         } else {
             if ($response === Password::INVALID_USER) {
-                $message = trans('brackets/admin-auth::admin.passwords.invalid_user');
+                $message = trans('brackets/zekini-admin::admin.passwords.invalid_user');
             } else {
                 if ($response === Password::INVALID_PASSWORD) {
                     $message = trans('brackets/admin-auth::admin.passwords.invalid_password');

@@ -20,7 +20,7 @@ class ApplyUserLocale
      */
     public function __construct()
     {
-        $this->guard = config('admin-auth.defaults.guard');
+        $this->guard = config('zekini-admin.defaults.guard');
     }
 
     /**

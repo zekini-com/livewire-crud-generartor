@@ -48,8 +48,8 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->guard = config('admin-auth.defaults.guard');
-        $this->passwordBroker = config('admin-auth.defaults.passwords');
+        $this->guard = config('zekini-admin.defaults.guard');
+        $this->passwordBroker = config('zekini-admin.defaults.passwords');
         $this->middleware('guest.admin:' . $this->guard);
     }
 
@@ -60,7 +60,7 @@ class ForgotPasswordController extends Controller
      */
     public function showLinkRequestForm()
     {
-        return view('brackets/admin-auth::admin.auth.passwords.email');
+        return view('brackets/zekini-admin::admin.auth.passwords.email');
     }
 
     /**
@@ -96,7 +96,7 @@ class ForgotPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::RESET_LINK_SENT) {
-            $message = trans('brackets/admin-auth::admin.passwords.sent');
+            $message = trans('brackets/zekini-admin::admin.passwords.sent');
         }
         return back()->with('status', $message);
     }

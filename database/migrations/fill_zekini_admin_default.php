@@ -13,7 +13,7 @@ class FillZekiniAdminDefault extends Migration
     public function __construct()
     {
         // TODO read this from an admin configuration file
-        $this->guard = 'zekini-admin';
+        $this->guard = config('zekini-admin.defaults.guard');
         $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
 
         $this->permissions = collect([
@@ -23,9 +23,9 @@ class FillZekiniAdminDefault extends Migration
             'administer.user.edit',
             'administer.user.delete',
         ]);
-        $this->roles = collect([
+        $this->roles = collect([[
             'name'=> 'Administrator',
-            'permissions'=> $this->permissions->toArray()
+            'permissions'=> $this->permissions->toArray()]
         ]);
 
         $this->admin = [
@@ -48,11 +48,13 @@ class FillZekiniAdminDefault extends Migration
         // create admin
         $adminId = DB::table('zekini_admins')->insertGetId($this->admin);
 
-        $roles = DB::table('roles')->get()->toArray();
-        $permissions = DB::table('permissions')->get()->toArray();
+        $roles = DB::table('roles')->get();
+      
+        $permissions = DB::table('permissions')->get();
 
         // setup admin roles
         foreach($roles as $role) {
+            $role = (array)$role;
             $modelRole = [
                 'model_id'=> $adminId,
                 'model_type'=> $this->className,
@@ -66,6 +68,7 @@ class FillZekiniAdminDefault extends Migration
 
         // setup admin permissions
         foreach($permissions as $rolePermission) {
+            $rolePermission  = (array)$rolePermission;
             $modelPermission = [
                 'model_id'=> $adminId,
                 'model_type'=> $this->className,
@@ -88,10 +91,11 @@ class FillZekiniAdminDefault extends Migration
     {
         foreach($this->roles as $role) {
             // we check if role exists
+           
             if (! DB::table('roles')->where(['name'=>$role['name'],'guard_name'=>$this->guard])->exists()) {
 
                 $roleId = DB::table('roles')->insertGetId([
-                    'name'=> $role,
+                    'name'=> $role['name'],
                     'guard_name'=> $this->guard,
                     'created_at'=> Carbon::now(),
                     'updated_at'=> Carbon::now()
@@ -121,7 +125,7 @@ class FillZekiniAdminDefault extends Migration
     {
         foreach($this->permissions as $permission) {
             // we check if permission exists
-            if (! DB::table('permissions')->where('name', $permission)->andWhere('guard_name', $this->guard)->exists()) {
+            if (! DB::table('permissions')->where(['name'=>$permission, 'guard_name'=>$this->guard])->exists()) {
 
                 DB::table('permissions')->insert([
                     'name'=> $permission,

@@ -25,7 +25,7 @@ class RedirectIfAuthenticated
      */
     public function __construct()
     {
-        $this->guard = config('admin-auth.defaults.guard');
+        $this->guard = config('zekini-admin.defaults.guard');
     }
 
     /**
@@ -40,7 +40,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             if ($guard === $this->guard) {
-                return redirect(config('admin-auth.login_redirect'));
+                return redirect(config('zekini-admin.login_redirect'));
             } else {
                 return redirect('/home');
             }

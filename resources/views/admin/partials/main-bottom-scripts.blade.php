@@ -1,2 +1,1 @@
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-<script src="{{ mix('/js/admin.js') }}"></script>
+<script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>

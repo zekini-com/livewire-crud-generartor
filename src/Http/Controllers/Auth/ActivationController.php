@@ -52,9 +52,9 @@ class ActivationController extends Controller
      */
     public function __construct()
     {
-        $this->guard = config('admin-auth.defaults.guard');
-        $this->activationBroker = config('admin-auth.defaults.activations');
-        $this->redirectTo = config('admin-auth.activation_redirect');
+        $this->guard = config('zekini-admin.defaults.guard');
+        $this->activationBroker = config('zekini-admin.defaults.activations');
+        $this->redirectTo = config('zekini-admin.activation_redirect');
         $this->middleware('guest.admin:' . $this->guard);
     }
 
@@ -68,7 +68,7 @@ class ActivationController extends Controller
      */
     public function activate(Request $request, $token)
     {
-        if (!config('admin-auth.activation_enabled')) {
+        if (!config('zekini-admin.activation_enabled')) {
             return $this->sendActivationFailedResponse($request, Activation::ACTIVATION_DISABLED);
         }
 
@@ -148,7 +148,7 @@ class ActivationController extends Controller
     {
         $message = trans($response);
         if ($response === Activation::ACTIVATED) {
-            $message = trans('brackets/admin-auth::admin.activations.activated');
+            $message = trans('brackets/zekini-admin::admin.activations.activated');
         }
         return redirect($this->redirectPath())
             ->with('status', $message);
@@ -166,18 +166,18 @@ class ActivationController extends Controller
     {
         $message = trans($response);
         if ($response === Activation::INVALID_USER || $response === Activation::INVALID_TOKEN) {
-            $message = trans('brackets/admin-auth::admin.activations.invalid_request');
+            $message = trans('brackets/zekini-admin::admin.activations.invalid_request');
         } else {
             if (Activation::ACTIVATION_DISABLED) {
-                $message = trans('brackets/admin-auth::admin.activations.disabled');
+                $message = trans('brackets/zekini-admin::admin.activations.disabled');
             }
         }
-        if (config('admin-auth.self_activation_form_enabled')) {
-            return redirect(route('brackets/admin-auth::admin/activation'))
+        if (config('zekini-admin.self_activation_form_enabled')) {
+            return redirect(route('brackets/zekini-admin::admin/activation'))
                 ->withInput($request->only('email'))
                 ->withErrors(['token' => $message]);
         } else {
-            return view('brackets/admin-auth::admin.auth.activation.error')->withErrors(
+            return view('brackets/zekini-admin::admin.auth.activation.error')->withErrors(
                 ['token' => $message]
             );
         }
