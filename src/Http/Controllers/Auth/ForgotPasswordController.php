@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    //use SendsPasswordResetEmails;
+    use SendsPasswordResetEmails;
 
     /**
      * Guard used for admin user
@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
      *
      * @var string
      */
-    protected $passwordBroker = 'admin_users';
+    protected $passwordBroker = 'zekini_admins';
 
     /**
      * Create a new controller instance.
@@ -50,7 +50,7 @@ class ForgotPasswordController extends Controller
     {
         $this->guard = config('zekini-admin.defaults.guard');
         $this->passwordBroker = config('zekini-admin.defaults.passwords');
-        $this->middleware('guest.admin:' . $this->guard);
+        $this->middleware('guest.' . $this->guard);
     }
 
     /**
@@ -60,7 +60,7 @@ class ForgotPasswordController extends Controller
      */
     public function showLinkRequestForm()
     {
-        return view('brackets/zekini-admin::admin.auth.passwords.email');
+        return view('zekini/livewire-crud-generator::admin.auth.passwords.email');
     }
 
     /**
@@ -79,7 +79,7 @@ class ForgotPasswordController extends Controller
         $response = $this->broker()->sendResetLink(
             $request->only('email')
         );
-
+      
         return $response === Password::RESET_LINK_SENT
             ? $this->sendResetLinkResponse($request, $response)
             : $this->sendResetLinkFailedResponse($request, $response);
@@ -96,7 +96,7 @@ class ForgotPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::RESET_LINK_SENT) {
-            $message = trans('brackets/zekini-admin::admin.passwords.sent');
+            $message = trans('zekini/livewire-crud-generator::admin.passwords.sent');
         }
         return back()->with('status', $message);
     }

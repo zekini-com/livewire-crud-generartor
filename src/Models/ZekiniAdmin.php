@@ -1,9 +1,10 @@
 <?php
 namespace Zekini\CrudGenerator\Models;
 
+use Illuminate\Notifications\Notifiable;
+use Zekini\CrudGenerator\Notification\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class ZekiniAdmin extends Authenticatable
 {
@@ -39,5 +40,16 @@ class ZekiniAdmin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+     /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(app(ResetPassword::class, ['token' => $token]));
+    }
 
 }
