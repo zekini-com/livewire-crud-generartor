@@ -7,6 +7,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
+use Zekini\CrudGenerator\Providers\CrudServiceProvider;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
@@ -20,9 +21,8 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $this->commands([
-            Commands\AdminScafold::class,
-        ]);
+        //$this->register(CrudServiceProvider::class);
+        $this->registerCommands();
 
         $this->loadViewsFrom(__DIR__.'./../resources/views', 'zekini/livewire-crud-generator');
         $this->loadRoutesFrom(__DIR__.'./../routes/web.php');
@@ -34,6 +34,31 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         }
         
         $this->setupMiddlewares();
+    }
+
+    
+    /**
+     * Registers Command
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        $this->commands([
+            Commands\AdminScafold::class,
+            Commands\CrudGenerator::class,
+            Commands\Generators\GenerateModel::class,
+            Commands\Generators\GenerateController::class,
+            Commands\Generators\GenerateForm::class,
+            Commands\Generators\GenerateIndexView::class,
+            Commands\Generators\GeneratePermission::class,
+            Commands\Generators\GenerateUnitTest::class,
+            Commands\Generators\GenerateFactory::class,
+            Commands\Generators\GenerateRequestIndex::class,
+            Commands\Generators\GenerateRequestStore::class,
+            Commands\Generators\GenerateRequestUpdate::class,
+            Commands\Generators\GenerateRequestDestroy::class
+        ]);
     }
     
     /**
