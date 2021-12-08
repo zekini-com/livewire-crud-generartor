@@ -55,18 +55,40 @@ class CrudGenerator extends Command
 
         // Get all table columns and attributes
         $columns = Schema::getColumnListing($tableName);
-        $this->coreClasses = [
-            'admin:generate:model',
-            'admin:generate:controller',
-            'admin:generate:route'
-        ];
+        $generators = $this->getGenerators();
         
-        foreach($this->coreClasses as $index=>$command) {
+        foreach($generators as $index=>$command) {
             $this->call($command, ['table'=> $tableName]);
         }
 
 
         return Command::SUCCESS;
+    }
+
+    
+    /**
+     * Get Generators
+     *
+     * @return array
+     */
+    protected function getGenerators()
+    {
+        return [
+            'admin:generate:model',
+            'admin:generate:controller',
+            'admin:generate:route',
+            'admin:generate:form',
+            'admin:generate:views:index',
+            'admin:generate:views:edit',
+            'admin:generate:views:create',
+            'admin:generate:permission',
+            'admin:generate:request:index',
+            'admin:generate:request:store',
+            'admin:generate:request:update',
+            'admin:generate:request:destroy',
+            'admin:generate:test',
+            'admin:generate:factory'
+        ];
     }
 
  
