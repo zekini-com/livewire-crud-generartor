@@ -11,6 +11,8 @@ abstract class BaseGenerator extends Command
 
     use ColumnTrait;
 
+    protected $hidden = true;
+
     protected $files;
     
     /**
