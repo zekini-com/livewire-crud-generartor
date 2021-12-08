@@ -34,6 +34,7 @@
     },
     "require": {
         "spatie/laravel-permission": "5.x-dev",
-        "doctrine/dbal": "2.13.1"
+        "doctrine/dbal": "2.13.1",
+        "livewire/livewire": "dev-master"
     }
 }
