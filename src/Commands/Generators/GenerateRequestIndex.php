@@ -4,8 +4,10 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class GenerateRequestIndex extends Command
+class GenerateRequestIndex extends BaseGenerator
 {
+
+    protected $classType = "index-request";
 
      /**
      * The name and signature of the console command.
@@ -19,38 +21,21 @@ class GenerateRequestIndex extends Command
      *
      * @var string
      */
-    protected $description = 'Generates model';
+    protected $description = 'Generates Index Request ';
+
 
     /**
-     * Create a new command instance.
+     * Get the default namespace for the class.
      *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
-    
-    /**
-     * getTemplate
-     *
-     * @return void
-     */
-    protected function getTemplateUrl()
-    {
-        return __DIR__.'../../../../templates/controller.php.stub';
-    }
-    
-    /**
-     * getClassNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
-    protected function getClassNamespace($table)
+    protected function getDefaultNamespace($rootNamespace)
     {
-        return "App\Http\Controllers\Admin\\".ucfirst($table);
+        $className = ucfirst($this->className);
+        return $rootNamespace."Http\Requests\Admin\\$className\\";
     }
+
 
     /**
      * Execute the console command.
@@ -59,17 +44,39 @@ class GenerateRequestIndex extends Command
      */
     public function handle(Filesystem $files)
     {
-        $this->info('Generating Controller Class');
+        $this->info('Generating Store Request Class');
        
        //publish any vendor files to where they belong
-       $content = $files->get($this->getTemplateUrl());
+       $this->className = $this->getClassName();
 
-       $tableName = $this->argument('table');
-    
-       $content = str_replace('DummyNamespace', $this->getClassNamespace($tableName), $content);
-       $content = str_replace('DummyClassName', ucfirst($tableName), $content);
+       $this->requestClass = "Index".ucfirst($this->className);
+
+       $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
+
+       $templateContent = $this->replaceContent();
+
+       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777, true);
+   
+       $filename = $path.'/'.$this->requestClass.'.php';
+      
+       $this->files->put($filename, $templateContent);
         
         return Command::SUCCESS;
+    }
+
+    
+    /**
+     * Get view data
+     *
+     * @return array
+     */
+    protected function getViewData()
+    {
+        return [
+            'modelBaseName' => ucfirst($this->className),
+            'modelDotNotation' => strtolower($this->className),
+            'columnsToQuery'=> ['id'] 
+        ];
     }
     
 

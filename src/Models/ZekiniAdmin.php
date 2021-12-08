@@ -5,11 +5,18 @@ use Illuminate\Notifications\Notifiable;
 use Zekini\CrudGenerator\Notification\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zekini\CrudGenerator\Factory\ZekiniAdminFactory;
 
 class ZekiniAdmin extends Authenticatable
 {
 
     use HasFactory, Notifiable;
+
+
+    protected static function newFactory()
+    {
+        return ZekiniAdminFactory::new();
+    }
 
       /**
      * The attributes that are mass assignable.

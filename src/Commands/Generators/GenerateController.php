@@ -4,8 +4,10 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class GenerateController extends Command
+class GenerateController extends BaseGenerator
 {
+
+    protected $classType = "controller";
 
      /**
      * The name and signature of the console command.
@@ -21,36 +23,18 @@ class GenerateController extends Command
      */
     protected $description = 'Generates model';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
 
-    }
-    
     /**
-     * getTemplate
+     * Get the default namespace for the class.
      *
-     * @return void
-     */
-    protected function getTemplateUrl()
-    {
-        return __DIR__.'../../../../templates/controller.php.stub';
-    }
-    
-    /**
-     * getClassNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
-    protected function getClassNamespace($table)
+    protected function getDefaultNamespace($rootNamespace)
     {
-        return "App\Http\Controllers\Admin\\".ucfirst($table);
+        return $rootNamespace.'Http\Controllers\Admin\\';
     }
+
 
     /**
      * Execute the console command.
@@ -62,14 +46,41 @@ class GenerateController extends Command
         $this->info('Generating Controller Class');
        
        //publish any vendor files to where they belong
-       $content = $files->get($this->getTemplateUrl());
+       $this->className = $this->getClassName();
 
-       $tableName = $this->argument('table');
-    
-       $content = str_replace('DummyNamespace', $this->getClassNamespace($tableName), $content);
-       $content = str_replace('DummyClassName', ucfirst($tableName), $content);
+       $this->controllerNamespace = $this->className.'Controller';
+
+       $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
+
+       $templateContent = $this->replaceContent();
+
+       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
+       $filename = $path.'/'.$this->controllerNamespace.'.php';
+      
+       $this->files->put($filename, $templateContent);
         
         return Command::SUCCESS;
+    }
+
+    
+    /**
+     * Get view data
+     *
+     * @return array
+     */
+    protected function getViewData()
+    {
+        return [
+            'controllerBaseName' => $this->controllerNamespace,
+            'controllerNamespace' => rtrim($this->namespace, '\\'),
+            'modelBaseName' => $this->className,
+            'modelPlural' => $this->className.'s',
+            'modelVariableName' => strtolower($this->className),
+            'modelDotNotation' => strtolower($this->className),
+            'modelWithNamespaceFromDefault' => rtrim($this->namespace, '\\'),
+            'resource'=> strtolower($this->className),
+            'modelFullName'=> "App\Models\\".$this->className
+        ];
     }
     
 

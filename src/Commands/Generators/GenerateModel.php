@@ -1,11 +1,28 @@
 <?php
 namespace Zekini\CrudGenerator\Commands\Generators;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class GenerateModel extends Command
+class GenerateModel extends BaseGenerator
 {
+
+    protected $classType = 'model';
+    
+    /**
+     * class name
+     *
+     * @var string
+     */
+    protected $className;
+    
+    /**
+     * class namespace
+     *
+     * @var string
+     */
+    protected $namespace;
 
      /**
      * The name and signature of the console command.
@@ -21,35 +38,16 @@ class GenerateModel extends Command
      */
     protected $description = 'Generates model';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
     
     /**
-     * getTemplate
+     * Get the default namespace for the class.
      *
-     * @return void
-     */
-    protected function getTemplateUrl()
-    {
-        return __DIR__.'../../../../templates/model.php.stub';
-    }
-    
-    /**
-     * getClassNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
-    protected function getClassNamespace($table)
+    protected function getDefaultNamespace($rootNamespace)
     {
-        return "App\Models\\".ucfirst($table);
+        return $rootNamespace.'Models\\';
     }
 
     /**
@@ -57,20 +55,38 @@ class GenerateModel extends Command
      *
      * @return int
      */
-    public function handle(Filesystem $files)
+    public function handle()
     {
         $this->info('Generating Model Class');
-       
-       //publish any vendor files to where they belong
-       $content = $files->get($this->getTemplateUrl());
 
-       $tableName = $this->argument('table');
-    
-       $content = str_replace('DummyNamespace', $this->getClassNamespace($tableName), $content);
-       $content = str_replace('DummyClassName', ucfirst($tableName), $content);
-        
+        $this->className = $this->getClassName();
+
+        $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
+
+        $templateContent = $this->replaceContent();
+
+        @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
+        $filename = $path.'/'.$this->className.'.php';
+       
+        $this->files->put($filename, $templateContent);
+       
         return Command::SUCCESS;
     }
+
+
+     /**
+     * Get view data
+     *
+     * @return array
+     */
+    protected function getViewData()
+    {
+        return [
+            'modelBaseName' => ucfirst($this->className)
+        ];
+    }
+
+   
     
 
   
