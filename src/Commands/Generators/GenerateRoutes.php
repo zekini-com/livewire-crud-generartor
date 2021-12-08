@@ -3,9 +3,11 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Zekini\CrudGenerator\Traits\CreatesSidebar;
 
 class GenerateRoutes extends BaseGenerator
 {
+    use CreatesSidebar;
 
     protected $classType = "routes";
 
@@ -43,6 +45,8 @@ class GenerateRoutes extends BaseGenerator
        $filename = base_path('routes/web.php');
       
        $this->files->append($filename, $templateContent);
+
+       $this->makeSideBar();
         
         return Command::SUCCESS;
     }
@@ -62,6 +66,7 @@ class GenerateRoutes extends BaseGenerator
         return view($view, $variables)->render();
 
     }
+    
 
 
     
