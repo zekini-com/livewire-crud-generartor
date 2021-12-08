@@ -57,7 +57,8 @@ class CrudGenerator extends Command
         $columns = Schema::getColumnListing($tableName);
         $this->coreClasses = [
             'admin:generate:model',
-            'admin:generate:controller'
+            'admin:generate:controller',
+            'admin:generate:route'
         ];
         
         foreach($this->coreClasses as $index=>$command) {

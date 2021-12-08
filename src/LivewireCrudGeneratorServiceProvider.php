@@ -51,13 +51,16 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
             Commands\Generators\GenerateIndexView::class,
+            Commands\Generators\GenerateEditView::class,
+            Commands\Generators\GenerateCreateView::class,
             Commands\Generators\GeneratePermission::class,
             Commands\Generators\GenerateUnitTest::class,
             Commands\Generators\GenerateFactory::class,
             Commands\Generators\GenerateRequestIndex::class,
             Commands\Generators\GenerateRequestStore::class,
             Commands\Generators\GenerateRequestUpdate::class,
-            Commands\Generators\GenerateRequestDestroy::class
+            Commands\Generators\GenerateRequestDestroy::class,
+            Commands\Generators\GenerateRoutes::class
         ]);
     }
     
@@ -72,6 +75,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             __DIR__ . '/../config/zekini-admin.php' => config_path('zekini-admin.php'),
         ], 'config');
     }
+    
 
     
     /**

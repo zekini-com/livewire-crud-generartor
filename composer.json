@@ -33,6 +33,7 @@
         "phpunit/phpunit": "9.5.x-dev"
     },
     "require": {
-        "spatie/laravel-permission": "5.x-dev"
+        "spatie/laravel-permission": "5.x-dev",
+        "doctrine/dbal": "2.13.1"
     }
 }

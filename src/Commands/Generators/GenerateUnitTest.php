@@ -3,9 +3,12 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Schema;
 
-class GenerateUnitTest extends Command
+class GenerateUnitTest extends BaseGenerator
 {
+
+    protected $classType = 'test';
 
      /**
      * The name and signature of the console command.
@@ -19,29 +22,19 @@ class GenerateUnitTest extends Command
      *
      * @var string
      */
-    protected $description = 'Generates Test';
+    protected $description = 'Generates Unit testing';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
     
-    /**
-     * getTemplate
+      /**
+     * Get the default namespace for the class.
      *
-     * @return void
+     * @param  string  $rootNamespace
+     * @return string
      */
-    protected function getTemplateUrl()
+    protected function getDefaultNamespace()
     {
-        return __DIR__.'../../../../templates/form.php.stub';
+        return 'Tests\Unit\\';
     }
-    
 
     /**
      * Execute the console command.
@@ -50,17 +43,40 @@ class GenerateUnitTest extends Command
      */
     public function handle(Filesystem $files)
     {
-        $this->info('Generating Edit Forms');
-       
        //publish any vendor files to where they belong
-       $content = $files->get($this->getTemplateUrl());
+       $this->className = $this->getClassName();
 
-       $tableName = $this->argument('table');
+       $this->testBaseName = $this->className.'Test';
 
-        
+       $this->namespace = $this->getDefaultNamespace();
+
+       $templateContent = $this->replaceContent();
+
+       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
+       $filename = $path.'/'.$this->testBaseName.'.php';
+      
+       $this->files->put($filename, $templateContent);
+
         return Command::SUCCESS;
     }
+
+     /**
+     * Get view data
+     *
+     * @return array
+     */
+    protected function getViewData()
+    {
+        return [
+            'modelBaseName' => ucfirst($this->getClassName()),
+            'adminModel'=> '\\'.config('zekini-admin.providers.zekini_admins.model'),
+            'resource'=> $this->getClassName(),
+            'tableName'=> $this->argument('table')
+        ];
+    }
     
+
+
 
   
 }
