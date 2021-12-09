@@ -1,4 +1,4 @@
-{{'@'}}extends('zekini\livewire-crud-generator::admin.layout.default')
+{{'@'}}extends('zekini/livewire-crud-generator::admin.layout.default')
 @php
 $dataCountIf = '@if(count($data) > 0)';
 $dataCountEndIf  = '@endif';
@@ -55,7 +55,7 @@ $closeBlade = '}}';
                                     <tbody>
                                          {{$dataCountForeach}}
                                             <tr>
-                                                <td>{!!$openBlade!!} $loop->index {!! $closeBlade !!}</td>
+                                                <td>{!!$openBlade!!} $loop->index+1 {!! $closeBlade !!}</td>
                                                 @foreach($vissibleColumns as $col)
                                                     
                                                    <td>

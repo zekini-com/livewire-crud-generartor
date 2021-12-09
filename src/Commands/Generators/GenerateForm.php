@@ -39,7 +39,7 @@ class GenerateForm extends BaseGenerator
        $templateContent = $this->replaceContent();
 
        @$this->files->makeDirectory($path = resource_path('views/admin/'.strtolower($this->className).'/components'), 0777, true);
-       $filename = $path.'/form.php';
+       $filename = $path.'/form.blade.php';
       
        $this->files->put($filename, $templateContent);
 

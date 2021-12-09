@@ -11,12 +11,10 @@
 |
 */
 
-Route::middleware(['web'])->group(static function () {
+Route::middleware(['web', 'admin.guest'])->group(static function () {
     Route::namespace('Zekini\CrudGenerator\Http\Controllers\Auth')->group(static function () {
         Route::get('/admin/login', 'LoginController@showLoginForm')->name('zekini/livewire-crud-generator::admin/login');
         Route::post('/admin/login', 'LoginController@login');
-
-        Route::any('/admin/logout', 'LoginController@logout')->name('zekini/livewire-crud-generator::admin/logout');
 
         Route::get('/admin/password-reset', 'ForgotPasswordController@showLinkRequestForm')->name('zekini/livewire-crud-generator::admin/password/showForgotForm');
         Route::post('/admin/password-reset/send', 'ForgotPasswordController@sendResetLinkEmail');
@@ -27,8 +25,15 @@ Route::middleware(['web'])->group(static function () {
     });
 });
 
-Route::middleware(['web', 'auth:' . config('zekini-admin.defaults.guard')])->group(static function () {
+Route::middleware(['web', 'admin:'.config('zekini-admin.defaults.guard')])->group(function(){
+    Route::namespace('Zekini\CrudGenerator\Http\Controllers\Auth')->group(static function () {
+        Route::any('/admin/logout', 'LoginController@logout')->name('zekini/livewire-crud-generator::admin/logout');
+    });
+});
+
+Route::middleware(['web', 'admin:'.config('zekini-admin.defaults.guard')])->group(static function () {
     Route::namespace('Zekini\CrudGenerator\Http\Controllers')->group(static function () {
         Route::get('/admin', 'AdminHomepageController@index')->name('zekini/livewire-crud-generator::admin');
+        
     });
 });

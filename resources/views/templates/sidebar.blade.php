@@ -20,6 +20,12 @@ $closeBlade = '}}';
         <li class="nav-title">CRUD</li>
     
         {!! $openBlade !!}{{"--@AutoGenerator--"}}{!! $closeBlade !!} 
+
+        <li class="nav-item"><a class="nav-link" href="{!! $openBlade !!} url('/admin/logout') {!! $closeBlade !!}">
+                <svg class="nav-icon">
+                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+                </svg> Logout</a></li>
+        
     
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
