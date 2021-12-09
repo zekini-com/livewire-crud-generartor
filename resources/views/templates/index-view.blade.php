@@ -14,7 +14,7 @@ $closeBlade = '}}';
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> {{ trans('admin.nav-item.actions.index') }}
+                        <i class="fa fa-align-justify"></i> Index {{ $resource }}
                     </div>
                     <div class="card-body" v-cloak>
                         <div class="card-block">
@@ -22,9 +22,9 @@ $closeBlade = '}}';
                                 <div class="row justify-content-md-between">
                                     <div class="col col-lg-7 col-xl-5 form-group">
                                         <div class="input-group">
-                                            <input class="form-control" placeholder="{{ trans('brackets/admin-ui::admin.placeholder.search') }}" v-model="search" @keyup.enter="filter('search', $event.target.value)" />
+                                            <input class="form-control" placeholder="Search {{$resource}}" v-model="search" @keyup.enter="filter('search', $event.target.value)" />
                                             <span class="input-group-append">
-                                                <button type="button" class="btn btn-primary" @click="filter('search', search)"><i class="fa fa-search"></i>&nbsp; {{ trans('brackets/admin-ui::admin.btn.search') }}</button>
+                                                <button type="button" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
                                             </span>
                                         </div>
                                     </div>
@@ -49,6 +49,7 @@ $closeBlade = '}}';
                                             @foreach($vissibleColumns as $col)
                                                 <th>{{$col['name']}}</th>
                                             @endforeach
+                                            <th>Actions</th>
                                         </tr>
 
                                     </thead>
@@ -62,6 +63,17 @@ $closeBlade = '}}';
                                                        {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
                                                    </td>
                                                 @endforeach
+                                                <td>
+                                                    <span>
+                                                        @php
+                                                            $id = '$item->id';
+                                                            $url = 'url("admin/'.$resource.'/".$item->id."/edit")';
+                                                        @endphp
+                                                     
+                                                        <a href="{!! $openBlade !!} {!! $url !!} {!! $closeBlade !!}">Edit</a>
+                                                        <a href="#">Delete</a>
+                                                    </span>
+                                                </td>
                                             </tr>
                                         {{$endDataCountForeach}} 
                                     </tbody>

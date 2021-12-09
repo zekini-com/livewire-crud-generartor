@@ -25,18 +25,24 @@ trait CreatesSidebar
         // if file exists simply append the sidebar for this
         $view = "zekini/livewire-crud-generator::templates.sidebar-single";
         $resource = strtolower($this->getClassName());
+        $resourceRoute =  "url('admin/$resource')";
         $templateContent =  view($view, [
             'modelBaseName'=> $this->getClassName(),
-            'resourceRoute'=> "url('admin/$resource')"
+            'resourceRoute'=> $resourceRoute
         ])->render();
 
         $fileContent = $this->files->get($filename);
 
-        // replace some things in the string before append
-        $find = "{{--@AutoGenerator--}}";
-        $replaceWith = $templateContent."
-        $find";
-        $this->files->put($filename, str_replace($find, $replaceWith, $fileContent));
+        // check if the sidebar does not exists
+        if (strpos($fileContent, $resourceRoute) == false){
+             // replace some things in the string before append
+            $find = "{{--@AutoGenerator--}}";
+            $replaceWith = $templateContent."
+            $find";
+            $this->files->put($filename, str_replace($find, $replaceWith, $fileContent));
 
+        }
+
+       // skip  and so nothings
     }
 }
