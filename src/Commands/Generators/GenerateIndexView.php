@@ -54,7 +54,9 @@ class GenerateIndexView extends BaseGenerator
     protected function getViewData()
     {
         return [
-            'vissibleColumns'=> $this->getColumnDetails()
+            'vissibleColumns'=> $this->getColumnDetailsWithId(),
+            'modelName'=> ucfirst($this->getClassName()),
+            'resource'=> strtolower($this->getClassName())
         ];
     }
     
