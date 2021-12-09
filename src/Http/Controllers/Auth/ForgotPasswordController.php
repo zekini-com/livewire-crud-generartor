@@ -96,7 +96,7 @@ class ForgotPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::RESET_LINK_SENT) {
-            $message = trans('zekini/livewire-crud-generator::admin.passwords.sent');
+            $message = "Reset link has been sent to yout email";
         }
         return back()->with('status', $message);
     }

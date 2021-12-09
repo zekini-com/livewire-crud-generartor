@@ -46,8 +46,8 @@ class ResetPassword extends Notification
     {
         //TODO change to template?
         return (new MailMessage)
-            ->line(trans('zekini/livewire-crud-generator::resets.email.line'))
-            ->action(trans('zekini/livewire-crud-generator::resets.email.action'), route('zekini/livewire-crud-generator::admin/password/showResetForm', $this->token))
-            ->line(trans('zekini/livewire-crud-generator::resets.email.notRequested'));
+            ->line("Please click the link below to reset your password")
+            ->action("Reset password", route('zekini/livewire-crud-generator::admin/password/showResetForm', $this->token))
+            ->line("If you did not request this action. Please ignore");
     }
 }

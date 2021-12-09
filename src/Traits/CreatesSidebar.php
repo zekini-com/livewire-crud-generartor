@@ -13,7 +13,7 @@ trait CreatesSidebar
     public function makeSideBar()
     {
         
-        @$this->files->makeDirectory($path  = resource_path('views/admin/layouts'), 0777, true);
+        @$this->files->makeDirectory($path  = resource_path('views/admin/layout'), 0777, true);
 
         if (! $this->files->exists($filename = $path.'/sidebar.blade.php')) {
             $filename = $path.'/sidebar.blade.php';
@@ -27,7 +27,7 @@ trait CreatesSidebar
         $resource = strtolower($this->getClassName());
         $templateContent =  view($view, [
             'modelBaseName'=> $this->getClassName(),
-            'resourceRoute'=> "url('admin/$resource'))"
+            'resourceRoute'=> "url('admin/$resource')"
         ])->render();
 
         $fileContent = $this->files->get($filename);

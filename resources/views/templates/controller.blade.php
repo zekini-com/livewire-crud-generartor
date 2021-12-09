@@ -6,10 +6,10 @@ namespace {{ $controllerNamespace }};
 
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests\Admin\Destroy{{ $modelBaseName }};
-use App\Http\Requests\Admin\Index{{ $modelBaseName }};
-use App\Http\Requests\Admin\Store{{ $modelBaseName }};
-use App\Http\Requests\Admin\Update{{ $modelBaseName }};
+use App\Http\Requests\Admin\{{$modelBaseName}}\Destroy{{ $modelBaseName }};
+use App\Http\Requests\Admin\{{$modelBaseName}}\Index{{ $modelBaseName }};
+use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
+use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
 use {{ $modelFullName }};
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
