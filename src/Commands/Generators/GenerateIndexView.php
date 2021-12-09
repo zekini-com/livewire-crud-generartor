@@ -39,7 +39,7 @@ class GenerateIndexView extends BaseGenerator
        $templateContent = $this->replaceContent();
 
        @$this->files->makeDirectory($path = resource_path('views/admin/'.strtolower($this->className)), 0777, true);
-       $filename = $path.'/index.php';
+       $filename = $path.'/index.blade.php';
       
        $this->files->put($filename, $templateContent);
 

@@ -6,6 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
+use Zekini\CrudGenerator\Http\Middleware\RedirectGuest;
 use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
 use Zekini\CrudGenerator\Providers\CrudServiceProvider;
 
@@ -128,7 +129,8 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     {
         $router = $this->app->make(Router::class);
         $guard = config('zekini-admin.defaults.guard');
-        $router->aliasMiddleware('guest.'.$guard, RedirectIfAuthenticated::class);
+        $router->aliasMiddleware('admin.guest', RedirectGuest::class);
+        $router->aliasMiddleware('admin', RedirectIfAuthenticated::class);
     }
 
     public function register()

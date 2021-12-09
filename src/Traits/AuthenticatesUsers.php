@@ -44,7 +44,8 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
-        if ($this->attemptLogin($request)) {
+        if ($loggedIn  = $this->attemptLogin($request)) {
+            
             return $this->sendLoginResponse($request);
         }
 
@@ -110,6 +111,7 @@ trait AuthenticatesUsers
         $this->clearLoginAttempts($request);
 
         if ($response = $this->authenticated($request, $this->guard()->user())) {
+
             return $response;
         }
        

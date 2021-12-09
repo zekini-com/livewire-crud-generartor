@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
  *
  * @package Zekini\CrudGenerator\Http\Middleware
  */
-class RedirectIfAuthenticated
+class RedirectGuest
 {
     /**
      * Guard used for admin user
@@ -39,8 +39,10 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
        
-        if (! Auth::guard($this->guard)->check()) {
-            return redirect(config('zekini-admin.auth_routes.logout_redirect'));
+        if (Auth::guard($this->guard)->check()) { // if user is logged in redirect them to dashboard
+          
+            return redirect(config('zekini-admin.auth_routes.login_redirect'));
+            
         }
 
         return $next($request);

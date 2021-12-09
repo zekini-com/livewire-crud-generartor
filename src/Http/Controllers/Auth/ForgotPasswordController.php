@@ -50,7 +50,7 @@ class ForgotPasswordController extends Controller
     {
         $this->guard = config('zekini-admin.defaults.guard');
         $this->passwordBroker = config('zekini-admin.defaults.passwords');
-        $this->middleware('guest.' . $this->guard);
+        $this->middleware('admin.guest:' . $this->guard);
     }
 
     /**
