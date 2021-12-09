@@ -27,9 +27,9 @@ class {{ $className }} extends Migration
      */
     public function __construct()
     {
-        $this->guardName = config('zekini-admin.defaults.guard');
-
-        $permissions = collect([
+        $this->guard = config('zekini-admin.defaults.guard');
+        $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
+        $this->permissions = collect([
             'admin.{{ $modelDotNotation }}',
             'admin.{{ $modelDotNotation }}.index',
             'admin.{{ $modelDotNotation }}.create',
@@ -38,24 +38,101 @@ class {{ $className }} extends Migration
             'admin.{{ $modelDotNotation }}.delete'
         ]);
 
-        //Add New permissions
-        $this->permissions = $permissions->map(function ($permission) {
-            return [
-                'name' => $permission,
-                'guard_name' => $this->guardName,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        })->toArray();
-
         //Role should already exists
         $this->roles = [
             [
                 'name' => 'Administrator',
-                'guard_name' => $this->guardName,
-                'permissions' => $permissions,
+                'guard_name' => $this->guard,
+                'permissions' => $this->permissions->toArray(),
             ],
         ];
+    }
+
+    /**
+     * Setup Super Admin with all roles and all permissions
+     *
+     * @return void
+     */
+    protected function setupSuperAdmin()
+    {
+        // create admin
+        $adminId = DB::table('zekini_admins')->where('name', 'Administrator')->first()->id;
+
+        $roles = DB::table('roles')->get();
+      
+        $permissions = DB::table('permissions')->get();
+
+        // setup admin roles
+        foreach($roles as $role) {
+            $role = (array)$role;
+            $modelRole = [
+                'model_id'=> $adminId,
+                'model_type'=> $this->className,
+                'role_id'=> $role['id']
+            ];
+            // we check if role exists
+            if (! DB::table('model_has_roles')->where($modelRole)->exists()) {
+               DB::table('model_has_roles')->insert($modelRole);
+            }
+        }
+
+        // setup admin permissions
+        foreach($permissions as $rolePermission) {
+            $rolePermission  = (array)$rolePermission;
+            $modelPermission = [
+                'model_id'=> $adminId,
+                'model_type'=> $this->className,
+                'permission_id'=> $rolePermission['id']
+            ];
+            // we check if role exists
+            if (! DB::table('model_has_permissions')->where($modelPermission)->exists()) {
+                DB::table('model_has_permissions')->insert($modelPermission);
+             }
+        }
+    }
+
+    /**
+     * The role admin would be assuming
+     *
+     * @return array
+     */
+    protected function attachPermissiontoAdminRole()
+    {
+        $role = DB::table('roles')->where('name', 'Administrator')->first();
+        $roleId = $role->id;
+
+        // map role to permisssions
+        foreach($this->permissions as $rolePermission) {
+            $permission = DB::table('permissions')->where(['name'=> $rolePermission, 'guard_name'=> $this->guard])->first();
+            $rolePermission = [
+                'permission_id'=> $permission->id,
+                'role_id'=> $roleId
+            ];
+            DB::table('role_has_permissions')->insert($rolePermission);
+        }
+        
+    }
+
+    /**
+     * Setup permissions
+     *
+     * @return void
+     */
+    protected function setupPermissions()
+    {
+        foreach($this->permissions as $permission) {
+            // we check if permission exists
+            if (! DB::table('permissions')->where(['name'=>$permission, 'guard_name'=>$this->guard])->exists()) {
+
+                DB::table('permissions')->insert([
+                    'name'=> $permission,
+                    'guard_name'=> $this->guard,
+                    'created_at'=> Carbon::now(),
+                    'updated_at'=> Carbon::now()
+                ]);
+            }
+        }
+        
     }
 
     /**
@@ -65,52 +142,18 @@ class {{ $className }} extends Migration
      */
     public function up(): void
     {
-        $tableNames = config('permission.table_names', [
-            'roles' => 'roles',
-            'permissions' => 'permissions',
-            'model_has_permissions' => 'model_has_permissions',
-            'model_has_roles' => 'model_has_roles',
-            'role_has_permissions' => 'role_has_permissions',
-        ]);
 
-        DB::transaction(function () use($tableNames) {
-            foreach ($this->permissions as $permission) {
-                $permissionItem = DB::table($tableNames['permissions'])->where([
-                    'name' => $permission['name'],
-                    'guard_name' => $permission['guard_name']
-                ])->first();
-                if ($permissionItem === null) {
-                    DB::table($tableNames['permissions'])->insert($permission);
-                }
-            }
+        DB::transaction(function(){
 
-            foreach ($this->roles as $role) {
-                $permissions = $role['permissions'];
-                unset($role['permissions']);
+            // Setup Permissions
+            $this->setupPermissions();
 
-                $roleItem = DB::table($tableNames['roles'])->where([
-                    'name' => $role['name'],
-                    'guard_name' => $role['guard_name']
-                ])->first();
-                if ($roleItem !== null) {
-                    $roleId = $roleItem->id;
+            $this->attachPermissiontoAdminRole();
+            
 
-                    $permissionItems = DB::table($tableNames['permissions'])->whereIn('name', $permissions)->where(
-                        'guard_name',
-                        $role['guard_name']
-                    )->get();
-                    foreach ($permissionItems as $permissionItem) {
-                        $roleHasPermissionData = [
-                            'permission_id' => $permissionItem->id,
-                            'role_id' => $roleId
-                        ];
-                        $roleHasPermissionItem = DB::table($tableNames['role_has_permissions'])->where($roleHasPermissionData)->first();
-                        if ($roleHasPermissionItem === null) {
-                            DB::table($tableNames['role_has_permissions'])->insert($roleHasPermissionData);
-                        }
-                    }
-                }
-            }
+            // Setup Default Admin Role
+            $this->setupSuperAdmin();
+
         });
         app()['cache']->forget(config('permission.cache.key'));
     }
@@ -122,26 +165,39 @@ class {{ $className }} extends Migration
      */
     public function down(): void
     {
-        $tableNames = config('permission.table_names', [
-            'roles' => 'roles',
-            'permissions' => 'permissions',
-            'model_has_permissions' => 'model_has_permissions',
-            'model_has_roles' => 'model_has_roles',
-            'role_has_permissions' => 'role_has_permissions',
-        ]);
-        
-        DB::transaction(function () use ($tableNames){
-            foreach ($this->permissions as $permission) {
-                $permissionItem = DB::table($tableNames['permissions'])->where([
-                    'name' => $permission['name'],
-                    'guard_name' => $permission['guard_name']
-                ])->first();
-                if ($permissionItem !== null) {
-                    DB::table($tableNames['permissions'])->where('id', $permissionItem->id)->delete();
-                    DB::table($tableNames['model_has_permissions'])->where('permission_id', $permissionItem->id)->delete();
-                }
-            }
+        DB::transaction(function(){
+
+            $this->clearRoleHasPermissions();
+
+            $this->clearPermissions();
+
+            
         });
+        
         app()['cache']->forget(config('permission.cache.key'));
+    }
+
+    
+    /**
+     * clearRoleHasPermissions
+     *
+     * @return void
+     */
+    protected function clearRoleHasPermissions()
+    {
+        $permissions  = DB::table('permissions')->whereIn('name', $this->permissions->toArray())->get();
+        $permissions = $permissions->pluck('id')->toArray();
+        DB::table('role_has_permissions')->whereIn('permission_id', $permissions)->delete();
+    }
+
+    
+    /**
+     * clearPermissions
+     *
+     * @return void
+     */
+    protected function clearPermissions()
+    {
+        $permissions  = DB::table('permissions')->whereIn('name', $this->permissions->toArray())->delete();
     }
 }

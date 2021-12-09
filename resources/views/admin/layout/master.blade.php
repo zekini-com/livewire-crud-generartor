@@ -18,16 +18,11 @@
 
 </head>
 
-<body class="app header-fixed sidebar-fixed sidebar-lg-show">
-    @yield('header')
-
+<body>
+  
     @yield('content')
 
-    @yield('footer')
-
-    @include('zekini/livewire-crud-generator::admin.partials.wysiwyg-svgs')
     @include('zekini/livewire-crud-generator::admin.partials.main-bottom-scripts')
-    @yield('bottom-scripts')
 </body>
 
 </html>

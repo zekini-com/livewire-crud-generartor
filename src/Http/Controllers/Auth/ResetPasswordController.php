@@ -142,7 +142,7 @@ class ResetPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::PASSWORD_RESET) {
-            $message = trans('brackets/zekini-admin::admin.passwords.reset');
+            $message = "Password reset was successful";
         }
        
         return redirect($this->redirectPath())

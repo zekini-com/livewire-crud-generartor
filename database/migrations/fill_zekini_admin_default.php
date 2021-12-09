@@ -210,7 +210,7 @@ class FillZekiniAdminDefault extends Migration
      */
     protected function clearRoles()
     {
-        $roles  = $this->roles->map(function($role){ return $role['name']; })->toArray();
+        $roles  = $this->roles->pluck('name')->toArray();
         DB::table('roles')->whereIn('name', $roles)->delete();
     }
     
@@ -221,7 +221,7 @@ class FillZekiniAdminDefault extends Migration
      */
     protected function clearPermissions()
     {
-        $permissions  = $this->permissions->toArray();
+        $permissions  = $this->permissions->pluck('name')->toArray();
         DB::table('roles')->whereIn('name', $permissions)->delete();
     }
 }

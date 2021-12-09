@@ -3,6 +3,7 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 
 class GeneratePermission extends BaseGenerator
@@ -77,10 +78,16 @@ class GeneratePermission extends BaseGenerator
         $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
         $templateContent = $this->replaceContent();
-        $path = database_path('migrations');
-        $filename = $path.'/'.$this->getFileName();
+      
+        $stampedFilename = $this->getFileName();
+    
+        $this->files->put($stampedFilename, $templateContent);
+        $pathToFile = str_replace('\\', '/',substr($stampedFilename, strpos($stampedFilename, 'database')));
        
-        $this->files->put($filename, $templateContent);
+        //the new permission
+        $this->call('migrate', [
+            '--path'=> $pathToFile
+        ]);
        
         return Command::SUCCESS;
     }
@@ -94,8 +101,15 @@ class GeneratePermission extends BaseGenerator
      */
     protected function getFileName()
     {
+        $filesystem = $this->files;
+        $migrationFileName = Str::snake($this->className, '_').".php";
         $timestamp = date('Y_m_d_His');
-        return "{$timestamp}_".Str::snake($this->className, '_').".php";
+        return Collection::make(database_path().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
+                return $filesystem->glob($path.'*_'.$migrationFileName);
+            })
+            ->push(database_path()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->first();
     }
 
 

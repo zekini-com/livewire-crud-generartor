@@ -1,66 +1,66 @@
 @extends('zekini/livewire-crud-generator::admin.layout.master')
 
-@section('title', trans('zekini/livewire-crud-generator::admin.login.title'))
+@section('title', 'Zekini Admin Login'))
 
 @section('content')
-	<div class="container" id="app">
-	    <div class="row align-items-center justify-content-center auth">
-	        <div class="col-md-6 col-lg-5">
-				<div class="card">
-					<div class="card-block">
-						<auth-form
-								:action="'{{ url('/admin/login') }}'"
-								:data="{}"
-								inline-template>
-							<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/login') }}" novalidate>
-								{{ csrf_field() }}
-								<div class="auth-header">
-									<h1 class="auth-title">{{ trans('zekini/livewire-crud-generator::admin.login.title') }}</h1>
-									<p class="auth-subtitle">{{ trans('zekini/livewire-crud-generator::admin.login.sign_in_text') }}</p>
-								</div>
-								<div class="auth-body">
-									@include('zekini/livewire-crud-generator::admin.auth.includes.messages')
-									<div class="form-group" :class="{'has-danger': errors.has('email'), 'has-success': fields.email && fields.email.valid }">
-										<label for="email">{{ trans('zekini/livewire-crud-generator::admin.auth_global.email') }}</label>
-										<div class="input-group input-group--custom">
-											<div class="input-group-addon"><i class="input-icon input-icon--mail"></i></div>
-											<input type="text" v-model="form.email" v-validate="'required|email'" class="form-control" :class="{'form-control-danger': errors.has('email'), 'form-control-success': fields.email && fields.email.valid}" id="email" name="email" placeholder="{{ trans('zekini/livewire-crud-generator::admin.auth_global.email') }}">
-										</div>
-										<div v-if="errors.has('email')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('email') }}</div>
-									</div>
 
-									<div class="form-group" :class="{'has-danger': errors.has('password'), 'has-success': fields.password && fields.password.valid }">
-										<label for="password">{{ trans('zekini/livewire-crud-generator::admin.auth_global.password') }}</label>
-										<div class="input-group input-group--custom">
-											<div class="input-group-addon"><i class="input-icon input-icon--lock"></i></div>
-											<input type="password" v-model="form.password"  class="form-control" :class="{'form-control-danger': errors.has('password'), 'form-control-success': fields.password && fields.password.valid}" id="password" name="password" placeholder="{{ trans('zekini/livewire-crud-generator::admin.auth_global.password') }}">
-										</div>
-										<div v-if="errors.has('password')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('password') }}</div>
-									</div>
-
-									<div class="form-group">
-										<input type="hidden" name="remember" value="1">
-										<button type="submit" class="btn btn-primary btn-block btn-spinner"><i class="fa"></i> {{ trans('zekini/livewire-crud-generator::admin.login.button') }}</button>
-									</div>
-									<div class="form-group text-center">
-										<a href="{{ url('/admin/password-reset') }}" class="auth-ghost-link">{{ trans('zekini/livewire-crud-generator::admin.login.forgot_password') }}</a>
-									</div>
-								</div>
-							</form>
-						</auth-form>
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="card-group d-block d-md-flex row">
+				<div class="card col-md-7 p-4 mb-0">
+					<div class="card-body">
+						<h1>Login</h1>
+						<p class="text-medium-emphasis">Sign In to your account</p>
+						<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/login') }}">
+						@include('zekini/livewire-crud-generator::admin.auth.includes.messages')
+						{{ csrf_field() }}
+						<div class="input-group mb-3"><span class="input-group-text">
+								<svg class="icon">
+									<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+								</svg></span>
+							<input class="form-control" type="email" placeholder="Email" name="email">
+						</div>
+						<div class="input-group mb-4"><span class="input-group-text">
+								<svg class="icon">
+									<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+								</svg></span>
+							<input class="form-control" type="password" placeholder="Password" name="password">
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<button class="btn btn-primary px-4" type="submit">Login</button>
+							</div>
+							<div class="col-6 text-end">
+								<a class="btn btn-link px-0" href="{{ url('/admin/password-reset') }}">Forgot password?</a>
+							</div>
+						</div>
+						
+					</form>
+						
 					</div>
 				</div>
-	        </div>
-	    </div>
+				<div class="card col-md-5 text-white bg-primary py-5">
+					<div class="card-body text-center">
+						<div>
+							<h2>Zekini Admin</h2>
+							<p>Automatically generated CRUD Admin panel to carter for your web projects</p>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-   
+</div>
+
 @endsection
 
 
 @section('bottom-scripts')
 <script type="text/javascript">
-    // fix chrome password autofill
-    // https://github.com/vuejs/vue/issues/1331
-    document.getElementById('password').dispatchEvent(new Event('input'));
+	// fix chrome password autofill
+	// https://github.com/vuejs/vue/issues/1331
+	document.getElementById('password').dispatchEvent(new Event('input'));
 </script>
 @endsection

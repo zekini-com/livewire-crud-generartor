@@ -1,43 +1,51 @@
 @extends('zekini/livewire-crud-generator::admin.layout.master')
 
-@section('title', trans('zekini/livewire-crud-generator::admin.forgot_password.title'))
+@section('title', 'Zekini Admin Login'))
 
 @section('content')
-	<div class="container" id="app">
-		<div class="row align-items-center justify-content-center auth">
-			<div class="col-md-6 col-lg-5">
-				<div class="card">
-					<div class="card-block">
-							<auth-form
-									:action="'{{ url('/admin/password-reset/send') }}'"
-									:data="{ 'email': '{{ old('email', '') }}' }"
-									inline-template>
-								<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/password-reset/send') }}" novalidate>
-									{{ csrf_field() }}
-									<div class="auth-header">
-										<h1 class="auth-title">{{ trans('zekini/livewire-crud-generator::admin.forgot_password.title') }}</h1>
-										<p class="auth-subtitle">{{ trans('zekini/livewire-crud-generator::admin.forgot_password.note') }}</p>
-									</div>
-									<div class="auth-body">
-										@include('zekini/livewire-crud-generator::admin.auth.includes.messages')
-											<div class="form-group" :class="{'has-danger': errors.has('email'), 'has-success': fields.email && fields.email.valid }">
-												<label for="email">{{ trans('zekini/livewire-crud-generator::admin.auth_global.email') }}</label>
-												<div class="input-group input-group--custom">
-													<div class="input-group-addon"><i class="input-icon input-icon--mail"></i></div>
-													<input type="text" v-model="form.email" v-validate="'required|email'" class="form-control" :class="{'form-control-danger': errors.has('email'), 'form-control-success': fields.email && fields.email.valid}" id="email" name="email" placeholder="{{ trans('zekini\livewire-crud-generator::admin.auth_global.email') }}">
-												</div>
-													<div v-if="errors.has('email')" class="form-control-feedback" v-cloak>@{{ errors.first('email') }}</div>
-											</div>
-											<div class="form-grou">
-													<input type="hidden" name="remember" value="1">
-													<button type="submit" class="btn btn-primary btn-block btn-spinner"><i class="fa"></i> {{ trans('zekini/livewire-crud-generator::admin.forgot_password.button') }}</button>
-											</div>
-									</div>
-								</form>
-							</auth-form>
+
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="card-group d-block d-md-flex row">
+				<div class="card col-md-7 p-4 mb-0">
+					<div class="card-body">
+						<h1>Reset Password</h1>
+						<p class="text-medium-emphasis">Enter Email</p>
+						<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/password-reset/send') }}">
+						@include('zekini/livewire-crud-generator::admin.auth.includes.messages')
+						{{ csrf_field() }}
+						<div class="input-group mb-3"><span class="input-group-text">
+								<svg class="icon">
+									<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+								</svg></span>
+							<input class="form-control" type="email" placeholder="Email" name="email">
+						</div>
+			
+						<div class="row">
+							<div class="col-6">
+								<button class="btn btn-primary px-4" type="submit">Send Reset Email</button>
+							</div>
+							
+						</div>
+						
+					</form>
+						
 					</div>
 				</div>
+	
 			</div>
 		</div>
 	</div>
+</div>
+
+@endsection
+
+
+@section('bottom-scripts')
+<script type="text/javascript">
+	// fix chrome password autofill
+	// https://github.com/vuejs/vue/issues/1331
+	document.getElementById('password').dispatchEvent(new Event('input'));
+</script>
 @endsection
