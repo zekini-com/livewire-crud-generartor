@@ -10,6 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class {{$modelBaseName}} extends Model
 {
+    
+    /**
+     * Allowed fillable items
+     *
+     * @var array
+     */
+    protected $fillable = [ 
+    @foreach($vissibleColumns as $col)
+    "{{$col['name']}}",
+    @endforeach
+    ];
    
    @if($hasDeletedAt)
         use SoftDeletes;

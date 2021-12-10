@@ -2,7 +2,6 @@
 $openBlade = '{{';
 $closeBlade = '}}';
 @endphp
-{{'@'}}section('body')
 
         <div class="row">
             <div class="col">
@@ -12,15 +11,25 @@ $closeBlade = '}}';
                     </div>
                     <div class="card-body">
                         <div class="card-block">
-                            <form >
-                               
+                            <form wire:submit.prevent="create">
+                                {{'@'}}if ($success)
+                                    <div>
+                                        <div class="alert alert-success">
+                                            {{$modelVariableName}} added successfully <a href="#">View all {{$modelVariableName}}s</a>
+                                        </div>
+
+                                    </div>
+                                {{'@'}}endif
+
                                {{'@'}}include('admin.{{$modelVariableName}}.components.form')
+                               <div class="form-group row align-items-center mt-3" >
+                                    <div class="col-xl-8">
+                                        <button class="btn btn-primary" type="submit">Create {{$modelVariableName}}</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-   
-
-{{'@'}}endsection

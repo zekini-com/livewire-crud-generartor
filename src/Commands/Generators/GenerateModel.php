@@ -83,7 +83,8 @@ class GenerateModel extends BaseGenerator
     {
         return [
             'modelBaseName' => ucfirst($this->className),
-            'hasDeletedAt'=> $this->hasColumn('deleted_at')
+            'hasDeletedAt'=> $this->hasColumn('deleted_at'),
+            'vissibleColumns'=> $this->getColumnDetails()
         ];
     }
 
