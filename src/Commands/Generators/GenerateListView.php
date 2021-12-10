@@ -5,17 +5,17 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 
-class GenerateIndexView extends BaseGenerator
+class GenerateListView extends BaseGenerator
 {
 
-    protected $classType = 'index-view';
+    protected $classType = 'list-view';
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:views:index {table}';
+    protected $signature = 'admin:generate:views:list {table}';
 
     /**
      * The console command description.
@@ -38,8 +38,8 @@ class GenerateIndexView extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/admin/'.strtolower($this->className)), 0777, true);
-       $filename = $path.'/index.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
+       $filename = $path.'/list-'.strtolower($this->className).'.blade.php';
       
        $this->files->put($filename, $templateContent);
 
@@ -53,10 +53,12 @@ class GenerateIndexView extends BaseGenerator
      */
     protected function getViewData()
     {
+        $resource = strtolower($this->getClassName());
         return [
             'vissibleColumns'=> $this->getColumnDetailsWithId(),
             'modelName'=> ucfirst($this->getClassName()),
-            'resource'=> strtolower($this->getClassName())
+            'resource'=> $resource,
+            'createResourceRoute'=> "url('admin/$resource/create')"
         ];
     }
     

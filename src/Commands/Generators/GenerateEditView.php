@@ -38,8 +38,8 @@ class GenerateEditView extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/admin/'.strtolower($this->className)), 0777, true);
-       $filename = $path.'/edit.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
+       $filename = $path.'/edit-'.strtolower($this->className).'.blade.php';
       
        $this->files->put($filename, $templateContent);
 

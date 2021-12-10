@@ -43,13 +43,11 @@ class AdminScafold extends Command
     {
         // TODOS
         // Setup the zekiniAdmin authentication guard
-        // $this->setupAdminAuthGuard();
+        $this->setupAdminAuthGuard();
         
         // // Create file migration for the default admin user
-        // $this->publishVendors();
-        $this->call('make:livewire', [
-            'name'=> 'test'
-        ]);
+        $this->publishVendors();
+       
 
 
         return Command::SUCCESS;

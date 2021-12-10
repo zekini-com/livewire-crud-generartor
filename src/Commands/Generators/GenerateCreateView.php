@@ -38,8 +38,8 @@ class GenerateCreateView extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/admin/'.strtolower($this->className)), 0777, true);
-       $filename = $path.'/create.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
+       $filename = $path.'/create-'.strtolower($this->className).'.blade.php';
       
        $this->files->put($filename, $templateContent);
 
