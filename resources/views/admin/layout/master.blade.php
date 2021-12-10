@@ -12,6 +12,8 @@
 	{{-- TODO translatable suffix --}}
     <title>@yield('title', 'Zekini Admin') - {{ trans('zekini/livewire-crud-generator::admin.page_title_suffix') }}</title>
 
+    @livewireStyles
+
 	@include('zekini/livewire-crud-generator::admin.partials.main-styles')
 
     @yield('styles')
@@ -22,6 +24,8 @@
   
     @yield('content')
 
+    @livewireScripts
+    
     @include('zekini/livewire-crud-generator::admin.partials.main-bottom-scripts')
 </body>
 

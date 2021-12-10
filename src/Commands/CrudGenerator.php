@@ -53,6 +53,11 @@ class CrudGenerator extends Command
             return;
         }
 
+        if(! Schema::hasColumn($tableName, 'deleted_at')) {
+            $this->error('Crud tables must have softdelete columns');
+            return;
+        }
+
         // Get all table columns and attributes
         $columns = Schema::getColumnListing($tableName);
         $generators = $this->getGenerators();

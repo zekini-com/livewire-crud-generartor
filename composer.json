@@ -18,7 +18,8 @@
         "laravel": {
             "providers": [
                 "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider",
-                "Spatie\\Permission\\PermissionServiceProvider"
+                "Spatie\\Permission\\PermissionServiceProvider",
+                "Livewire\\LivewireServiceProvider"
             ]
         }
     },
@@ -35,6 +36,6 @@
     "require": {
         "spatie/laravel-permission": "5.x-dev",
         "doctrine/dbal": "2.13.1",
-        "livewire/livewire": "dev-master"
+        "livewire/livewire": "^2.7"
     }
 }
