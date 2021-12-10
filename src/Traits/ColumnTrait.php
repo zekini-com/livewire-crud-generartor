@@ -39,6 +39,18 @@ trait ColumnTrait
         return $columns;
     }
 
+    
+    /**
+     * The model contains a particular column
+     *
+     * @param  string $col
+     * @return boolean
+     */
+    public function hasColumn($col)
+    {
+        return Schema::hasColumn($this->argument('table'), $col);
+    }
+
 
      /**
      * Gets column details of table

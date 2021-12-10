@@ -82,7 +82,8 @@ class GenerateModel extends BaseGenerator
     protected function getViewData()
     {
         return [
-            'modelBaseName' => ucfirst($this->className)
+            'modelBaseName' => ucfirst($this->className),
+            'hasDeletedAt'=> $this->hasColumn('deleted_at')
         ];
     }
 

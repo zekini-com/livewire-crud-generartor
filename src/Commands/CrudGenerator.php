@@ -53,11 +53,6 @@ class CrudGenerator extends Command
             return;
         }
 
-        if(! Schema::hasColumn($tableName, 'deleted_at')) {
-            $this->error('Crud tables must have softdelete columns');
-            return;
-        }
-
         // Get all table columns and attributes
         $columns = Schema::getColumnListing($tableName);
         $generators = $this->getGenerators();
@@ -83,14 +78,25 @@ class CrudGenerator extends Command
             'admin:generate:controller',
             'admin:generate:route',
             'admin:generate:form',
-            'admin:generate:views:index',
+
+            // livewire views
+            'admin:generate:views:list',
             'admin:generate:views:edit',
             'admin:generate:views:create',
+
+            // livewire components
+            'admin:generate:component:list',
+            'admin:generate:component:create',
+            'admin:generate:component:edit',
+
             'admin:generate:permission',
+
+            // request classes
             'admin:generate:request:index',
             'admin:generate:request:store',
             'admin:generate:request:update',
             'admin:generate:request:destroy',
+            
             'admin:generate:test',
             'admin:generate:factory'
         ];

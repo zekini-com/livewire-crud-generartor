@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 	{{-- TODO translatable suffix --}}
-    <title>@yield('title', 'Zekini Admin') - {{ trans('zekini/livewire-crud-generator::admin.page_title_suffix') }}</title>
+    <title>@yield('title', 'Zekini Admin')</title>
 
     @livewireStyles
 
@@ -25,7 +25,7 @@
     @yield('content')
 
     @livewireScripts
-    
+
     @include('zekini/livewire-crud-generator::admin.partials.main-bottom-scripts')
 </body>
 

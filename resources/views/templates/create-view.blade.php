@@ -1,4 +1,3 @@
-{{'@'}}extends('zekini/livewire-crud-generator::admin.layout.default')
 @php
 $openBlade = '{{';
 $closeBlade = '}}';

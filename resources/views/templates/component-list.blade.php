@@ -29,7 +29,7 @@ class List{{ucfirst($modelBaseName)}} extends Component
 
         return view('livewire.list-{{strtolower($modelBaseName)}}', [
             'data'=> $data
-        ]);
+        ])->layout('zekini/livewire-crud-generator::admin.layout.default');
     }
     
     /**

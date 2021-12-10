@@ -1,4 +1,3 @@
-{{'@'}}extends('zekini/livewire-crud-generator::admin.layout.default')
 @php
 $dataCountIf = '@if(count($data) > 0)';
 $dataCountEndIf  = '@endif';
@@ -14,9 +13,12 @@ $closeBlade = '}}';
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Index {{ $resource }}
+                        <i class="fa fa-align-justify"></i> Index {{ $resource }} 
+                        <button class="btn btn-primary">
+                            <a href="{!! $openBlade !!} {!!$createResourceRoute!!} {!! $closeBlade !!}"> Create {{$resource}}</a>
+                        </button>
                     </div>
-                    <div class="card-body" v-cloak>
+                    <div class="card-body">
                         <div class="card-block">
                             <form @submit.prevent="">
                                 <div class="row justify-content-md-between">

@@ -4,10 +4,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+@if($hasDeletedAt)
+    use Illuminate\Database\Eloquent\SoftDeletes;
+@endif
 
 class {{$modelBaseName}} extends Model
 {
    
-   use SoftDeletes;
+   @if($hasDeletedAt)
+        use SoftDeletes;
+    @endif
 }
