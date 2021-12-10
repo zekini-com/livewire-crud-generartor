@@ -5,6 +5,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Livewire\LivewireServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 use Zekini\CrudGenerator\Http\Middleware\RedirectGuest;
 use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
@@ -22,7 +23,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        //$this->register(CrudServiceProvider::class);
+        $this->register(LivewireServiceProvider::class);
         $this->registerCommands();
 
         $this->loadViewsFrom(__DIR__.'./../resources/views', 'zekini/livewire-crud-generator');
@@ -61,7 +62,11 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateRequestStore::class,
             Commands\Generators\GenerateRequestUpdate::class,
             Commands\Generators\GenerateRequestDestroy::class,
-            Commands\Generators\GenerateRoutes::class
+            Commands\Generators\GenerateRoutes::class,
+
+            Commands\Generators\GenerateListComponent::class,
+            Commands\Generators\GenerateCreateComponent::class,
+            Commands\Generators\GenerateEditComponent::class
         ]);
     }
     
