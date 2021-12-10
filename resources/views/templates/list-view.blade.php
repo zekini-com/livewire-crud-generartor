@@ -7,7 +7,6 @@ $endDataCountForeach = '@endforeach';
 $openBlade = '{{';
 $closeBlade = '}}';
 @endphp
-{{'@'}}section('body')
 
         <div class="row">
             <div class="col">
@@ -96,6 +95,3 @@ $closeBlade = '}}';
                 </div>
             </div>
         </div>
-   
-
-{{'@'}}endsection

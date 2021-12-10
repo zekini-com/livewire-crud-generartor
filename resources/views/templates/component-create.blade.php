@@ -12,8 +12,15 @@ use {{ $modelFullName }};
 
 class Create{{ucfirst($modelBaseName)}} extends Component
 { 
+
+    public $success;
+
     @foreach($vissibleColumns as $col)
     
+    /**
+     * @var string {{$col['name']}}
+     * 
+     */
     public ${{$col['name']}};
 
     @endforeach
@@ -29,7 +36,28 @@ class Create{{ucfirst($modelBaseName)}} extends Component
 
         return view('livewire.create-{{strtolower($modelBaseName)}}', [
             'data'=> $data
-        ])->layout('zekini/livewire-crud-generator::admin.layout.default');
+        ])->extends('zekini/livewire-crud-generator::admin.layout.default')
+        ->section('body');
+    }
+
+    
+    /**
+     * Creates a {{$modelBaseName}}
+     *
+     * @return void
+     */
+    public function create()
+    {
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::create([
+        @foreach($vissibleColumns as $col)
+            '{{$col['name']}}'=> $this->{{$col['name']}},
+        @endforeach
+    ]);
+
+    if(isset(${{strtolower($modelBaseName)}})){
+        $this->success = true;
+    }
+
     }
 
 
