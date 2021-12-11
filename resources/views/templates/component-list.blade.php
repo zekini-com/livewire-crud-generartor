@@ -7,8 +7,9 @@ use Livewire\Component;
 use App\Http\Requests\Admin\{{$modelBaseName}}\Destroy{{ $modelBaseName }};
 use App\Http\Requests\Admin\{{$modelBaseName}}\Index{{ $modelBaseName }};
 use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
-use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
+
 use {{ $modelFullName }};
+use Illuminate\Support\Str;
 
 class List{{ucfirst($modelBaseName)}} extends Component
 { 
@@ -37,8 +38,10 @@ class List{{ucfirst($modelBaseName)}} extends Component
      *
      * @return View
      */
-    public function render()
+    public function render(Index{{ucfirst($modelBaseName)}} ${{Str::camel('index'.$modelBaseName)}})
     {
+        ${{Str::camel('index'.$modelBaseName)}}->authorize();
+
         $data = ($this->isViewingTrashed && $this->canBeTrashed) ? {{$modelBaseName}}::onlyTrashed()->get() : {{$modelBaseName}}::all();
 
         return view('livewire.list-{{strtolower($modelBaseName)}}', [
@@ -52,8 +55,9 @@ class List{{ucfirst($modelBaseName)}} extends Component
      *
      * @return void
      */
-    public function delete($id)
+    public function delete(Destroy{{ucfirst($modelBaseName)}} ${{Str::camel('destroy'.$modelBaseName)}}, $id)
     {
+        ${{Str::camel('destroy'.$modelBaseName)}}->authorize();
         ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
         $this->isViewingTrashed ? ${{strtolower($modelBaseName)}}->forceDelete() : ${{strtolower($modelBaseName)}}->delete();
     }
@@ -64,8 +68,10 @@ class List{{ucfirst($modelBaseName)}} extends Component
      * @param  mixed $id
      * @return void
      */
-    public function restore($id)
+    public function restore(Destroy{{ucfirst($modelBaseName)}} ${{Str::camel('destroy'.$modelBaseName)}}, $id)
     {
+        ${{Str::camel('destroy'.$modelBaseName)}}->authorize();
+
         ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
         ${{strtolower($modelBaseName)}}->restore();
     }

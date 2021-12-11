@@ -4,10 +4,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Requests\Admin\{{$modelBaseName}}\Destroy{{ $modelBaseName }};
-use App\Http\Requests\Admin\{{$modelBaseName}}\Index{{ $modelBaseName }};
 use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
-use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
 use {{ $modelFullName }};
 
 class Create{{ucfirst($modelBaseName)}} extends Component
@@ -46,8 +43,10 @@ class Create{{ucfirst($modelBaseName)}} extends Component
      *
      * @return void
      */
-    public function create()
+    public function create(Store{{ucfirst($modelBaseName)}} ${{Str::camel('store'.$modelBaseName)}})
     {
+        ${{Str::camel('store'.$modelBaseName)}}->authorize();
+        
         ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::create([
         @foreach($vissibleColumns as $col)
             '{{$col['name']}}'=> $this->{{$col['name']}},
