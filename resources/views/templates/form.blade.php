@@ -1,3 +1,7 @@
+@php
+$openBlade = '{{';
+$closeBlade = '}}';
+@endphp
 @foreach($vissibleColumns as $col)
     @php
         $textLabel = str_replace('_',' ',ucfirst($col['name']));
@@ -8,6 +12,7 @@
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">
                 <input class="form-check-input" wire:model="{{$wireModel}}" id="{{ $col['name'] }}" type="checkbox"   name="{{ $col['name'] }}">
+                {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>
     @elseif($col['type'] == 'text')
@@ -16,6 +21,7 @@
             <div class="col-md-9 col-xl-8">
                 <div>
                     <textarea class="form-control"  wire:model="{{$wireModel}}"  id="{{ $col['name'] }}" name="{{ $col['name'] }}"></textarea>
+                    {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
                 </div>
             </div>
         </div>
@@ -24,6 +30,7 @@
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">
                 <input id="{{ $col['name'] }}" type="datetime" wire:model="{{$wireModel}}"   name="{{ $col['name'] }}">
+                {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>
     @else
@@ -31,7 +38,7 @@
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">
                 <input class="form-control" id="{{ $col['name'] }}" wire:model="{{$wireModel}}" type="text"   name="{{ $col['name'] }}">
-               
+                {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>
     @endif

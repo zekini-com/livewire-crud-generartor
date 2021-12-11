@@ -34,6 +34,20 @@ class Update{{ $modelBaseName }} extends FormRequest
     }
 
     /**
+     * Gets the rule set needed for validation
+     *
+     * {{'@'}}return array
+     */
+    public function getRuleSet()
+    {
+        return [
+        @foreach($vissibleColumns as $col)
+        '{{$col['name']}}'=> 'required',
+        @endforeach
+        ];
+    }
+
+    /**
     * Modify input data
     *
     * {{'@'}}return array
