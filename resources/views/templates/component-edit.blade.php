@@ -4,8 +4,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Requests\Admin\{{$modelBaseName}}\Destroy{{ $modelBaseName }};
-use App\Http\Requests\Admin\{{$modelBaseName}}\Index{{ $modelBaseName }};
+use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
 use {{ $modelFullName }};
 
 class Edit{{ucfirst($modelBaseName)}} extends Component
@@ -41,8 +40,9 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
         ->section('body');
     }
 
-    public function update()
+    public function update(Update{{ucfirst($modelBaseName)}} ${{Str::camel('update'.$modelBaseName)}})
     {
+        ${{Str::camel('update'.$modelBaseName)}}->authorize();
 
         ${{strtolower($modelBaseName)}} = $this->{{strtolower($modelBaseName)}}->update([
         @foreach($vissibleColumns as $col)
