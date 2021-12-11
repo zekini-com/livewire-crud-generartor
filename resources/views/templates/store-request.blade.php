@@ -28,8 +28,21 @@ class Store{{ $modelBaseName }} extends FormRequest
      */
     public function rules(): array
     {
-        return [
+       return [];
+    }
 
+    
+    /**
+     * Gets the rule set needed for validation
+     *
+     * {{'@'}}return array
+     */
+    public function getRuleSet()
+    {
+        return [
+        @foreach($vissibleColumns as $col)
+        '{{$col['name']}}'=> 'required',
+        @endforeach
         ];
     }
 

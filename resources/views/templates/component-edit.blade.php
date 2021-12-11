@@ -42,7 +42,11 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
 
     public function update(Update{{ucfirst($modelBaseName)}} ${{Str::camel('update'.$modelBaseName)}})
     {
+        //access control
         ${{Str::camel('update'.$modelBaseName)}}->authorize();
+
+        // validate request
+        $this->validate(${{Str::camel('update'.$modelBaseName)}}->getRuleSet());
 
         ${{strtolower($modelBaseName)}} = $this->{{strtolower($modelBaseName)}}->update([
         @foreach($vissibleColumns as $col)

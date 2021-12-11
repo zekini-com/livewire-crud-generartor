@@ -75,7 +75,8 @@ class GenerateRequestStore extends BaseGenerator
         return [
            
             'modelBaseName' => ucfirst($this->className),
-            'modelDotNotation' => strtolower($this->className)
+            'modelDotNotation' => strtolower($this->className),
+            'vissibleColumns'=> $this->getColumnDetails()
         ];
     }
     

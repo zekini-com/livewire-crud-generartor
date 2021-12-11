@@ -45,8 +45,12 @@ class Create{{ucfirst($modelBaseName)}} extends Component
      */
     public function create(Store{{ucfirst($modelBaseName)}} ${{Str::camel('store'.$modelBaseName)}})
     {
+        //access control
         ${{Str::camel('store'.$modelBaseName)}}->authorize();
-        
+
+        // validate request
+        $this->validate(${{Str::camel('store'.$modelBaseName)}}->getRuleSet());
+
         ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::create([
         @foreach($vissibleColumns as $col)
             '{{$col['name']}}'=> $this->{{$col['name']}},

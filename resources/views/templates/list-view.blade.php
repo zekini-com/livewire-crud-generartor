@@ -74,7 +74,7 @@ $closeBlade = '}}';
                                                    </td>
                                                 @endforeach
                                                 <td>
-                                                    <span>
+                                                    <div>
                                                         @php
                                                             $id = '$item->id';
                                                             $url = 'url("admin/'.$resource.'/".$item->id."/edit")';
@@ -82,13 +82,27 @@ $closeBlade = '}}';
                                                      
                                                        
                                                         {{'@'}}if($isViewingTrashed)
+                                                        <div>
                                                         <a href="#" wire:click.prevent="{!! 'restore({{$item->id}})' !!}">Restore</a>
+                                                        </div>
+
+                                                        <div>
                                                         <a href="#" wire:click.prevent="{!! 'delete({{$item->id}})' !!}">Remove</a>
+                                                        </div>
+                                                      
+            
                                                         {{'@'}}else
+                                                        <div>
                                                         <a href="{!! $openBlade !!} {!! $url !!} {!! $closeBlade !!}">Edit</a>
+                                                        </div>
+
+                                                        <div>
                                                         <a href="#" wire:click.prevent="{!! 'delete({{$item->id}})' !!}">Trash</a>
+                                                        </div>
+                                                       
+                                                        
                                                         {{'@'}}endif
-                                                    </span>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         {{$endDataCountForeach}} 
