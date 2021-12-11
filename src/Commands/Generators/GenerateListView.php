@@ -58,7 +58,8 @@ class GenerateListView extends BaseGenerator
             'vissibleColumns'=> $this->getColumnDetailsWithId(),
             'modelName'=> ucfirst($this->getClassName()),
             'resource'=> $resource,
-            'createResourceRoute'=> "url('admin/$resource/create')"
+            'createResourceRoute'=> "url('admin/$resource/create')",
+            'hasDeletedAt'=> $this->hasColumn('deleted_at')
         ];
     }
     

@@ -16,6 +16,9 @@ $closeBlade = '}}';
                         <button class="btn btn-primary">
                             <a href="{!! $openBlade !!} {!!$createResourceRoute!!} {!! $closeBlade !!}"> Create {{$resource}}</a>
                         </button>
+                        @if($hasDeletedAt)
+                        <input type="checkbox" wire:click="toggleTrash"> View Trashed 
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="card-block">
@@ -30,7 +33,7 @@ $closeBlade = '}}';
                                         </div>
                                     </div>
                                     <div class="col-sm-auto form-group ">
-                                        <select class="form-control" v-model="pagination.state.per_page">
+                                        <select class="form-control">
                                             
                                             <option value="10">10</option>
                                             <option value="25">25</option>
@@ -61,7 +64,13 @@ $closeBlade = '}}';
                                                 @foreach($vissibleColumns as $col)
                                                     
                                                    <td>
-                                                       {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                      
+                                                        @if($col['type'] == 'text') 
+                                                        {!!$openBlade!!} substr($item->{{$col['name']}} , 0, 40) {!! $closeBlade !!}
+                                                        @else
+                                                        {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                        @endif
+                                                      
                                                    </td>
                                                 @endforeach
                                                 <td>
@@ -71,8 +80,14 @@ $closeBlade = '}}';
                                                             $url = 'url("admin/'.$resource.'/".$item->id."/edit")';
                                                         @endphp
                                                      
+                                                       
+                                                        {{'@'}}if($isViewingTrashed)
+                                                        <a href="#" wire:click.prevent="{!! 'restore({{$item->id}})' !!}">Restore</a>
+                                                        <a href="#" wire:click.prevent="{!! 'delete({{$item->id}})' !!}">Remove</a>
+                                                        {{'@'}}else
                                                         <a href="{!! $openBlade !!} {!! $url !!} {!! $closeBlade !!}">Edit</a>
-                                                        <a href="#">Delete</a>
+                                                        <a href="#" wire:click.prevent="{!! 'delete({{$item->id}})' !!}">Trash</a>
+                                                        {{'@'}}endif
                                                     </span>
                                                 </td>
                                             </tr>
@@ -86,7 +101,10 @@ $closeBlade = '}}';
                                     <i class="icon-magnifier"></i>
                                     <h3></h3>
                                     <p></p>
-                                    <a class="btn btn-primary btn-spinner" href="#" role="button"><i class="fa fa-plus"></i>&nbsp; {{ trans('admin.nav-item.actions.create') }}</a>
+                                    <a class="btn btn-primary btn-spinner" href="#" role="button"><i class="fa fa-plus"></i>&nbsp; Nothin here </a>
+                                    <button class="btn btn-primary">
+                                        <a href="{!! $openBlade !!} {!!$createResourceRoute!!} {!! $closeBlade !!}"> Create {{$resource}}</a>
+                                    </button>
                                 </div>
                             {{$dataCountEndIf}}
 
