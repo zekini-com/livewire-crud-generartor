@@ -21,6 +21,11 @@ $closeBlade = '}}';
     
         {!! $openBlade !!}{{"--@AutoGenerator--"}}{!! $closeBlade !!} 
 
+        <li class="nav-item"><a class="nav-link" href="{!! $openBlade !!} url('/admin/audit/logs') {!! $closeBlade !!}">
+                <svg class="nav-icon">
+                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+                </svg> Audit Logs</a></li>
+
         <li class="nav-item"><a class="nav-link" href="{!! $openBlade !!} url('/admin/logout') {!! $closeBlade !!}">
                 <svg class="nav-icon">
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
