@@ -62,6 +62,8 @@ class AdminScafold extends Command
     protected function publishVendors()
     {
         $this->publishSpatieVendors();
+
+        $this->publishAuditVendor();
        
         $this->publishZekini();
     }
@@ -73,7 +75,6 @@ class AdminScafold extends Command
      */
     protected function publishSpatieVendors()
     {
-        
          //Spatie Permission
          $this->call('vendor:publish', [
             '--provider' => 'Spatie\\Permission\\PermissionServiceProvider',
@@ -85,7 +86,25 @@ class AdminScafold extends Command
             '--tag' => 'config'
         ]);
 
+    }
+
+     /**
+     * Publishes Audit Vendor
+     *
+     * @return void
+     */
+    protected function publishAuditVendor()
+    {
+         //Spatie Permission
+         $this->call('vendor:publish', [
+            '--provider' => "OwenIt\\Auditing\\AuditingServiceProvider",
+            '--tag' => 'migrations'
+        ]);
        
+        $this->call('vendor:publish', [
+            '--provider' => "OwenIt\\Auditing\\AuditingServiceProvider",
+            '--tag' => 'config'
+        ]);
 
     }
     
