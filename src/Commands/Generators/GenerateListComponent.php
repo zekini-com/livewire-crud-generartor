@@ -78,7 +78,8 @@ class GenerateListComponent extends BaseGenerator
             'modelDotNotation' => strtolower($this->className),
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
-            'vissibleColumns'=> $this->getColumnDetails()
+            'vissibleColumns'=> $this->getColumnDetails(),
+            'canBeTrashed'=> $this->hasColumn('deleted_at')
         ];
     }
     

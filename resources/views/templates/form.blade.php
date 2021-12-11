@@ -31,7 +31,7 @@
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">
                 <input class="form-control" id="{{ $col['name'] }}" wire:model="{{$wireModel}}" type="text"   name="{{ $col['name'] }}">
-                {!! "@error('body') <span class="error">{{ $message }}</span> @enderror" !!}
+               
             </div>
         </div>
     @endif

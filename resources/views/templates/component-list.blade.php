@@ -12,6 +12,20 @@ use {{ $modelFullName }};
 
 class List{{ucfirst($modelBaseName)}} extends Component
 { 
+
+    @if($canBeTrashed)
+    public $canBeTrashed = true;
+    @else
+    public $canBeTrashed = false;
+    @endif
+    
+    /**
+     * Checks if a user is viewing trashed
+     *
+     * @var bool
+     */
+    public $isViewingTrashed = false;
+    
     @foreach($vissibleColumns as $col)
     
     public ${{$col['name']}};
@@ -25,7 +39,7 @@ class List{{ucfirst($modelBaseName)}} extends Component
      */
     public function render()
     {
-        $data = {{$modelBaseName}}::all();
+        $data = ($this->isViewingTrashed && $this->canBeTrashed) ? {{$modelBaseName}}::onlyTrashed()->get() : {{$modelBaseName}}::all();
 
         return view('livewire.list-{{strtolower($modelBaseName)}}', [
             'data'=> $data
@@ -38,14 +52,33 @@ class List{{ucfirst($modelBaseName)}} extends Component
      *
      * @return void
      */
-    public function softDelete()
+    public function delete($id)
     {
-
+        ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
+        $this->isViewingTrashed ? ${{strtolower($modelBaseName)}}->forceDelete() : ${{strtolower($modelBaseName)}}->delete();
+    }
+    
+    /**
+     * Hards Delete a {{$modelBaseName}}
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function restore($id)
+    {
+        ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
+        ${{strtolower($modelBaseName)}}->restore();
     }
 
-    public function hardDelete()
+    
+    /**
+     * Switch the content mode 
+     *
+     * @return void
+     */
+    public function toggleTrash()
     {
-        
+        $this->isViewingTrashed = ! $this->isViewingTrashed;
     }
 
    
