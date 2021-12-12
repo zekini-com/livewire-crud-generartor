@@ -7,12 +7,14 @@ use Livewire\Component;
 use App\Http\Requests\Admin\{{$modelBaseName}}\Destroy{{ $modelBaseName }};
 use App\Http\Requests\Admin\{{$modelBaseName}}\Index{{ $modelBaseName }};
 use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
-
+use Zekini\CrudGenerator\Traits\HandlesFile;
 use {{ $modelFullName }};
 use Illuminate\Support\Str;
 
 class List{{ucfirst($modelBaseName)}} extends Component
 { 
+
+    use HandlesFile;
 
     @if($canBeTrashed)
     public $canBeTrashed = true;
@@ -60,6 +62,14 @@ class List{{ucfirst($modelBaseName)}} extends Component
         ${{Str::camel('destroy'.$modelBaseName)}}->authorize();
         ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
         $this->isViewingTrashed ? ${{strtolower($modelBaseName)}}->forceDelete() : ${{strtolower($modelBaseName)}}->delete();
+
+        @if($hasFile)
+        if ($this->isViewingTrashed){
+            // delete the old image
+            $this->deleteFile(${{strtolower($modelBaseName)}}->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
+        }
+        @endif
+   
     }
     
     /**

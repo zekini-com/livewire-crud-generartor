@@ -126,6 +126,11 @@ class AdminScafold extends Command
             '--tag'=> 'config'
         ]);
 
+        $this->call('vendor:publish', [
+            '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
+            '--tag'=> 'resources'
+        ]);
+
        
     }
 

@@ -67,8 +67,15 @@ $closeBlade = '}}';
                                                       
                                                         @if($col['type'] == 'text') 
                                                         {!!$openBlade!!} substr($item->{{$col['name']}} , 0, 40) {!! $closeBlade !!}
+                            
                                                         @else
-                                                        {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                            @if($col['name'] == 'image')
+                                                                {{'@'}}foreach(json_decode($item->{{$col['name']}}) as $url)
+                                                                    <img  width="100px" height="100px" src="{!!$openBlade!!} asset('storage/'.$url){!! $closeBlade !!}">
+                                                                {{'@'}}endforeach
+                                                            @else
+                                                                {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                            @endif
                                                         @endif
                                                       
                                                    </td>

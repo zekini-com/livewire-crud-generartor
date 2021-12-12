@@ -33,6 +33,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
            $this->publishConfig();
            $this->publishMigrations();
+           $this->publishResources();
         }
         
         $this->setupMiddlewares();
@@ -80,6 +81,22 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/zekini-admin.php' => config_path('zekini-admin.php'),
         ], 'config');
+    }
+
+    
+    /**
+     * publishResources
+     *
+     * @return void
+     */
+    protected function publishResources()
+    {
+        $this->publishes([
+            __DIR__.'/../resources/css/app.css'=> public_path('app.css')
+        ], 'resources');
+        $this->publishes([
+            __DIR__.'/../resources/js/app.js'=> public_path('app.js')
+        ], 'resources');
     }
     
 
