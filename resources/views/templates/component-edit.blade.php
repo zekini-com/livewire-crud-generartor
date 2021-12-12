@@ -59,7 +59,7 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
 
         //image processing
         @if($hasFile)
-        if ($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} instanceof TemporaryUploadedFile){
+        if (@$this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}}[0] instanceof TemporaryUploadedFile){
             $this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} = $this->getFile($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
 
             // delete the old image

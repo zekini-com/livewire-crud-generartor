@@ -39,7 +39,7 @@ $closeBlade = '}}';
         <div class="form-group row align-items-center" >
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">
-                <input class="form-control" id="{{ $col['name'] }}" wire:model="{{$wireModel}}" type="file"   name="{{ $col['name'] }}">
+                <input class="form-control" id="{{ $col['name'] }}" wire:model="{{$wireModel}}" type="file"   name="{{ $col['name'] }}" multiple>
                 {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>
