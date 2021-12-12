@@ -70,7 +70,9 @@ $closeBlade = '}}';
                             
                                                         @else
                                                             @if($col['name'] == 'image')
-                                                                <img  width="100px" height="100px" src="{!!$openBlade!!} asset('storage/'.$item->{{$col['name']}}){!! $closeBlade !!}">
+                                                                {{'@'}}foreach(json_decode($item->{{$col['name']}}) as $url)
+                                                                    <img  width="100px" height="100px" src="{!!$openBlade!!} asset('storage/'.$url){!! $closeBlade !!}">
+                                                                {{'@'}}endforeach
                                                             @else
                                                                 {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
                                                             @endif

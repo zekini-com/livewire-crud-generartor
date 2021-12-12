@@ -18,26 +18,37 @@ trait HandlesFile
     /**
      * Get File
      *
-     * @param  UploadedFile $image
+     * @param  UploadedFile $files
      * @return string
      */
-    public function getFile($image)
+    public function getFile($files)
     {
-        $filepath = $image->store($this->disk);
-        $filePathArr = explode('/', $filepath);
-        return $filePathArr[array_key_last($filePathArr)];
+
+        $filesArr = [];
+
+        foreach($files as $file){
+            $filepath = $file->store($this->disk);
+            $filePathArr = explode('/', $filepath);
+            $filesArr[] = $filePathArr[array_key_last($filePathArr)];
+        }
+
+        return json_encode($filesArr);
     }
     
     /**
      * Deleted an uploaded file
      *
-     * @param  string $url
+     * @param  array $url
      * @param  string $disk
      * @return void
      */
-    public function deleteFile($url, $disk=null)
+    public function deleteFile($urls, $disk=null)
     {
+
         $disk = $disk ?? $this->disk;
-        Storage::disk($disk)->delete($url);
+        foreach(json_decode($urls) as $url){
+            Storage::disk($disk)->delete($url);
+        }
+       
     }
 }
