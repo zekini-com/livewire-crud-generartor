@@ -6,9 +6,18 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
 use {{ $modelFullName }};
+use Zekini\CrudGenerator\Traits\HandlesFile;
+@if($hasFile)
+use Livewire\WithFileUploads;
+@endif
 
 class Create{{ucfirst($modelBaseName)}} extends Component
 { 
+    use
+    @if($hasFile)
+    WithFileUploads,
+    @endif
+    HandlesFile;
 
     public $success;
 
@@ -50,6 +59,11 @@ class Create{{ucfirst($modelBaseName)}} extends Component
 
         // validate request
         $this->validate(${{Str::camel('store'.$modelBaseName)}}->getRuleSet());
+
+        // image processing
+        @if($hasFile)
+            $this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} = $this->getFile($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
+        @endif
 
         ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::create([
         @foreach($vissibleColumns as $col)

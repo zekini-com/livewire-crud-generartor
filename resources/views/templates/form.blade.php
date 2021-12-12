@@ -34,6 +34,16 @@ $closeBlade = '}}';
             </div>
         </div>
     @else
+
+        @if($col['name'] == 'image' || $col['name'] == 'file')
+        <div class="form-group row align-items-center" >
+            <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
+            <div class="col-xl-8">
+                <input class="form-control" id="{{ $col['name'] }}" wire:model="{{$wireModel}}" type="file"   name="{{ $col['name'] }}">
+                {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
+            </div>
+        </div>
+        @else
         <div class="form-group row align-items-center" >
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">
@@ -41,6 +51,7 @@ $closeBlade = '}}';
                 {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>
+        @endif
     @endif
 @endforeach
 

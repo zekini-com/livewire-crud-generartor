@@ -78,7 +78,8 @@ class GenerateCreateComponent extends BaseGenerator
             'modelDotNotation' => strtolower($this->className),
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
-            'vissibleColumns'=> $this->getColumnDetails()
+            'vissibleColumns'=> $this->getColumnDetails(),
+            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')
         ];
     }
     

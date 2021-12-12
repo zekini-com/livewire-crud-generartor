@@ -79,7 +79,8 @@ class GenerateListComponent extends BaseGenerator
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
-            'canBeTrashed'=> $this->hasColumn('deleted_at')
+            'canBeTrashed'=> $this->hasColumn('deleted_at'),
+            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')
         ];
     }
     
