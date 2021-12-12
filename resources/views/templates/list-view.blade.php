@@ -67,8 +67,13 @@ $closeBlade = '}}';
                                                       
                                                         @if($col['type'] == 'text') 
                                                         {!!$openBlade!!} substr($item->{{$col['name']}} , 0, 40) {!! $closeBlade !!}
+                            
                                                         @else
-                                                        {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                            @if($col['name'] == 'image')
+                                                                <img  width="100px" height="100px" src="{!!$openBlade!!} asset('storage/'.$item->{{$col['name']}}){!! $closeBlade !!}">
+                                                            @else
+                                                                {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                            @endif
                                                         @endif
                                                       
                                                    </td>

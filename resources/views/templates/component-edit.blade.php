@@ -6,9 +6,18 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
 use {{ $modelFullName }};
-
+use Zekini\CrudGenerator\Traits\HandlesFile;
+@if($hasFile)
+use Livewire\WithFileUploads;
+use Livewire\TemporaryUploadedFile;
+@endif
 class Edit{{ucfirst($modelBaseName)}} extends Component
 {
+    use
+    @if($hasFile)
+    WithFileUploads,
+    @endif
+    HandlesFile;
 
     public $success;
 
@@ -47,6 +56,17 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
 
         // validate request
         $this->validate(${{Str::camel('update'.$modelBaseName)}}->getRuleSet());
+
+        //image processing
+        @if($hasFile)
+        if ($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} instanceof TemporaryUploadedFile){
+            $this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} = $this->getFile($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
+
+            // delete the old image
+            $this->deleteFile($this->{{strtolower($modelBaseName)}}->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
+        }
+           
+        @endif
 
         ${{strtolower($modelBaseName)}} = $this->{{strtolower($modelBaseName)}}->update([
         @foreach($vissibleColumns as $col)
