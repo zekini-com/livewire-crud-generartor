@@ -52,7 +52,7 @@ class GenerateFactory extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
+       @$this->files->makeDirectory($path = strtolower($this->getPathFromNamespace($this->namespace)), 0777);
        $filename = $path.'/'.$this->factoryBaseName.'.php';
       
        $this->files->put($filename, $templateContent);

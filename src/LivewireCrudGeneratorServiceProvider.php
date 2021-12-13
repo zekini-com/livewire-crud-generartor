@@ -26,7 +26,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->register(LivewireServiceProvider::class);
         $this->registerCommands();
 
-        $this->loadViewsFrom(__DIR__.'./../resources/views', 'zekini/livewire-crud-generator');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'zekini/livewire-crud-generator');
         $this->loadRoutesFrom(__DIR__.'./../routes/web.php');
 
         // register commands
