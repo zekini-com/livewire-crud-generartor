@@ -97,7 +97,7 @@ class CrudGenerator extends Command
             'admin:generate:request:update',
             'admin:generate:request:destroy',
             
-            'admin:generate:test',
+            // 'admin:generate:test',
             'admin:generate:factory'
         ];
     }
