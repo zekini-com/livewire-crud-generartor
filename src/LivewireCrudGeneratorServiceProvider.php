@@ -5,10 +5,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Livewire\LivewireServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 use Zekini\CrudGenerator\Http\Middleware\RedirectGuest;
 use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
+use Zekini\CrudGenerator\Mixin\StrMixin;
 use Zekini\CrudGenerator\Providers\CrudServiceProvider;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
@@ -22,6 +24,9 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
+        // my custom str mixin
+       Str::mixin(new StrMixin);
 
         $this->register(LivewireServiceProvider::class);
         $this->registerCommands();

@@ -53,13 +53,16 @@ class GenerateListView extends BaseGenerator
      */
     protected function getViewData()
     {
+        //dd($this->getRecordTitleTableMap());
         $resource = strtolower($this->getClassName());
         return [
             'vissibleColumns'=> $this->getColumnDetailsWithId(),
             'modelName'=> ucfirst($this->getClassName()),
             'resource'=> $resource,
             'createResourceRoute'=> "url('admin/$resource/create')",
-            'hasDeletedAt'=> $this->hasColumn('deleted_at')
+            'hasDeletedAt'=> $this->hasColumn('deleted_at'),
+            'relations'=> $this->getRelationColumns(),
+            'tableRecordTitleMap'=> $this->getRecordTitleTableMap()
         ];
     }
     

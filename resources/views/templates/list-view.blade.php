@@ -51,7 +51,11 @@ $closeBlade = '}}';
                                         <tr>
                                             <th>S/N</th>
                                             @foreach($vissibleColumns as $col)
+                                                @if(Str::isRelation($col['name']))
+                                                <th>{{Str::relationName($col['name'])}}</th>
+                                                @else
                                                 <th>{{$col['name']}}</th>
+                                                @endif
                                             @endforeach
                                             <th>Actions</th>
                                         </tr>
@@ -66,7 +70,9 @@ $closeBlade = '}}';
                                                    <td>
                                                       
                                                         @if($col['type'] == 'text') 
-                                                        {!!$openBlade!!} substr($item->{{$col['name']}} , 0, 40) {!! $closeBlade !!}
+                                                        {!!$openBlade!!} 
+                                                            substr($item->{{$col['name']}} , 0, 40) 
+                                                        {!! $closeBlade !!}
                             
                                                         @else
                                                             @if($col['name'] == 'image')
@@ -74,7 +80,13 @@ $closeBlade = '}}';
                                                                     <img  width="100px" height="100px" src="{!!$openBlade!!} asset('storage/'.$url){!! $closeBlade !!}">
                                                                 {{'@'}}endforeach
                                                             @else
-                                                                {!!$openBlade!!} $item->{{$col['name']}} {!! $closeBlade !!}
+                                                                {!!$openBlade!!}
+                                                                    @if(Str::isRelation($col['name']))
+                                                                        optional($item->{{Str::relationName($col['name'])}})->{{$tableRecordTitleMap[Str::plural(Str::relationName($col['name']))]}}
+                                                                    @else
+                                                                    $item->{{$col['name']}} 
+                                                                    @endif
+                                                                 {!! $closeBlade !!}
                                                             @endif
                                                         @endif
                                                       

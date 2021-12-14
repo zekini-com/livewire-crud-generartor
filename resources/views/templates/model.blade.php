@@ -12,6 +12,7 @@ use OwenIt\Auditing\Auditable as AuditableTrait;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use OwenIt\Auditing\Resolvers\UserResolver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Zekini\CrudGenerator\Traits\HasModelRelations;
 
 class {{$modelBaseName}} extends Model implements Auditable
 {
@@ -20,7 +21,7 @@ class {{$modelBaseName}} extends Model implements Auditable
     @if($hasDeletedAt)
          SoftDeletes,
      @endif
-     HasFactory,
+     HasFactory, HasModelRelations,
      AuditableTrait;
     
     /**
@@ -52,5 +53,24 @@ class {{$modelBaseName}} extends Model implements Auditable
 
         throw new AuditingException('Invalid UserResolver implementation');
     }
+
+    // Relationships start here
+    @if(count($relations)> 0)
+    @foreach($relations as $index=>$relation)
+        @if(strpos($relation['table'], 'has'))
+        public function {{$relation['table']}}()
+        {
+        
+            return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class);
+        }
+        @else
+        public function {{Str::singular($relation['table'])}}()
+        {
+        
+            return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class);
+        }
+        @endif
+    @endforeach
+    @endif
    
 }
