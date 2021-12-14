@@ -44,7 +44,6 @@ trait HandlesFile
      */
     public function deleteFile($urls, $disk=null)
     {
-
         $disk = $disk ?? $this->disk;
         foreach(json_decode($urls) as $url){
             Storage::disk($disk)->delete($url);

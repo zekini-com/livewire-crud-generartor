@@ -57,12 +57,12 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateEditView::class,
             Commands\Generators\GenerateCreateView::class,
             Commands\Generators\GeneratePermission::class,
-            Commands\Generators\GenerateUnitTest::class,
+
+            Commands\Generators\GenerateStoreUnitTest::class,
+            Commands\Generators\GenerateUpdateUnitTest::class,
+            Commands\Generators\GenerateListUnitTest::class,
             Commands\Generators\GenerateFactory::class,
-            Commands\Generators\GenerateRequestIndex::class,
-            Commands\Generators\GenerateRequestStore::class,
-            Commands\Generators\GenerateRequestUpdate::class,
-            Commands\Generators\GenerateRequestDestroy::class,
+           
             Commands\Generators\GenerateRoutes::class,
 
             Commands\Generators\GenerateListComponent::class,

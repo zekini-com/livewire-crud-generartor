@@ -11,6 +11,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as AuditableTrait;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use OwenIt\Auditing\Resolvers\UserResolver;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class {{$modelBaseName}} extends Model implements Auditable
 {
@@ -19,6 +20,7 @@ class {{$modelBaseName}} extends Model implements Auditable
     @if($hasDeletedAt)
          SoftDeletes,
      @endif
+     HasFactory,
      AuditableTrait;
     
     /**

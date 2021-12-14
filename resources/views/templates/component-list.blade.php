@@ -4,9 +4,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Requests\Admin\{{$modelBaseName}}\Destroy{{ $modelBaseName }};
-use App\Http\Requests\Admin\{{$modelBaseName}}\Index{{ $modelBaseName }};
-use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Zekini\CrudGenerator\Traits\HandlesFile;
 use {{ $modelFullName }};
 use Illuminate\Support\Str;
@@ -14,7 +12,7 @@ use Illuminate\Support\Str;
 class List{{ucfirst($modelBaseName)}} extends Component
 { 
 
-    use HandlesFile;
+    use HandlesFile, AuthorizesRequests;
 
     @if($canBeTrashed)
     public $canBeTrashed = true;
@@ -40,9 +38,9 @@ class List{{ucfirst($modelBaseName)}} extends Component
      *
      * @return View
      */
-    public function render(Index{{ucfirst($modelBaseName)}} ${{Str::camel('index'.$modelBaseName)}})
+    public function render()
     {
-        ${{Str::camel('index'.$modelBaseName)}}->authorize();
+        $this->authorize('admin.{{ strtolower($modelBaseName) }}.index');
 
         $data = ($this->isViewingTrashed && $this->canBeTrashed) ? {{$modelBaseName}}::onlyTrashed()->get() : {{$modelBaseName}}::all();
 
@@ -57,9 +55,9 @@ class List{{ucfirst($modelBaseName)}} extends Component
      *
      * @return void
      */
-    public function delete(Destroy{{ucfirst($modelBaseName)}} ${{Str::camel('destroy'.$modelBaseName)}}, $id)
+    public function delete($id)
     {
-        ${{Str::camel('destroy'.$modelBaseName)}}->authorize();
+        $this->authorize('admin.{{ strtolower($modelBaseName) }}.delete');
         ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
         $this->isViewingTrashed ? ${{strtolower($modelBaseName)}}->forceDelete() : ${{strtolower($modelBaseName)}}->delete();
 
@@ -78,9 +76,9 @@ class List{{ucfirst($modelBaseName)}} extends Component
      * @param  mixed $id
      * @return void
      */
-    public function restore(Destroy{{ucfirst($modelBaseName)}} ${{Str::camel('destroy'.$modelBaseName)}}, $id)
+    public function restore($id)
     {
-        ${{Str::camel('destroy'.$modelBaseName)}}->authorize();
+        $this->authorize('admin.{{ strtolower($modelBaseName) }}.delete');
 
         ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
         ${{strtolower($modelBaseName)}}->restore();

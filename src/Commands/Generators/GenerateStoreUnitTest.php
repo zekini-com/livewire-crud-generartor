@@ -5,17 +5,17 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 
-class GenerateUnitTest extends BaseGenerator
+class GenerateStoreUnitTest extends BaseGenerator
 {
 
-    protected $classType = 'test';
+    protected $classType = 'store-test';
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:test {table}';
+    protected $signature = 'admin:generate:test:store {table}';
 
     /**
      * The console command description.
@@ -46,9 +46,9 @@ class GenerateUnitTest extends BaseGenerator
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
 
-       $this->testBaseName = $this->className.'Test';
+       $this->testBaseName = $this->className.'StoreTest';
 
-       $this->namespace = $this->getDefaultNamespace();
+       $this->namespace = $this->getDefaultNamespace().'\\'.ucfirst($this->className);
 
        $templateContent = $this->replaceContent();
 
@@ -67,11 +67,15 @@ class GenerateUnitTest extends BaseGenerator
      */
     protected function getViewData()
     {
+        
         return [
             'modelBaseName' => ucfirst($this->getClassName()),
             'adminModel'=> '\\'.config('zekini-admin.providers.zekini_admins.model'),
             'resource'=> $this->getClassName(),
-            'tableName'=> $this->argument('table')
+            'tableName'=> $this->argument('table'),
+            'columnFakerMappings'=> $this->getColumnFakerMap(),
+            'viewName'=> 'create-'.strtolower($this->getClassName())
+         
         ];
     }
     
