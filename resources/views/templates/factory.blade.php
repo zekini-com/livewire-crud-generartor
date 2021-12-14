@@ -22,7 +22,9 @@ class {{$factoryBaseName}} extends Factory
             @if($attribute['name'] == 'file' || $attribute['name']== 'image')
                 "{{$attribute['name']}}" => '["img.jpg"]',
             @else
+            
             "{{$attribute['name']}}"=> {!! $attribute['faker'] !!},
+        
             @endif
             @endforeach
         ];

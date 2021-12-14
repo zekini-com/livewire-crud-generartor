@@ -5,11 +5,12 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Zekini\CrudGenerator\Traits\ColumnTrait;
+use Zekini\CrudGenerator\Traits\HasRelations;
 
 abstract class BaseGenerator extends Command
 {
 
-    use ColumnTrait;
+    use ColumnTrait, HasRelations;
 
     protected $hidden = true;
 
@@ -106,6 +107,7 @@ abstract class BaseGenerator extends Command
      */
     protected function decideFaker($type, $name)
     {
+        if(Str::isRelation($name)) return "\App\Models\\".ucfirst(Str::relationName($name))."::factory()->create()->id";
         if ($name == 'name') return '$this->faker->name()';
         if ($name == 'email') return '$this->faker->unique()->safeEmail()';
         if ($name == 'image' || $name == 'file') return "[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]";

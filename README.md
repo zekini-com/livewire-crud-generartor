@@ -25,6 +25,8 @@ To run the created migrations and access admin
 
     php artisan migrate
 
+To setup relationship mappings on a model simply go to the zekini-admin config under relationships
+
 To generate crud for a particular model. Simply create the migration file for that crud and migrate to the database
 After the you simply run admin:crud generate command wth the table name
 

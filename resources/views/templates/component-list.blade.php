@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Zekini\CrudGenerator\Traits\HandlesFile;
+use Zekini\CrudGenerator\Helpers\CrudModelList;
 use {{ $modelFullName }};
 use Illuminate\Support\Str;
 
@@ -15,9 +16,9 @@ class List{{ucfirst($modelBaseName)}} extends Component
     use HandlesFile, AuthorizesRequests;
 
     @if($canBeTrashed)
-    public $canBeTrashed = true;
+    protected $canBeTrashed = true;
     @else
-    public $canBeTrashed = false;
+    protected $canBeTrashed = false;
     @endif
     
     /**
@@ -26,6 +27,8 @@ class List{{ucfirst($modelBaseName)}} extends Component
      * @var bool
      */
     public $isViewingTrashed = false;
+
+    protected $model = {{$modelBaseName}}::class;
     
     @foreach($vissibleColumns as $col)
     
@@ -42,7 +45,7 @@ class List{{ucfirst($modelBaseName)}} extends Component
     {
         $this->authorize('admin.{{ strtolower($modelBaseName) }}.index');
 
-        $data = ($this->isViewingTrashed && $this->canBeTrashed) ? {{$modelBaseName}}::onlyTrashed()->get() : {{$modelBaseName}}::all();
+        $data = CrudModelList::getList({{$modelBaseName}}::class, $this->isViewingTrashed, $this->canBeTrashed);
 
         return view('livewire.list-{{strtolower($modelBaseName)}}', [
             'data'=> $data
@@ -58,7 +61,8 @@ class List{{ucfirst($modelBaseName)}} extends Component
     public function delete($id)
     {
         $this->authorize('admin.{{ strtolower($modelBaseName) }}.delete');
-        ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
+     
+        ${{strtolower($modelBaseName)}}  = $this->isViewingTrashed ? {{ucfirst($modelBaseName)}}::withTrashed()->find($id) : {{ucfirst($modelBaseName)}}::find($id) ;
         $this->isViewingTrashed ? ${{strtolower($modelBaseName)}}->forceDelete() : ${{strtolower($modelBaseName)}}->delete();
 
         @if($hasFile)

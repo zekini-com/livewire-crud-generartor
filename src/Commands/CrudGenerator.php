@@ -75,7 +75,7 @@ class CrudGenerator extends Command
     {
         return [
             'admin:generate:model',
-            'admin:generate:controller',
+
             'admin:generate:route',
             'admin:generate:form',
 
@@ -90,12 +90,6 @@ class CrudGenerator extends Command
             'admin:generate:component:edit',
 
             'admin:generate:permission',
-
-            // request classes
-            'admin:generate:request:index',
-            'admin:generate:request:store',
-            'admin:generate:request:update',
-            'admin:generate:request:destroy',
             
             // 'admin:generate:test',
             'admin:generate:factory'

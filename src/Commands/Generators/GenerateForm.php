@@ -33,6 +33,7 @@ class GenerateForm extends BaseGenerator
      */
     public function handle(Filesystem $files)
     {
+       
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
 
@@ -54,7 +55,10 @@ class GenerateForm extends BaseGenerator
     protected function getViewData()
     {
         return [
-            'vissibleColumns'=> $this->getColumnDetails()
+            'vissibleColumns'=> $this->getColumnDetails(),
+            'relations'=>  $this->getRelations(),
+            'belongsTo'=> $this->belongsToConfiguration()->toArray(),
+            'recordTitleMap'=> $this->getRecordTitleTableMap()
         ];
     }
     

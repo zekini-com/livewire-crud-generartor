@@ -7,7 +7,19 @@ $closeBlade = '}}';
         $textLabel = str_replace('_',' ',ucfirst($col['name']));
         $wireModel = $col['name'];
     @endphp
-    @if($col['type'] == 'boolean')
+    @if(in_array($col['name'], $belongsTo))
+    <div class="form-group row align-items-center" >
+        <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
+        <div class="col-xl-8">
+            <select class="form-control" wire:model="{{$wireModel}}" id="{{ $col['name'] }}"  name="{{ $col['name'] }}">
+                {{'@'}}foreach(\App\Models\{{ucfirst(str_replace('_id','',$col['name']))}}::all() as $item)
+                    <option  wire:key="{!! $openBlade !!} $item->id {!! $closeBlade !!}" value="{!! $openBlade !!} $item->id {!! $closeBlade !!}"> {!! $openBlade !!}  $item->{{$recordTitleMap[Str::plural(str_replace('_id', '', $col['name']))]}} {!! $closeBlade !!}</option>
+                {{'@'}}endforeach
+            </select>
+            {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
+        </div>
+    </div>
+    @elseif($col['type'] == 'boolean')
         <div class="form-group row align-items-center" >
             <label for="{{$col['name']}}" class="col-form-label text-md-right" >{{ $textLabel }}</label>
             <div class="col-xl-8">

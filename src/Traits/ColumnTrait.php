@@ -77,4 +77,23 @@ trait ColumnTrait
 
         return $columns;
     }
+    
+    /**
+     * getRelationColumns
+     *
+     * @return Collection
+     */
+    public function getRelationColumns()
+    {
+        $tableName = $this->argument('table');
+        $blackList = $this->dontShow;
+        unset($blackList['id']);
+        
+        $columns = collect(Schema::getColumnListing($tableName));
+        $columns = $columns->filter(function($col){
+            return strpos($col, '_id');
+        })->toArray();
+
+        return $columns;
+    }
 }
