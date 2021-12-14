@@ -48,16 +48,6 @@ abstract class BaseGenerator extends Command
         return rtrim(Str::studly($this->argument('table')), 's');    
     }
 
-    /**
-     * getTemplate
-     *
-     * @return void
-     */
-    protected function getTemplateUrl($file)
-    {
-        return __DIR__.'../../../../templates/'.$file.'.blade.php';
-    }
-
     
     /**
      * Get the path of a file from the namespace
@@ -89,6 +79,53 @@ abstract class BaseGenerator extends Command
         return view($view, $variables)->render();
 
     }
+
+    /**
+     * Get Column Faker Map
+     *
+     * @return void
+     */
+    protected function getColumnFakerMap()
+    {
+       $columns = $this->getColumnDetails();
+       return $columns->map(function($colArr){
+           return [
+               'name'=> $colArr['name'],
+               'faker'=> $this->decideFaker($colArr['type'], $colArr['name'])
+           ];
+       });
+        
+    }
+
+    
+    /**
+     * Decide what faker to user
+     *
+     * @param  string $colName
+     * @return string
+     */
+    protected function decideFaker($type, $name)
+    {
+        if ($name == 'name') return '$this->faker->name()';
+        if ($name == 'email') return '$this->faker->unique()->safeEmail()';
+        if ($name == 'image' || $name == 'file') return "[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]";
+        if ($name == preg_match('/phone/', $name)) return '$this->faker->phoneNumber()';
+
+        switch($type){
+            case 'string':
+                return '$this->faker->word()';
+            break;
+            case 'boolean':
+                return '$this->faker->bolean()';
+            break;
+            case 'text':
+                return '$this->faker->sentence()';
+            break;
+            default: 
+                return '$this->faker->word()';
+        }
+    }
+    
 
     
 

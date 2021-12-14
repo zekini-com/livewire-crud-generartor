@@ -4,8 +4,8 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
 use {{ $modelFullName }};
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Zekini\CrudGenerator\Traits\HandlesFile;
 @if($hasFile)
 use Livewire\WithFileUploads;
@@ -17,7 +17,13 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
     @if($hasFile)
     WithFileUploads,
     @endif
-    HandlesFile;
+    AuthorizesRequests, HandlesFile;
+
+    protected $rules = [
+    @foreach($vissibleColumns as $col)
+    '{{$col['name']}}'=> 'required',
+    @endforeach
+    ];
 
     public $success;
 
@@ -49,13 +55,13 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
         ->section('body');
     }
 
-    public function update(Update{{ucfirst($modelBaseName)}} ${{Str::camel('update'.$modelBaseName)}})
+    public function update()
     {
         //access control
-        ${{Str::camel('update'.$modelBaseName)}}->authorize();
+        $this->authorize('admin.{{ strtolower($modelBaseName) }}.edit');
 
         // validate request
-        $this->validate(${{Str::camel('update'.$modelBaseName)}}->getRuleSet());
+        $this->validate();
 
         //image processing
         @if($hasFile)

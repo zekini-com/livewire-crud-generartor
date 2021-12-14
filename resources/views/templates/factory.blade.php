@@ -19,7 +19,11 @@ class {{$factoryBaseName}} extends Factory
         return [
 
             @foreach($fakerAttributes as $attribute)
-                "{{$attribute['name']}}"=> {!! $attribute['faker'] !!},
+            @if($attribute['name'] == 'file' || $attribute['name']== 'image')
+                "{{$attribute['name']}}" => '["img.jpg"]',
+            @else
+            "{{$attribute['name']}}"=> {!! $attribute['faker'] !!},
+            @endif
             @endforeach
         ];
     }

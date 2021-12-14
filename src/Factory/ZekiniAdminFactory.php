@@ -4,9 +4,12 @@ namespace Zekini\CrudGenerator\Factory;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Zekini\CrudGenerator\Models\ZekiniAdmin;
 
 class ZekiniAdminFactory extends Factory
 {
+
+    protected $model = ZekiniAdmin::class;
     /**
      * Define the model's default state.
      *
