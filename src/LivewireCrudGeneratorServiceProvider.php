@@ -29,9 +29,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         // my custom str mixin
        Str::mixin(new StrMixin);
 
-       Builder::macro('search', function($field, $str){
-            return $str ? $this->where($field, 'like', '%'.$str.'%') : $this;
-       });
 
         $this->register(LivewireServiceProvider::class);
         $this->registerCommands();
