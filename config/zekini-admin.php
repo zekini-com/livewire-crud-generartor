@@ -51,10 +51,17 @@ return [
     |        ]
     |        
     |    ],
+    | Search Keys 
+    |  Column name to use for serach
+    | 'post'=> 'title'
     |
     */
 
     'relationships'=> [
        
+    ],
+
+    'search_keys'=> [
+
     ]
 ];

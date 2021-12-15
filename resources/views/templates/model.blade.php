@@ -35,6 +35,32 @@ class {{$modelBaseName}} extends Model implements Auditable
     @endforeach
     ];
 
+    
+    /**
+     * Creates the query builder query needed for a relational search
+     *
+     * @param  string $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($query, $search)
+    {
+        if(empty($search)){
+            return $query;
+        }
+      
+        $query->where('{{\Zekini\CrudGenerator\Helpers\Utilities::getSearchKey($modelBaseName)}}', 'like', '%'.$search.'%')
+        @foreach(\Zekini\CrudGenerator\Helpers\Utilities::getRelations($modelBaseName) as $relation)
+        ->OrWhereHas('{{$relation}}', function($rQuery) use ($search){
+            $rQuery->where('{{\Zekini\CrudGenerator\Helpers\Utilities::getSearchKey($relation)}}', 'like', '%'.$search.'%');
+        })
+        @endforeach
+        ;
+    }
+
+   
+
+
+
 
     /**
      * Resolve the User.
@@ -57,19 +83,16 @@ class {{$modelBaseName}} extends Model implements Auditable
     // Relationships start here
     @if(count($relations)> 0)
     @foreach($relations as $index=>$relation)
-        @if(strpos($relation['table'], 'has'))
-        public function {{$relation['table']}}()
+       
+        @php
+            $relationName = strpos($relation['name'], 'belong') === false ? $relation['table'] : Str::singular($relation['table']);
+        @endphp
+        public function {{$relationName}}()
         {
         
             return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class);
         }
-        @else
-        public function {{Str::singular($relation['table'])}}()
-        {
-        
-            return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class);
-        }
-        @endif
+
     @endforeach
     @endif
    
