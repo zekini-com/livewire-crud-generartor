@@ -26,10 +26,8 @@ $closeBlade = '}}';
                                 <div class="row justify-content-md-between">
                                     <div class="col col-lg-7 col-xl-5 form-group">
                                         <div class="input-group">
-                                            <input class="form-control" placeholder="Search {{$resource}}" v-model="search" @keyup.enter="filter('search', $event.target.value)" />
-                                            <span class="input-group-append">
-                                                <button type="button" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
-                                            </span>
+                                            <input class="form-control" placeholder="Search {{$resource}}" wire:model="search"  />
+                                        
                                         </div>
                                     </div>
                                     <div class="col-sm-auto form-group ">
@@ -140,6 +138,10 @@ $closeBlade = '}}';
                                     </button>
                                 </div>
                             {{$dataCountEndIf}}
+
+                            <div>
+                            {!! $openBlade !!} $data->links() {!! $closeBlade !!}
+                            </div>
 
                         </div>
                     </div>
