@@ -104,6 +104,12 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/js/app.js'=> public_path('app.js')
         ], 'resources');
+        $this->publishes([
+            __DIR__.'/../resources/css/app.css'=> public_path('tailwind.css')
+        ], 'resources');
+        $this->publishes([
+            __DIR__.'/../resources/js/app.js'=> public_path('alpine.js')
+        ], 'resources');
     }
     
 

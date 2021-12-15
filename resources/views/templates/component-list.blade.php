@@ -9,98 +9,79 @@ use Zekini\CrudGenerator\Traits\HandlesFile;
 use Zekini\CrudGenerator\Helpers\CrudModelList;
 use {{ $modelFullName }};
 use Illuminate\Support\Str;
-use Livewire\WithPagination;
+use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Mediconesystems\LivewireDatatables\Column;
+use Mediconesystems\LivewireDatatables\NumberColumn;
+use Mediconesystems\LivewireDatatables\DateColumn;
+use Mediconesystems\LivewireDatatables\BooleanColumn;
 
-class List{{ucfirst($modelBaseName)}} extends Component
+class {{ucfirst($modelBaseName)}}Table extends LivewireDatatable
 { 
 
-    use HandlesFile, AuthorizesRequests, WithPagination;
+    use HandlesFile, AuthorizesRequests;
 
 
-    public $search = '';
-
-    @if($canBeTrashed)
-    protected $canBeTrashed = true;
-    @else
-    protected $canBeTrashed = false;
-    @endif
-    
-    /**
-     * Checks if a user is viewing trashed
-     *
-     * @var bool
-     */
-    public $isViewingTrashed = false;
-
-    
-    @foreach($vissibleColumns as $col)
-    
-    public ${{$col['name']}};
-
-    @endforeach
-
-    /**
-     * Renders the component
-     *
-     * @return View
-     */
-    public function render()
+    public function builder()
     {
-        $this->authorize('admin.{{ strtolower($modelBaseName) }}.index');
-
-        $data = CrudModelList::getList({{$modelBaseName}}::class, $this->isViewingTrashed, $this->canBeTrashed, $this->search);
-
-        return view('livewire.list-{{strtolower($modelBaseName)}}', [
-            'data'=> $data
-        ])->extends('zekini/livewire-crud-generator::admin.layout.default')
-        ->section('body');
-    }
-    
-    /**
-     * soft Deletes a {{$modelBaseName}}
-     *
-     * @return void
-     */
-    public function delete($id)
-    {
-        $this->authorize('admin.{{ strtolower($modelBaseName) }}.delete');
-     
-        ${{strtolower($modelBaseName)}}  = $this->isViewingTrashed ? {{ucfirst($modelBaseName)}}::withTrashed()->find($id) : {{ucfirst($modelBaseName)}}::find($id) ;
-        $this->isViewingTrashed ? ${{strtolower($modelBaseName)}}->forceDelete() : ${{strtolower($modelBaseName)}}->delete();
-
-        @if($hasFile)
-        if ($this->isViewingTrashed){
-            // delete the old image
-            $this->deleteFile(${{strtolower($modelBaseName)}}->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
-        }
-        @endif
-   
-    }
-    
-    /**
-     * Hards Delete a {{$modelBaseName}}
-     *
-     * @param  mixed $id
-     * @return void
-     */
-    public function restore($id)
-    {
-        $this->authorize('admin.{{ strtolower($modelBaseName) }}.delete');
-
-        ${{strtolower($modelBaseName)}}  = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
-        ${{strtolower($modelBaseName)}}->restore();
+        return {{ucfirst($modelBaseName)}}::query()
+        @foreach($relations as $relation)
+            ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelBaseName))}}.{{$relation['column']}}")
+        @endforeach
+        ->groupBy('{{strtolower(Str::plural($modelBaseName))}}.id');
+        
     }
 
-    
-    /**
-     * Switch the content mode 
-     *
-     * @return void
-     */
-    public function toggleTrash()
+    public function columns()
     {
-        $this->isViewingTrashed = ! $this->isViewingTrashed;
+        return [
+
+            @foreach($vissibleColumns as $col)
+
+                @if(Str::isRelation($col['name']))
+                @php
+                    $relationTable = Str::plural(Str::relationName($col['name']));
+                @endphp
+                Column::name('{{$relationTable}}.{{$tableTitleMap[$relationTable]}}')
+                        ->label('{{ucfirst(Str::relationName($col['name']))}}')
+                        ->searchable()
+                        ->hideable()
+                        ->filterable()
+                @continue
+                @endif
+
+                @switch($col['type'])
+                    @case('integer')
+                    NumberColumn::name('{{$col['name']}}')
+                        ->label('{{ucfirst($col['name'])}}'),
+                    @break
+                    @case('boolean')
+                    BooleanColumn::name('{{$col['name']}}')
+                    ->label('{{ucfirst($col['name'])}}')
+                    ->format()
+                    ->filterable(),
+                    @break
+                    @case('date')
+                    @case('datetime')
+                    DateColumn::name('{{$col['name']}}')
+                    ->label('{{ucfirst($col['name'])}}')
+                    ->filterable()
+                    ->hide(),
+                    @break
+                    @case('string')
+                    @default
+                    Column::name('{{$col['name']}}')
+                        ->label('{{ucfirst($col['name'])}}')
+                        ->defaultSort('asc')
+                        ->searchable()
+                        ->hideable()
+                        ->filterable(),
+                    @break
+                @endswitch
+
+            @endforeach
+        ];
     }
+
 
    
 }
