@@ -32,11 +32,14 @@ trait HasRelations
     {
         $relations = collect($this->getRelations());
         $belongsTo = $relations->filter(function($relation){
-            return $relation['name'] == 'belongs_to';
+            return strpos($relation['name'], 'belongs_to') !== false;
         });
        
         return $belongsTo->map(function($relation){
-            return Str::singular($relation['table']).'_id';
+            return [ 
+                'column'=>Str::singular($relation['table']).'_id',
+                'table'=> $relation['table']
+            ];
 
         });
     }

@@ -4,6 +4,7 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class GenerateListView extends BaseGenerator
 {
@@ -53,16 +54,25 @@ class GenerateListView extends BaseGenerator
      */
     protected function getViewData()
     {
-        //dd($this->getRecordTitleTableMap());
-        $resource = strtolower($this->getClassName());
+
+        $colMap = $this->getRecordTitleTableMap();
+
+        $relations = $this->belongsToConfiguration()->map(function($relation) use($colMap){
+            return Str::singular($relation['table']).'.'.$colMap[$relation['table']];
+        });
+       
+        $columns  = $this->getColumnWithDates()->filter(function($col){
+            return ! Str::isRelation($col['name']);
+        })->map(function($col){
+            return $col['name'];
+        });
+
+        $columns = $columns->merge($relations)->toArray();
+   
         return [
-            'vissibleColumns'=> $this->getColumnDetailsWithId(),
             'modelName'=> ucfirst($this->getClassName()),
-            'resource'=> $resource,
-            'createResourceRoute'=> "url('admin/$resource/create')",
-            'hasDeletedAt'=> $this->hasColumn('deleted_at'),
-            'relations'=> $this->getRelationColumns(),
-            'tableRecordTitleMap'=> $this->getRecordTitleTableMap()
+            'columns'=> implode(',', $columns),
+            'relationships'=> implode(',', $this->belongsToConfiguration()->pluck('table')->toArray())
         ];
     }
     
