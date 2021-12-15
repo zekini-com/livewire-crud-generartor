@@ -9,11 +9,15 @@ use Zekini\CrudGenerator\Traits\HandlesFile;
 use Zekini\CrudGenerator\Helpers\CrudModelList;
 use {{ $modelFullName }};
 use Illuminate\Support\Str;
+use Livewire\WithPagination;
 
 class List{{ucfirst($modelBaseName)}} extends Component
 { 
 
-    use HandlesFile, AuthorizesRequests;
+    use HandlesFile, AuthorizesRequests, WithPagination;
+
+
+    public $search = '';
 
     @if($canBeTrashed)
     protected $canBeTrashed = true;
@@ -28,7 +32,6 @@ class List{{ucfirst($modelBaseName)}} extends Component
      */
     public $isViewingTrashed = false;
 
-    protected $model = {{$modelBaseName}}::class;
     
     @foreach($vissibleColumns as $col)
     
@@ -45,7 +48,7 @@ class List{{ucfirst($modelBaseName)}} extends Component
     {
         $this->authorize('admin.{{ strtolower($modelBaseName) }}.index');
 
-        $data = CrudModelList::getList({{$modelBaseName}}::class, $this->isViewingTrashed, $this->canBeTrashed);
+        $data = CrudModelList::getList({{$modelBaseName}}::class, $this->isViewingTrashed, $this->canBeTrashed, $this->search);
 
         return view('livewire.list-{{strtolower($modelBaseName)}}', [
             'data'=> $data

@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
@@ -27,6 +28,10 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         
         // my custom str mixin
        Str::mixin(new StrMixin);
+
+       Builder::macro('search', function($field, $str){
+            return $str ? $this->where($field, 'like', '%'.$str.'%') : $this;
+       });
 
         $this->register(LivewireServiceProvider::class);
         $this->registerCommands();
