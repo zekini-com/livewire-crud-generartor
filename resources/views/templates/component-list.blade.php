@@ -105,7 +105,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
                     'model' => '{{strtolower($modelBaseName)}}',
                     'canBeTrashed'=> $this->canBeTrashed
                 ]);
-            })->unsortable()
+            })->unsortable()->excludeFromExport()
         ];
     }
 
@@ -121,9 +121,28 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
 
         $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
 
+        $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
+        foreach($fileCols as $files){
+            $this->deleteFile($files);
+        }
+
         ${{strtolower($modelBaseName)}}->forceDelete();
     }
     @endif
+
+    
+    /**
+     * Checks if a model has files or images and deletes it
+     *
+     * @param  mixed $model
+     * @return array
+     */
+    protected function checkForFiles($model)
+    {
+        return collect($model->getAttributes())->filter(function($col, $index){
+            return Str::likelyFile($index);
+        })->toArray();
+    }
 
     /**
      * Force deletes a model
@@ -135,6 +154,11 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     {
         ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
         $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+
+        $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
+        foreach($fileCols as $files){
+            $this->deleteFile($files);
+        }
 
         ${{strtolower($modelBaseName)}}->delete();
     }
