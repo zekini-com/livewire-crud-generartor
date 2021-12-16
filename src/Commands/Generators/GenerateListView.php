@@ -55,25 +55,26 @@ class GenerateListView extends BaseGenerator
     protected function getViewData()
     {
 
-        $colMap = $this->getRecordTitleTableMap();
+        // $colMap = $this->getRecordTitleTableMap();
 
-        $relations = $this->belongsToConfiguration()->map(function($relation) use($colMap){
-            return Str::singular($relation['table']).'.'.$colMap[$relation['table']];
-        });
+        // $relations = $this->belongsToConfiguration()->map(function($relation) use($colMap){
+        //     return Str::singular($relation['table']).'.'.$colMap[$relation['table']];
+        // });
        
-        $columns  = $this->getColumnWithDates()->filter(function($col){
-            return ! Str::isRelation($col['name']);
-        })->map(function($col){
-            return $col['name'];
-        });
+        // $columns  = $this->getColumnWithDates()->filter(function($col){
+        //     return ! Str::isRelation($col['name']);
+        // })->map(function($col){
+        //     return $col['name'];
+        // });
 
-        $columns = $columns->merge($relations)->toArray();
-   
+        // $columns = $columns->merge($relations)->toArray();
+
         return [
-            'modelName'=> ucfirst($this->getClassName()),
-            'columns'=> implode(',', $columns),
-            'relationships'=> implode(',', $this->belongsToConfiguration()->pluck('table')->toArray())
+            'componentName'=> strtolower('list-'.$this->className),
+            'resource'=> strtolower($this->className),
+            'createView'=> strtolower('create-'.$this->className)
         ];
+   
     }
     
 

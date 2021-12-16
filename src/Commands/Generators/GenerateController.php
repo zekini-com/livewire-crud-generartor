@@ -79,7 +79,8 @@ class GenerateController extends BaseGenerator
             'modelDotNotation' => strtolower($this->className),
             'modelWithNamespaceFromDefault' => rtrim($this->namespace, '\\'),
             'resource'=> strtolower($this->className),
-            'modelFullName'=> "App\Models\\".$this->className
+            'modelFullName'=> "App\Models\\".$this->className,
+            'viewName'=> 'livewire.list-'.strtolower($this->className)
         ];
     }
     

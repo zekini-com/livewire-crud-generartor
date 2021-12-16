@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Livewire\LivewireServiceProvider;
@@ -34,6 +35,9 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->registerCommands();
 
         $this->loadViewsFrom(__DIR__.'./../resources/views', 'zekini/livewire-crud-generator');
+
+        Blade::component('zekini/livewire-crud-generator::components.modal', 'c.modal');
+        
         $this->loadRoutesFrom(__DIR__.'./../routes/web.php');
 
         // register commands

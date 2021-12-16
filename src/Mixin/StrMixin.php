@@ -32,4 +32,18 @@ class StrMixin
         };
        
     }
+
+    /**
+     * A string is likely the name of a file
+     *
+     * @param  string $str
+     * @return string
+     */
+    public function likelyFile (){
+
+        return function($str){
+            return preg_match('/image/', $str) || preg_match('/file/', $str);
+        };
+       
+    }
 }

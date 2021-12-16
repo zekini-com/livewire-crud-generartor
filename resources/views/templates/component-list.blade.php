@@ -15,10 +15,23 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
 
-class {{ucfirst($modelBaseName)}}Table extends LivewireDatatable
+class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
 { 
 
     use HandlesFile, AuthorizesRequests;
+    
+    /**
+     * Checks to see if we can softdelete a model
+    */
+    @if ($canBeTrashed)
+    protected $canBeTrashed = true;
+    @else
+    protected $canBeTrashed = false;
+    @endif
+
+    public $model = {{ucfirst($modelBaseName)}}::class;
+
+    public $exportable = true;
 
 
     public function builder()
@@ -45,7 +58,7 @@ class {{ucfirst($modelBaseName)}}Table extends LivewireDatatable
                         ->label('{{ucfirst(Str::relationName($col['name']))}}')
                         ->searchable()
                         ->hideable()
-                        ->filterable()
+                        ->filterable(),
                 @continue
                 @endif
 
@@ -69,17 +82,61 @@ class {{ucfirst($modelBaseName)}}Table extends LivewireDatatable
                     @break
                     @case('string')
                     @default
+                    @if(Str::likelyFile($col['name']))
+                    Column::callback(['{{$col['name']}}'], function (${{$col['name']}}) {
+                        return view('zekini/livewire-crud-generator::image-display', ['file' => ${{$col['name']}}]);
+                    })->unsortable()->excludeFromExport(),
+                    @else
+                    
                     Column::name('{{$col['name']}}')
                         ->label('{{ucfirst($col['name'])}}')
                         ->defaultSort('asc')
                         ->searchable()
                         ->hideable()
                         ->filterable(),
+                    @endif
                     @break
                 @endswitch
 
             @endforeach
+            Column::callback(['id'], function ($id) {
+                return view('zekini/livewire-crud-generator::table-actions', [
+                    'id' => $id, 
+                    'model' => '{{strtolower($modelBaseName)}}',
+                    'canBeTrashed'=> $this->canBeTrashed
+                ]);
+            })->unsortable()
         ];
+    }
+
+    @if($canBeTrashed)
+    /**
+     * Force deletes a model
+     *
+     * @param  {{ucfirst($modelBaseName)}} ${{$modelBaseName}}
+     * @return void
+     */
+    public function forceDelete({{ucfirst($modelBaseName)}} ${{strtolower($modelBaseName)}})
+    {
+
+        $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+
+        ${{strtolower($modelBaseName)}}->forceDelete();
+    }
+    @endif
+
+    /**
+     * Force deletes a model
+     *
+     * @param  {{ucfirst($modelBaseName)}} ${{$modelBaseName}}
+     * @return void
+     */
+    public function delete($id)
+    {
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
+        $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+
+        ${{strtolower($modelBaseName)}}->delete();
     }
 
 
