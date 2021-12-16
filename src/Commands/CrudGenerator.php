@@ -89,6 +89,9 @@ class CrudGenerator extends Command
             'admin:generate:component:create',
             'admin:generate:component:edit',
 
+            //controller
+            'admin:generate:controller',
+
             'admin:generate:permission',
             
             // 'admin:generate:test',

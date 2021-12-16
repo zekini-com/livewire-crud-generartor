@@ -46,7 +46,7 @@ abstract class BaseGenerator extends Command
      */
     protected function getClassName()
     {
-        return rtrim(Str::studly($this->argument('table')), 's');    
+        return Str::studly(Str::singular($this->argument('table')));    
     }
 
     

@@ -48,7 +48,7 @@ class GenerateListComponent extends BaseGenerator
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
 
-       $this->componentName = $this->className.'Table';
+       $this->componentName = 'List'.$this->className;
 
        $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
@@ -70,7 +70,7 @@ class GenerateListComponent extends BaseGenerator
      */
     protected function getViewData()
     {
-       
+      
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
