@@ -54,10 +54,11 @@ class GenerateForm extends BaseGenerator
      */
     protected function getViewData()
     {
+       
         return [
             'vissibleColumns'=> $this->getColumnDetails(),
             'relations'=>  $this->getRelations(),
-            'belongsTo'=> $this->belongsToConfiguration()->toArray(),
+            'belongsTo'=> $this->belongsToConfiguration()->pluck('column')->toArray(),
             'recordTitleMap'=> $this->getRecordTitleTableMap()
         ];
     }

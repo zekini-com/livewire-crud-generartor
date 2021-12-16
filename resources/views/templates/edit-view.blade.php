@@ -6,9 +6,7 @@ $closeBlade = '}}';
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Edit
-                    </div>
+
                     <div class="card-body">
                         <div class="card-block">
                             <form wire:submit.prevent="update">
