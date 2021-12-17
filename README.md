@@ -9,7 +9,7 @@ The **zekini/livewire-crud-generator** package allows us to generate an admin pa
 
 **Installation**
 
-    composer require zekini/livewire-crud-generator
+    composer require --dev zekini/livewire-crud-generator
 
 
 
