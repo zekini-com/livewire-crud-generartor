@@ -4,7 +4,11 @@ return [
 
     'defaults'=> [
         'guard'=> 'zekini_admin',
-        'passwords'=> 'zekini_admins'
+        'passwords'=> 'zekini_admins',
+
+        // used for development
+        'default-email'=> 'support@zekini.com',
+        'default-password'=> 'localpassword@zekini'
     ],
 
     'guards'=> [

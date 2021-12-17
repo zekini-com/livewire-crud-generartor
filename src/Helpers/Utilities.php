@@ -38,12 +38,13 @@ class Utilities
     public static function getRelations($model)
     {
         $table =   Str::snake(Str::pluralStudly(class_basename($model)));
+       
         return collect(config('zekini-admin.relationships.'.$table))->map(function($relation){
            
             $relationName =  strpos($relation['name'], 'belong') === false ? $relation['table'] : Str::singular($relation['table']);
-           
             return $relationName;
         })->toArray();
+        
     }
 
 
