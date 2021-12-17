@@ -41,14 +41,15 @@ class AdminScafold extends Command
      */
     public function handle()
     {
-        // TODOS
+       
         // Setup the zekiniAdmin authentication guard
         $this->setupAdminAuthGuard();
         
         // // Create file migration for the default admin user
         $this->publishVendors();
-       
-
+      
+        $this->info("Email : support@zekini.com");
+        $this->info("Password : localpassword@zekini");
 
         return Command::SUCCESS;
     }
@@ -116,7 +117,7 @@ class AdminScafold extends Command
     protected function publishZekini()
     {
 
-        $tags = ['migrations', 'config', 'resources', 'views', 'controllers'];
+        $tags = ['config', 'migrations', 'resources', 'views', 'controllers'];
 
         foreach($tags as $tag){
             $this->call('vendor:publish', [
