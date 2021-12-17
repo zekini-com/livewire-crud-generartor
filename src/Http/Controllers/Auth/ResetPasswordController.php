@@ -1,8 +1,8 @@
 <?php
 
-namespace Zekini\CrudGenerator\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
-use Zekini\CrudGenerator\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Zekini\CrudGenerator\Traits\ResetsPasswords;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;

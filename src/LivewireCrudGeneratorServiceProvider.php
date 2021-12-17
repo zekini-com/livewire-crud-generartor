@@ -34,7 +34,13 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->register(LivewireServiceProvider::class);
         $this->registerCommands();
 
-        $this->loadViewsFrom(__DIR__.'./../resources/views', 'zekini/livewire-crud-generator');
+        $this->publishAdminViews();
+
+        $this->publishAdminControllers();
+
+        $this->loadViewsFrom(__DIR__.'./../stubs', 'zekini/stubs');
+
+        $this->app['view']->addNamespace('zekini/livewire-crud-generator', resource_path('views/vendor/zekini'));
 
         Blade::component('zekini/livewire-crud-generator::components.modal', 'c.modal');
         
@@ -48,6 +54,31 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         }
         
         $this->setupMiddlewares();
+    }
+
+    
+    /**
+     * Publishes admin views
+     *
+     * @return void
+     */
+    protected function publishAdminViews()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/zekini'),
+        ], 'views');
+    }
+    
+    /**
+     * Publishes admin controllers
+     *
+     * @return void
+     */
+    protected function publishAdminControllers()
+    {
+        $this->publishes([
+            __DIR__ . '/Http/Controllers' => app_path('Http/Controllers/Admin'),
+        ], 'controllers');
     }
 
     
@@ -108,12 +139,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/js/app.js'=> public_path('app.js')
         ], 'resources');
-        $this->publishes([
-            __DIR__.'/../resources/css/app.css'=> public_path('tailwind.css')
-        ], 'resources');
-        $this->publishes([
-            __DIR__.'/../resources/js/app.js'=> public_path('alpine.js')
-        ], 'resources');
+       
     }
     
 

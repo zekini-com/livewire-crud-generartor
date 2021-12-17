@@ -84,7 +84,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
                     @default
                     @if(Str::likelyFile($col['name']))
                     Column::callback(['{{$col['name']}}'], function (${{$col['name']}}) {
-                        return view('zekini/livewire-crud-generator::image-display', ['file' => ${{$col['name']}}]);
+                        return view('zekini/livewire-crud-generator::datatable.image-display', ['file' => ${{$col['name']}}]);
                     })->unsortable()->excludeFromExport(),
                     @else
                     
@@ -100,7 +100,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
 
             @endforeach
             Column::callback(['id'], function ($id) {
-                return view('zekini/livewire-crud-generator::table-actions', [
+                return view('zekini/livewire-crud-generator::datatable.table-actions', [
                     'id' => $id, 
                     'model' => '{{strtolower($modelBaseName)}}',
                     'canBeTrashed'=> $this->canBeTrashed
