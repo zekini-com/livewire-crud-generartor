@@ -116,20 +116,14 @@ class AdminScafold extends Command
     protected function publishZekini()
     {
 
-        $this->call('vendor:publish', [
-            '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
-            '--tag'=> 'migrations'
-        ]);
+        $tags = ['migrations', 'config', 'resources', 'views', 'controllers'];
 
-        $this->call('vendor:publish', [
-            '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
-            '--tag'=> 'config'
-        ]);
-
-        $this->call('vendor:publish', [
-            '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
-            '--tag'=> 'resources'
-        ]);
+        foreach($tags as $tag){
+            $this->call('vendor:publish', [
+                '--provider'=> 'Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider',
+                '--tag'=> $tag
+            ]);
+        }
 
        
     }

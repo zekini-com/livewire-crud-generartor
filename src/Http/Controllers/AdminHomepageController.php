@@ -1,9 +1,10 @@
 <?php
 
-namespace Zekini\CrudGenerator\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\View\View;
 use OwenIt\Auditing\Models\Audit;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Contracts\View\Factory;
 

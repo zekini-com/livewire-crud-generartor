@@ -1,8 +1,8 @@
 <?php
 
-namespace Zekini\CrudGenerator\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
-use Zekini\CrudGenerator\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Zekini\CrudGenerator\Traits\AuthenticatesUsers;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
