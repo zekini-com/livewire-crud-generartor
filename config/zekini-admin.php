@@ -4,7 +4,11 @@ return [
 
     'defaults'=> [
         'guard'=> 'zekini_admin',
-        'passwords'=> 'zekini_admins'
+        'passwords'=> 'zekini_admins',
+
+        // used for development
+        'default-email'=> 'support@zekini.com',
+        'default-password'=> 'localpassword@zekini'
     ],
 
     'guards'=> [
@@ -34,5 +38,34 @@ return [
         'login_redirect'=> '/admin',
         'logout_redirect'=> '/admin/login',
         'password_reset_redirect'=> '/admin/login'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    |
+    | Here is we register the relationship linkings between models
+    |  supported relationship types : has_many, has_one, belongsTo, belongsToMany
+    | Eg  'posts'=> [
+    |       [
+    |            'name'=> 'has_many',
+    |            'table'=> 'comments',
+    |            'record_title'=> 'comment'
+    |        ]
+    |        
+    |    ],
+    | Search Keys 
+    |  Column name to use for serach
+    | 'post'=> 'title'
+    |
+    */
+
+    'relationships'=> [
+       
+    ],
+
+    'search_keys'=> [
+
     ]
 ];

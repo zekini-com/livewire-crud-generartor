@@ -61,7 +61,7 @@ class GenerateRoutes extends BaseGenerator
        
         $variables = $this->getViewData();
 
-        $view = "zekini/livewire-crud-generator::templates.".$this->classType;
+        $view = "zekini/stubs::templates.".$this->classType;
 
         return view($view, $variables)->render();
 

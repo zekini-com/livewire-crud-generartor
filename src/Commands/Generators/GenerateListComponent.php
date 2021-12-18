@@ -70,6 +70,7 @@ class GenerateListComponent extends BaseGenerator
      */
     protected function getViewData()
     {
+      
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
@@ -79,6 +80,8 @@ class GenerateListComponent extends BaseGenerator
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
+            'relations'=>$this->belongsToConfiguration(),
+            'tableTitleMap'=> $this->getRecordTitleTableMap(),
             'canBeTrashed'=> $this->hasColumn('deleted_at'),
             'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')
         ];

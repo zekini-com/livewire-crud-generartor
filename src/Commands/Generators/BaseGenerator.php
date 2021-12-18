@@ -5,11 +5,12 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Zekini\CrudGenerator\Traits\ColumnTrait;
+use Zekini\CrudGenerator\Traits\HasRelations;
 
 abstract class BaseGenerator extends Command
 {
 
-    use ColumnTrait;
+    use ColumnTrait, HasRelations;
 
     protected $hidden = true;
 
@@ -45,17 +46,7 @@ abstract class BaseGenerator extends Command
      */
     protected function getClassName()
     {
-        return rtrim(Str::studly($this->argument('table')), 's');    
-    }
-
-    /**
-     * getTemplate
-     *
-     * @return void
-     */
-    protected function getTemplateUrl($file)
-    {
-        return __DIR__.'../../../../templates/'.$file.'.blade.php';
+        return Str::studly(Str::singular($this->argument('table')));    
     }
 
     
@@ -84,11 +75,59 @@ abstract class BaseGenerator extends Command
        
         $variables = $this->getViewData();
 
-        $view = "zekini/livewire-crud-generator::templates.".$this->classType;
+        $view = "zekini/stubs::templates.".$this->classType;
 
         return view($view, $variables)->render();
 
     }
+
+    /**
+     * Get Column Faker Map
+     *
+     * @return void
+     */
+    protected function getColumnFakerMap()
+    {
+       $columns = $this->getColumnDetails();
+       return $columns->map(function($colArr){
+           return [
+               'name'=> $colArr['name'],
+               'faker'=> $this->decideFaker($colArr['type'], $colArr['name'])
+           ];
+       });
+        
+    }
+
+    
+    /**
+     * Decide what faker to user
+     *
+     * @param  string $colName
+     * @return string
+     */
+    protected function decideFaker($type, $name)
+    {
+        if(Str::isRelation($name)) return "\App\Models\\".ucfirst(Str::relationName($name))."::factory()->create()->id";
+        if ($name == 'name') return '$this->faker->name()';
+        if ($name == 'email') return '$this->faker->unique()->safeEmail()';
+        if ($name == 'image' || $name == 'file') return "[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]";
+        if ($name == preg_match('/phone/', $name)) return '$this->faker->phoneNumber()';
+
+        switch($type){
+            case 'string':
+                return '$this->faker->word()';
+            break;
+            case 'boolean':
+                return '$this->faker->bolean()';
+            break;
+            case 'text':
+                return '$this->faker->sentence()';
+            break;
+            default: 
+                return '$this->faker->word()';
+        }
+    }
+    
 
     
 

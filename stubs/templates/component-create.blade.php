@@ -4,9 +4,9 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Requests\Admin\{{$modelBaseName}}\Store{{ $modelBaseName }};
 use {{ $modelFullName }};
 use Zekini\CrudGenerator\Traits\HandlesFile;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 @if($hasFile)
 use Livewire\WithFileUploads;
 @endif
@@ -17,7 +17,14 @@ class Create{{ucfirst($modelBaseName)}} extends Component
     @if($hasFile)
     WithFileUploads,
     @endif
-    HandlesFile;
+    AuthorizesRequests, HandlesFile;
+
+    protected $rules = [
+    @foreach($vissibleColumns as $col)
+    '{{$col['name']}}'=> 'required',
+    @endforeach
+    ];
+    
 
     public $success;
 
@@ -52,13 +59,13 @@ class Create{{ucfirst($modelBaseName)}} extends Component
      *
      * @return void
      */
-    public function create(Store{{ucfirst($modelBaseName)}} ${{Str::camel('store'.$modelBaseName)}})
+    public function create()
     {
         //access control
-        ${{Str::camel('store'.$modelBaseName)}}->authorize();
+        $this->authorize('admin.{{ strtolower($modelBaseName) }}.create');
 
         // validate request
-        $this->validate(${{Str::camel('store'.$modelBaseName)}}->getRuleSet());
+        $this->validate();
 
         // image processing
         @if($hasFile)

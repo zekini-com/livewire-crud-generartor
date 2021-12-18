@@ -4,8 +4,8 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Requests\Admin\{{$modelBaseName}}\Update{{ $modelBaseName }};
 use {{ $modelFullName }};
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Zekini\CrudGenerator\Traits\HandlesFile;
 @if($hasFile)
 use Livewire\WithFileUploads;
@@ -17,16 +17,22 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
     @if($hasFile)
     WithFileUploads,
     @endif
-    HandlesFile;
+    AuthorizesRequests, HandlesFile;
+
+    protected $rules = [
+    @foreach($vissibleColumns as $col)
+    '{{$col['name']}}'=> 'required',
+    @endforeach
+    ];
 
     public $success;
 
-    public ${{strtolower($modelBaseName)}};
+   
 
     @foreach($vissibleColumns as $col)
     
     /**
-     * @var string {{$col['name']}}
+     * @var {{ucfirst($modelBaseName)}} {{$col['name']}}
      * 
      */
     public ${{$col['name']}};
@@ -35,9 +41,9 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
 
     public function mount(${{strtolower($modelBaseName)}})
     {
-    $this->{{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find(${{strtolower($modelBaseName)}});
+    $this->{{strtolower($modelBaseName)}}Model = {{ucfirst($modelBaseName)}}::find(${{strtolower($modelBaseName)}});
     @foreach($vissibleColumns as $col)
-    $this->{{$col['name']}} = $this->{{strtolower($modelBaseName)}}->{{$col['name']}};
+    $this->{{$col['name']}} = $this->{{strtolower($modelBaseName)}}Model->{{$col['name']}};
     @endforeach
 
     }
@@ -49,13 +55,13 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
         ->section('body');
     }
 
-    public function update(Update{{ucfirst($modelBaseName)}} ${{Str::camel('update'.$modelBaseName)}})
+    public function update()
     {
         //access control
-        ${{Str::camel('update'.$modelBaseName)}}->authorize();
+        $this->authorize('admin.{{ strtolower($modelBaseName) }}.edit');
 
         // validate request
-        $this->validate(${{Str::camel('update'.$modelBaseName)}}->getRuleSet());
+        $this->validate();
 
         //image processing
         @if($hasFile)
@@ -63,12 +69,12 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
             $this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} = $this->getFile($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
 
             // delete the old image
-            $this->deleteFile($this->{{strtolower($modelBaseName)}}->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
+            $this->deleteFile($this->{{strtolower($modelBaseName)}}Model->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
         }
            
         @endif
 
-        ${{strtolower($modelBaseName)}} = $this->{{strtolower($modelBaseName)}}->update([
+        ${{strtolower($modelBaseName)}} = $this->{{strtolower($modelBaseName)}}Model->update([
         @foreach($vissibleColumns as $col)
             '{{$col['name']}}'=> $this->{{$col['name']}},
         @endforeach

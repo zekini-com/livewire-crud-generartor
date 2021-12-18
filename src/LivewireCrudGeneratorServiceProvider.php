@@ -1,14 +1,18 @@
 <?php
 namespace Zekini\CrudGenerator;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Livewire\LivewireServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 use Zekini\CrudGenerator\Http\Middleware\RedirectGuest;
 use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
+use Zekini\CrudGenerator\Mixin\StrMixin;
 use Zekini\CrudGenerator\Providers\CrudServiceProvider;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
@@ -22,11 +26,22 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
+        // my custom str mixin
+       Str::mixin(new StrMixin);
 
-        $this->register(LivewireServiceProvider::class);
         $this->registerCommands();
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'zekini/livewire-crud-generator');
+        $this->publishAdminViews();
+
+        $this->publishAdminControllers();
+
+        $this->loadViewsFrom(__DIR__.'./../stubs', 'zekini/stubs');
+
+        $this->app['view']->addNamespace('zekini/livewire-crud-generator', resource_path('views/vendor/zekini'));
+
+        Blade::component('zekini/livewire-crud-generator::components.modal', 'c.modal');
+        
         $this->loadRoutesFrom(__DIR__.'./../routes/web.php');
 
         // register commands
@@ -37,6 +52,31 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         }
         
         $this->setupMiddlewares();
+    }
+
+    
+    /**
+     * Publishes admin views
+     *
+     * @return void
+     */
+    protected function publishAdminViews()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/zekini'),
+        ], 'views');
+    }
+    
+    /**
+     * Publishes admin controllers
+     *
+     * @return void
+     */
+    protected function publishAdminControllers()
+    {
+        $this->publishes([
+            __DIR__ . '/Http/Controllers' => app_path('Http/Controllers/Admin'),
+        ], 'controllers');
     }
 
     
@@ -57,12 +97,12 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateEditView::class,
             Commands\Generators\GenerateCreateView::class,
             Commands\Generators\GeneratePermission::class,
-            Commands\Generators\GenerateUnitTest::class,
+
+            Commands\Generators\GenerateStoreUnitTest::class,
+            Commands\Generators\GenerateUpdateUnitTest::class,
+            Commands\Generators\GenerateListUnitTest::class,
             Commands\Generators\GenerateFactory::class,
-            Commands\Generators\GenerateRequestIndex::class,
-            Commands\Generators\GenerateRequestStore::class,
-            Commands\Generators\GenerateRequestUpdate::class,
-            Commands\Generators\GenerateRequestDestroy::class,
+           
             Commands\Generators\GenerateRoutes::class,
 
             Commands\Generators\GenerateListComponent::class,
@@ -97,6 +137,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/js/app.js'=> public_path('app.js')
         ], 'resources');
+       
     }
     
 

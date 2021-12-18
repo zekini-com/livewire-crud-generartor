@@ -17,13 +17,13 @@ trait CreatesSidebar
 
         if (! $this->files->exists($filename = $path.'/sidebar.blade.php')) {
             $filename = $path.'/sidebar.blade.php';
-            $view = "zekini/livewire-crud-generator::templates.sidebar";
+            $view = "zekini/stubs::templates.sidebar";
             $templateContent =  view($view)->render();
             $this->files->put($filename, $templateContent);
         }
 
         // if file exists simply append the sidebar for this
-        $view = "zekini/livewire-crud-generator::templates.sidebar-single";
+        $view = "zekini/stubs::templates.sidebar-single";
         $resource = strtolower($this->getClassName());
         $resourceRoute =  "url('admin/$resource')";
         $templateContent =  view($view, [

@@ -5,24 +5,24 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 
-class GenerateFactory extends BaseGenerator
+class GenerateListUnitTest extends BaseGenerator
 {
 
-    protected $classType = 'factory';
+    protected $classType = 'list-test';
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:factory {table}';
+    protected $signature = 'admin:generate:test:list {table}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generates Factory';
+    protected $description = 'Generates Unit testing';
 
     
       /**
@@ -33,7 +33,7 @@ class GenerateFactory extends BaseGenerator
      */
     protected function getDefaultNamespace()
     {
-        return 'Database\Factories\\';
+        return 'Tests\Unit\\';
     }
 
     /**
@@ -46,14 +46,14 @@ class GenerateFactory extends BaseGenerator
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
 
-       $this->factoryBaseName = $this->className.'Factory';
+       $this->testBaseName = $this->className.'ListTest';
 
-       $this->namespace = $this->getDefaultNamespace();
+       $this->namespace = $this->getDefaultNamespace().'\\'.ucfirst($this->className);
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = strtolower($this->getPathFromNamespace($this->namespace)), 0777);
-       $filename = $path.'/'.$this->factoryBaseName.'.php';
+       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
+       $filename = $path.'/'.$this->testBaseName.'.php';
       
        $this->files->put($filename, $templateContent);
 
@@ -67,17 +67,20 @@ class GenerateFactory extends BaseGenerator
      */
     protected function getViewData()
     {
+        
         return [
-            'factoryBaseName' => $this->factoryBaseName,
-            'factoryNamespace' => rtrim($this->namespace, '\\'),
-            'fakerAttributes'=> $this->getColumnFakerMap(),
-            'factoryModelNamespace'=> "App\Models\\".$this->className
+            'modelBaseName' => ucfirst($this->getClassName()),
+            'adminModel'=> '\\'.config('zekini-admin.providers.zekini_admins.model'),
+            'resource'=> $this->getClassName(),
+            'tableName'=> $this->argument('table'),
+            'columnFakerMappings'=> $this->getColumnFakerMap(),
+            'viewName'=> 'list-'.strtolower($this->getClassName())
+         
         ];
     }
+    
 
-    
-    
-    
+
 
   
 }

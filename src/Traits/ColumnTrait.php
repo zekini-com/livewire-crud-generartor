@@ -39,30 +39,16 @@ trait ColumnTrait
         return $columns;
     }
 
-    
     /**
-     * The model contains a particular column
-     *
-     * @param  string $col
-     * @return boolean
-     */
-    public function hasColumn($col)
-    {
-        return Schema::hasColumn($this->argument('table'), $col);
-    }
-
-
-     /**
      * Gets column details of table
      *
      * @return Collection
      */
-    public function getColumnDetailsWithId()
+    public function getColumnWithDates()
     {
         $tableName = $this->argument('table');
         $blackList = $this->dontShow;
-        unset($blackList['id']);
-        
+
         $columns = collect(Schema::getColumnListing($tableName));
         $columns = $columns->reject(function($col) use($blackList){
             return in_array($col, $blackList);
@@ -77,4 +63,31 @@ trait ColumnTrait
 
         return $columns;
     }
+
+     /**
+     * Gets column details of table
+     *
+     * @return Collection
+     */
+    public function getColumnDetailsWithRelations()
+    {
+       $columns = $this->getColumnDetails();
+      
+       $belongsTo = $this->belongsToConfiguration()->pluck('column')->toArray();
+       
+       return $belongsTo;
+    }
+
+    
+    /**
+     * The model contains a particular column
+     *
+     * @param  string $col
+     * @return boolean
+     */
+    public function hasColumn($col)
+    {
+        return Schema::hasColumn($this->argument('table'), $col);
+    }
+
 }
