@@ -15,11 +15,7 @@
         
         <li class="nav-title">CRUD</li>
     
-            <li class="nav-item"><a class="nav-link" href="{{ url('admin/post') }}">
-                <svg class="nav-icon">
-                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-chart-pie"></use>
-                </svg> Post</a>
-        </li>
+           
             {{--@AutoGenerator--}} 
 
         <li class="nav-item"><a class="nav-link" href="{{ url('/admin/audit/logs') }}">
