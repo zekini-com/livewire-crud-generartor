@@ -19,7 +19,7 @@ trait HasRelations
         $tableName = $this->argument('table');
         $relations = config('zekini-admin.relationships.'.$tableName);
         
-        return $relations;
+        return $relations ?? [];
     }
 
     
