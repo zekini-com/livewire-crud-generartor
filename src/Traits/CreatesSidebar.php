@@ -13,7 +13,7 @@ trait CreatesSidebar
     public function makeSideBar()
     {
         
-        @$this->files->makeDirectory($path  = resource_path('views/admin/layout'), 0777, true);
+        @$this->files->makeDirectory($path  = resource_path('views/vendor/zekini/admin/layout'), 0777, true);
 
         if (! $this->files->exists($filename = $path.'/sidebar.blade.php')) {
             $filename = $path.'/sidebar.blade.php';

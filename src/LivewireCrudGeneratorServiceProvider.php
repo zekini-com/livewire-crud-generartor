@@ -36,7 +36,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
         $this->publishAdminControllers();
 
-        $this->loadViewsFrom(__DIR__.'./../stubs', 'zekini/stubs');
+        $this->loadViewsFrom(__DIR__.'/../stubs', 'zekini/stubs');
 
         $this->app['view']->addNamespace('zekini/livewire-crud-generator', resource_path('views/vendor/zekini'));
 

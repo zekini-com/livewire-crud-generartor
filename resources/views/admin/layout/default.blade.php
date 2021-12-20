@@ -2,9 +2,8 @@
 
 
 @section('content')
-    @if(View::exists('admin.layout.sidebar'))
-        @include('admin.layout.sidebar')
-    @endif
+
+    @include('zekini/livewire-crud-generator::admin.layout.sidebar')
 
     <div class="wrapper d-flex flex-column min-vh-100 bg-light" style="margin-left:250px">
         <header class="header header-sticky mb-4" style="z-index: 100;">
