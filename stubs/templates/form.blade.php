@@ -42,7 +42,7 @@ $closeBlade = '}}';
         <div class="form-group row align-items-center" >
             <label for="{{$col['name']}}" class="col-form-label text-md-right col-md-3" >{{ $textLabel }}</label>
             <div class="col-xl-8 col-md-9">
-                <input id="{{ $col['name'] }}" type="datetime" wire:model="{{$wireModel}}"   name="{{ $col['name'] }}">
+                <input id="{{ $col['name'] }}" type="datetime-local" wire:model="{{$wireModel}}"   name="{{ $col['name'] }}">
                 {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>

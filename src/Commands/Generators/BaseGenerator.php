@@ -118,8 +118,22 @@ abstract class BaseGenerator extends Command
                 return '$this->faker->word()';
             break;
             case 'boolean':
-                return '$this->faker->bolean()';
+                return '$this->faker->boolean()';
             break;
+            case 'char':
+                return '$this->faker->randomLetter()';
+                break;
+            case 'datetime':
+                return '$this->faker->dateTime()';
+                break;
+            case 'float':
+            case 'decimal':
+                return '200.05';
+                break;
+            case 'integer':
+            case 'bigint':
+                return '$this->faker->randomNumber()';
+                break;
             case 'text':
                 return '$this->faker->sentence()';
             break;
