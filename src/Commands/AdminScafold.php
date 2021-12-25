@@ -51,6 +51,9 @@ class AdminScafold extends Command
         $this->info("Email : support@zekini.com");
         $this->info("Password : localpassword@zekini");
 
+        $this->call('admin:crud:generate', ['table'=> 'zekini_admins']);
+        $this->call('admin:crud:generate', ['table'=> 'permissions']);
+        $this->call('admin:crud:generate', ['table'=> 'roles']);
         return Command::SUCCESS;
     }
 

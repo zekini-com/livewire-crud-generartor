@@ -29,7 +29,7 @@ class {{ $controllerBaseName }} extends Controller
      */
     public function index()
     {
-        $this->authorize('admin.{{$resource}}.index');
+        $this->authorize('admin.{{$modelDotNotation}}.index');
         
         return view('{{$viewName}}');
     }

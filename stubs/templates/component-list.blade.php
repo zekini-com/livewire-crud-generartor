@@ -38,9 +38,15 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     {
         return {{ucfirst($modelBaseName)}}::query()
         @foreach($relations as $relation)
+            @if(isset($relation['pivot']))
+            ->join('{{$relation['pivot']}}', '{{strtolower(Str::plural($modelBaseName))}}.id', '=', "{{$relation['pivot']}}.{{strtolower(Str::singular($modelBaseName))}}_id")
+            ->join('{{$relation['table']}}', '{{$relation['pivot']}}.{{$relation['column']}}', '=', '{{$relation['table']}}.id')
+            @else
             ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelBaseName))}}.{{$relation['column']}}")
+            @endif
         @endforeach
-        ->groupBy('{{strtolower(Str::plural($modelBaseName))}}.id');
+       
+        ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id');
         
     }
 
@@ -99,10 +105,20 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
                 @endswitch
 
             @endforeach
+
+            // belongs to many relationship tables
+            @foreach($pivots as $pivot)
+                Column::name('{{Str::singular($pivot['table'])}}.{{$tableTitleMap[$pivot['table']]}}')
+                ->label('{{Str::singular($pivot['table'])}}')
+            ,
+            @endforeach
+
+
             Column::callback(['id'], function ($id) {
                 return view('zekini/livewire-crud-generator::datatable.table-actions', [
                     'id' => $id, 
-                    'model' => '{{strtolower($modelBaseName)}}',
+                    'view' => '{{strtolower(Str::kebab($modelBaseName))}}',
+                    'model'=> '{{strtolower($modelBaseName)}}',
                     'canBeTrashed'=> $this->canBeTrashed
                 ]);
             })->unsortable()->excludeFromExport()
@@ -119,7 +135,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     public function forceDelete({{ucfirst($modelBaseName)}} ${{strtolower($modelBaseName)}})
     {
 
-        $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){

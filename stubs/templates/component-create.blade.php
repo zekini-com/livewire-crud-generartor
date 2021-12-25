@@ -24,7 +24,6 @@ class Create{{ucfirst($modelBaseName)}} extends Component
     '{{$col['name']}}'=> 'required',
     @endforeach
     ];
-    
 
     public $success;
 
@@ -38,6 +37,10 @@ class Create{{ucfirst($modelBaseName)}} extends Component
 
     @endforeach
 
+    @foreach($pivots as $pivot)
+    public ${{$pivot['table']}};
+    @endforeach
+
     /**
      * Renders the component
      *
@@ -47,7 +50,7 @@ class Create{{ucfirst($modelBaseName)}} extends Component
     {
         $data = {{$modelBaseName}}::all();
 
-        return view('livewire.create-{{strtolower($modelBaseName)}}', [
+        return view('livewire.create-{{Str::kebab($modelBaseName)}}', [
             'data'=> $data
         ])->extends('zekini/livewire-crud-generator::admin.layout.default')
         ->section('body');
@@ -62,7 +65,7 @@ class Create{{ucfirst($modelBaseName)}} extends Component
     public function create()
     {
         //access control
-        $this->authorize('admin.{{ strtolower($modelBaseName) }}.create');
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.create');
 
         // validate request
         $this->validate();
@@ -76,7 +79,12 @@ class Create{{ucfirst($modelBaseName)}} extends Component
         @foreach($vissibleColumns as $col)
             '{{$col['name']}}'=> $this->{{$col['name']}},
         @endforeach
-    ]);
+
+        ]);
+
+        @foreach($pivots as $pivot)
+        ${{strtolower($modelBaseName)}}->{{Str::singular($pivot['table'])}}()->sync($this->{{$pivot['table']}});
+        @endforeach
 
     if(isset(${{strtolower($modelBaseName)}})){
         $this->success = true;

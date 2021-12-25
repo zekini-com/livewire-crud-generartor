@@ -90,7 +90,11 @@ class {{$modelBaseName}} extends Model implements Auditable
         public function {{$relationName}}()
         {
         
-            return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class);
+            return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class
+            @if(isset($relation['pivot']))
+            , "{{$relation['pivot']}}"
+            @endif
+            );
         }
 
     @endforeach
