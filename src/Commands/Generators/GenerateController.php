@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator\Commands\Generators;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -47,6 +48,7 @@ class GenerateController extends BaseGenerator
        
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
+       $this->classNameKebab = Str::kebab($this->className);
 
        $this->controllerNamespace = $this->className.'Controller';
 
@@ -76,11 +78,11 @@ class GenerateController extends BaseGenerator
             'modelBaseName' => $this->className,
             'modelPlural' => $this->className.'s',
             'modelVariableName' => strtolower($this->className),
-            'modelDotNotation' => strtolower($this->className),
+            'modelDotNotation' => Str::singular($this->argument('table')),
             'modelWithNamespaceFromDefault' => rtrim($this->namespace, '\\'),
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
-            'viewName'=> 'livewire.list-'.strtolower($this->className)
+            'viewName'=> 'livewire.list-'.$this->classNameKebab
         ];
     }
     

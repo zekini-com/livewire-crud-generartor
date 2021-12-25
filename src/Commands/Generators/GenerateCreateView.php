@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator\Commands\Generators;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
@@ -35,11 +36,12 @@ class GenerateCreateView extends BaseGenerator
     {
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
+       $this->classNameKebab = Str::kebab($this->className);
 
        $templateContent = $this->replaceContent();
 
        @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
-       $filename = $path.'/create-'.strtolower($this->className).'.blade.php';
+       $filename = $path.'/create-'.$this->classNameKebab.'.blade.php';
       
        $this->files->put($filename, $templateContent);
 

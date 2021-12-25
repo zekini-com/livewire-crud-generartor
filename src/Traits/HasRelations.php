@@ -38,7 +38,8 @@ trait HasRelations
         return $belongsTo->map(function($relation){
             return [ 
                 'column'=>Str::singular($relation['table']).'_id',
-                'table'=> $relation['table']
+                'table'=> $relation['table'],
+                'pivot'=> $relation['pivot'] ?? ''
             ];
 
         });
