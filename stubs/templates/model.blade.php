@@ -94,6 +94,12 @@ class {{$modelBaseName}} extends Model implements Auditable
             @if(isset($relation['pivot']))
             , "{{$relation['pivot']}}"
             @endif
+            @if(isset($relation['foreign_pivot_key']))
+            , "{{$relation['foreign_pivot_key']}}"
+            @endif
+            @if(isset($relation['related_pivot_key']))
+            , "{{$relation['related_pivot_key']}}"
+            @endif
             );
         }
 

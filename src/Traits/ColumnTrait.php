@@ -11,6 +11,7 @@ trait ColumnTrait
         'created_at',
         'deleted_at',
         'updated_at',
+        'email_verified_at',
         'remember_token'
     ];
     

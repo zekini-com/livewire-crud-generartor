@@ -62,7 +62,25 @@ return [
     */
 
     'relationships'=> [
-       
+
+        'roles' => [
+            [
+                'name' => 'belongs_to_many',
+                'table' => 'permissions',
+                'record_title' => 'name',
+                'pivot' => 'role_has_permissions'
+            ]
+        ],
+        'zekini_admins'=> [
+            [
+                'name' => 'belongs_to_many',
+                'table' => 'roles',
+                'record_title' => 'name',
+                'pivot' => 'model_has_roles',
+                'foreign_pivot_key'=> 'model_id',
+                'related_pivot_key'=> 'role_id'
+            ]
+        ]
     ],
 
     'search_keys'=> [
