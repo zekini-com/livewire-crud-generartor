@@ -38,7 +38,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     {
         return {{ucfirst($modelBaseName)}}::query()
         @foreach($relations as $relation)
-            @if(isset($relation['pivot']))
+            @if(!empty($relation['pivot']) && isset($relation['pivot']))
             ->join('{{$relation['pivot']}}', '{{strtolower(Str::plural($modelBaseName))}}.id', '=', "{{$relation['pivot']}}.{{strtolower(Str::singular($modelBaseName))}}_id")
             ->join('{{$relation['table']}}', '{{$relation['pivot']}}.{{$relation['column']}}', '=', '{{$relation['table']}}.id')
             @else
@@ -169,7 +169,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     public function delete($id)
     {
         ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
-        $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+        $this->authorize("admin.{{strtolower($modelDotNotation)}}.delete");
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){
