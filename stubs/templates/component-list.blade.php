@@ -39,10 +39,11 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
         return {{ucfirst($modelBaseName)}}::query()
         @foreach($relations as $relation)
             @if(!empty($relation['pivot']) && isset($relation['pivot']))
-            ->join('{{$relation['pivot']}}', '{{strtolower(Str::plural($modelBaseName))}}.id', '=', "{{$relation['pivot']}}.{{strtolower(Str::singular($modelBaseName))}}_id")
+    
+            ->join('{{$relation['pivot']}}', '{{strtolower(Str::plural($modelDotNotation))}}.id', '=', "{{$relation['pivot']}}.{{$modelDotNotation == 'zekini_admin' ? 'model': strtolower(Str::singular($modelDotNotation))}}_id")
             ->join('{{$relation['table']}}', '{{$relation['pivot']}}.{{$relation['column']}}', '=', '{{$relation['table']}}.id')
             @else
-            ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelBaseName))}}.{{$relation['column']}}")
+            ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelDotNotation))}}.{{$relation['column']}}")
             @endif
         @endforeach
        

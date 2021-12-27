@@ -7,6 +7,7 @@ use Livewire\Component;
 use {{ $modelFullName }};
 use Zekini\CrudGenerator\Traits\HandlesFile;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Hash;
 @if($hasFile)
 use Livewire\WithFileUploads;
 @endif
@@ -75,15 +76,26 @@ class Create{{ucfirst($modelBaseName)}} extends Component
             $this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}} = $this->getFile($this->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
         @endif
 
-        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::create([
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::forceCreate([
         @foreach($vissibleColumns as $col)
             '{{$col['name']}}'=> $this->{{$col['name']}},
         @endforeach
 
+        @if($modelBaseName == 'ZekiniAdmin')
+        //for admins add password
+        'password'=> Hash::make('fakepassword')
+        @endif
+
         ]);
 
         @foreach($pivots as $pivot)
+        @if($modelBaseName == 'ZekiniAdmin')
+        ${{strtolower($modelBaseName)}}->{{Str::singular($pivot['table'])}}()->syncWithPivotValues($this->{{$pivot['table']}}, [
+            'model_type'=> 'Zekini\CrudGenerator\Models\ZekiniAdmin'
+        ]);
+        @else
         ${{strtolower($modelBaseName)}}->{{Str::singular($pivot['table'])}}()->sync($this->{{$pivot['table']}});
+        @endif
         @endforeach
 
     if(isset(${{strtolower($modelBaseName)}})){
