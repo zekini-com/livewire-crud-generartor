@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator\Commands\Generators;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
@@ -45,6 +46,7 @@ class GenerateUpdateUnitTest extends BaseGenerator
     {
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
+       $this->classNameKebab = Str::kebab($this->className);
 
        $this->testBaseName = $this->className.'UpdateTest';
 
@@ -74,7 +76,8 @@ class GenerateUpdateUnitTest extends BaseGenerator
             'resource'=> $this->getClassName(),
             'tableName'=> $this->argument('table'),
             'columnFakerMappings'=> $this->getColumnFakerMap(),
-            'viewName'=> 'edit-'.strtolower($this->getClassName())
+            'viewName'=> 'edit-'.$this->classNameKebab,
+            'modelDotNotation'=> Str::singular($this->argument('table'))
          
         ];
     }

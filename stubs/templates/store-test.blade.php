@@ -32,7 +32,7 @@ class {{$modelBaseName}}StoreTest extends TestCase
     {
       $guard = config('zekini-admin.defaults.guard');
       $admin  = {{$adminModel}}::factory()->create();
-      $admin->givePermissionTo('admin.{{ strtolower($resource)}}.create');
+      $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
 
       $this->actingAs($admin, $guard);
 
@@ -63,7 +63,7 @@ class {{$modelBaseName}}StoreTest extends TestCase
         $guard = config('zekini-admin.defaults.guard');
       
         $admin  = {{$adminModel}}::factory()->create();
-        $admin->givePermissionTo('admin.{{ strtolower($resource)}}.create');
+        $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
   
         $this->actingAs($admin, $guard);
         $this->faker = \Faker\Factory::create();

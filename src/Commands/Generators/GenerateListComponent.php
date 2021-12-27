@@ -75,7 +75,7 @@ class GenerateListComponent extends BaseGenerator
     // TODO
     // I need to check when the relationship is a belongsto
     $pivots = $this->belongsToConfiguration()->filter(function($item){
-        return isset($item['pivot']);
+        return !empty($item['pivot']) && isset($item['pivot']);
     });
         
         return [

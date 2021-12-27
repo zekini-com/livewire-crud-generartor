@@ -23,8 +23,8 @@ class {{$modelBaseName}}ListTest extends TestCase
     {
       $guard = config('zekini-admin.defaults.guard');
       $admin  = {{$adminModel}}::factory()->create();
-      $admin->givePermissionTo('admin.{{ strtolower($resource)}}.delete');
-      $admin->givePermissionTo('admin.{{ strtolower($resource)}}.index');
+      $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
+      $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
       $this->actingAs($admin, $guard);
 
       $this->faker = \Faker\Factory::create();
@@ -52,7 +52,7 @@ class {{$modelBaseName}}ListTest extends TestCase
       
         $admin  = {{$adminModel}}::factory()->create();
 
-        $admin->givePermissionTo('admin.{{ strtolower($resource)}}.index');
+        $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
   
         $this->actingAs($admin, $guard);
         $this->faker = \Faker\Factory::create();

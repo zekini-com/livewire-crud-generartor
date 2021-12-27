@@ -56,7 +56,7 @@ class GenerateForm extends BaseGenerator
     {
       
        $pivots = $this->belongsToConfiguration()->filter(function($item){
-            return isset($item['pivot']);
+            return !empty($item['pivot']) && isset($item['pivot']);
         });
        
         return [

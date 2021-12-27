@@ -23,7 +23,7 @@ class {{$modelBaseName}}UpdateTest extends TestCase
     {
       $guard = config('zekini-admin.defaults.guard');
       $admin  = {{$adminModel}}::factory()->create();
-      $admin->givePermissionTo('admin.{{ strtolower($resource)}}.edit');
+      $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.edit');
 
       $this->actingAs($admin, $guard);
 
@@ -57,7 +57,7 @@ class {{$modelBaseName}}UpdateTest extends TestCase
         $guard = config('zekini-admin.defaults.guard');
       
         $admin  = {{$adminModel}}::factory()->create();
-        $admin->givePermissionTo('admin.{{ strtolower($resource)}}.edit');
+        $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.edit');
   
         $this->actingAs($admin, $guard);
         $this->faker = \Faker\Factory::create();
