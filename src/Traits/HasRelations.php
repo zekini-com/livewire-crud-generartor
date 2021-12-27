@@ -42,7 +42,7 @@ trait HasRelations
                 'pivot'=> $relation['pivot'] ?? ''
             ];
 
-        });
+        }) ?? [];
     }
 
     
