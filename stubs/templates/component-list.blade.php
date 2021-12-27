@@ -37,6 +37,8 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     public function builder()
     {
         return {{ucfirst($modelBaseName)}}::query()
+
+        @if(count($relations) > 0)
         @foreach($relations as $relation)
             @if(!empty($relation['pivot']) && isset($relation['pivot']))
     
@@ -46,8 +48,11 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
             ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelDotNotation))}}.{{$relation['column']}}")
             @endif
         @endforeach
+        @else
+        ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id')
+        @endif
        
-        ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id');
+       ;
         
     }
 

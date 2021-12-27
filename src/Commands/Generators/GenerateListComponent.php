@@ -87,7 +87,7 @@ class GenerateListComponent extends BaseGenerator
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
-            'relations'=>$this->belongsToConfiguration(),
+            'relations'=>$this->belongsToConfiguration() ?? [],
             'pivots'=> $pivots,
             'tableTitleMap'=> $this->getRecordTitleTableMap(),
             'canBeTrashed'=> $this->hasColumn('deleted_at'),
