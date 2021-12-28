@@ -37,10 +37,22 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     public function builder()
     {
         return {{ucfirst($modelBaseName)}}::query()
+
+        @if(count($relations) > 0)
         @foreach($relations as $relation)
-            ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelBaseName))}}.{{$relation['column']}}")
+            @if(!empty($relation['pivot']) && isset($relation['pivot']))
+    
+            ->join('{{$relation['pivot']}}', '{{strtolower(Str::plural($modelDotNotation))}}.id', '=', "{{$relation['pivot']}}.{{$modelDotNotation == 'zekini_admin' ? 'model': strtolower(Str::singular($modelDotNotation))}}_id")
+            ->join('{{$relation['table']}}', '{{$relation['pivot']}}.{{$relation['column']}}', '=', '{{$relation['table']}}.id')
+            @else
+            ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelDotNotation))}}.{{$relation['column']}}")
+            @endif
         @endforeach
-        ->groupBy('{{strtolower(Str::plural($modelBaseName))}}.id');
+        @else
+        ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id')
+        @endif
+       
+       ;
         
     }
 
@@ -99,10 +111,20 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
                 @endswitch
 
             @endforeach
+
+            // belongs to many relationship tables
+            @foreach($pivots as $pivot)
+                Column::name('{{Str::singular($pivot['table'])}}.{{$tableTitleMap[$pivot['table']]}}')
+                ->label('{{Str::singular($pivot['table'])}}')
+            ,
+            @endforeach
+
+
             Column::callback(['id'], function ($id) {
                 return view('zekini/livewire-crud-generator::datatable.table-actions', [
                     'id' => $id, 
-                    'model' => '{{strtolower($modelBaseName)}}',
+                    'view' => '{{strtolower(Str::kebab($modelBaseName))}}',
+                    'model'=> '{{strtolower($modelBaseName)}}',
                     'canBeTrashed'=> $this->canBeTrashed
                 ]);
             })->unsortable()->excludeFromExport()
@@ -119,7 +141,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     public function forceDelete({{ucfirst($modelBaseName)}} ${{strtolower($modelBaseName)}})
     {
 
-        $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){
@@ -153,7 +175,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
     public function delete($id)
     {
         ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
-        $this->authorize("admin.{{strtolower($modelBaseName)}}.delete");
+        $this->authorize("admin.{{strtolower($modelDotNotation)}}.delete");
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){

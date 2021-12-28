@@ -36,11 +36,12 @@ class GenerateListView extends BaseGenerator
     {
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
+       $this->classNameKebab = Str::kebab($this->className);
 
        $templateContent = $this->replaceContent();
 
        @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
-       $filename = $path.'/list-'.strtolower($this->className).'.blade.php';
+       $filename = $path.'/list-'.$this->classNameKebab.'.blade.php';
       
        $this->files->put($filename, $templateContent);
 
@@ -54,25 +55,11 @@ class GenerateListView extends BaseGenerator
      */
     protected function getViewData()
     {
-
-        // $colMap = $this->getRecordTitleTableMap();
-
-        // $relations = $this->belongsToConfiguration()->map(function($relation) use($colMap){
-        //     return Str::singular($relation['table']).'.'.$colMap[$relation['table']];
-        // });
-       
-        // $columns  = $this->getColumnWithDates()->filter(function($col){
-        //     return ! Str::isRelation($col['name']);
-        // })->map(function($col){
-        //     return $col['name'];
-        // });
-
-        // $columns = $columns->merge($relations)->toArray();
-
+        
         return [
-            'componentName'=> strtolower('list-'.$this->className),
+            'componentName'=> ('list-'.$this->classNameKebab),
             'resource'=> strtolower($this->className),
-            'createView'=> strtolower('create-'.$this->className)
+            'createView'=> strtolower('create-'.$this->classNameKebab)
         ];
    
     }

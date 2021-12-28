@@ -38,6 +38,10 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
     public ${{$col['name']}};
     @endforeach
 
+    @foreach($pivots as $pivot)
+    public ${{$pivot['table']}};
+    @endforeach
+
 
     public function mount(${{strtolower($modelBaseName)}})
     {
@@ -50,7 +54,7 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
 
     public function render()
     {
-        return view('livewire.edit-{{strtolower($modelBaseName)}}')
+        return view('livewire.edit-{{Str::kebab($modelBaseName)}}')
         ->extends('zekini/livewire-crud-generator::admin.layout.default')
         ->section('body');
     }
@@ -58,7 +62,7 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
     public function update()
     {
         //access control
-        $this->authorize('admin.{{ strtolower($modelBaseName) }}.edit');
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.edit');
 
         // validate request
         $this->validate();
@@ -79,6 +83,11 @@ class Edit{{ucfirst($modelBaseName)}} extends Component
             '{{$col['name']}}'=> $this->{{$col['name']}},
         @endforeach
         ]);
+
+        @foreach($pivots as $pivot)
+        $this->{{strtolower($modelBaseName)}}Model->{{Str::singular($pivot['table'])}}()->sync($this->{{$pivot['table']}});
+        @endforeach
+
         if(isset(${{strtolower($modelBaseName)}})){
             $this->success = true;
         }

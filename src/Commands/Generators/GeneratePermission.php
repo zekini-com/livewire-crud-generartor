@@ -122,7 +122,7 @@ class GeneratePermission extends BaseGenerator
     {
         return [
             'className' => $this->getClassName(),
-            'modelDotNotation'=> strtolower($this->model)
+            'modelDotNotation'=> Str::singular($this->argument('table'))
         ];
     }
 

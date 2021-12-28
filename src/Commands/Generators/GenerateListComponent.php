@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator\Commands\Generators;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -70,17 +71,24 @@ class GenerateListComponent extends BaseGenerator
      */
     protected function getViewData()
     {
-      
+        
+    // TODO
+    // I need to check when the relationship is a belongsto
+    $pivots = $this->belongsToConfiguration()->filter(function($item){
+        return !empty($item['pivot']) && isset($item['pivot']);
+    });
+        
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
             'modelBaseName' => $this->className,
             'modelVariableName' => strtolower($this->className),
-            'modelDotNotation' => strtolower($this->className),
+            'modelDotNotation' => Str::singular($this->argument('table')),
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
-            'relations'=>$this->belongsToConfiguration(),
+            'relations'=>$this->belongsToConfiguration() ?? [],
+            'pivots'=> $pivots,
             'tableTitleMap'=> $this->getRecordTitleTableMap(),
             'canBeTrashed'=> $this->hasColumn('deleted_at'),
             'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')

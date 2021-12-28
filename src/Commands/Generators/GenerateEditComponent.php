@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator\Commands\Generators;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -70,16 +71,21 @@ class GenerateEditComponent extends BaseGenerator
      */
     protected function getViewData()
     {
+        $pivots = $this->belongsToConfiguration()->filter(function($item){
+            return !empty($item['pivot']) && isset($item['pivot']);
+        });
+
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
             'modelBaseName' => $this->className,
             'modelVariableName' => strtolower($this->className),
-            'modelDotNotation' => strtolower($this->className),
+            'modelDotNotation' => Str::singular($this->argument('table')),
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
-            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')
+            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file'),
+            'pivots'=> $pivots ?? []
         ];
     }
     

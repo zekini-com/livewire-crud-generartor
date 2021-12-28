@@ -42,7 +42,7 @@ $closeBlade = '}}';
         <div class="form-group row align-items-center" >
             <label for="{{$col['name']}}" class="col-form-label text-md-right col-md-3" >{{ $textLabel }}</label>
             <div class="col-xl-8 col-md-9">
-                <input id="{{ $col['name'] }}" type="datetime" wire:model="{{$wireModel}}"   name="{{ $col['name'] }}">
+                <input id="{{ $col['name'] }}" type="datetime-local" wire:model="{{$wireModel}}"   name="{{ $col['name'] }}">
                 {{'@'}}error('{{$col['name']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
             </div>
         </div>
@@ -66,5 +66,25 @@ $closeBlade = '}}';
         </div>
         @endif
     @endif
+@endforeach
+
+
+@foreach($pivots as $pivot)
+@php
+    $textLabel = str_replace('_',' ',ucfirst($pivot['table']));
+    $wireModel = $pivot['table'];
+@endphp
+<div class="form-group row align-items-center" >
+
+        <label for="{{$pivot['table']}}" class="col-form-label text-md-right col-md-3" >{{ $textLabel }}</label>
+        <div class="col-xl-8">
+            <select class="form-control col-md-9" wire:model="{{$wireModel}}" id="{{ $pivot['table'] }}"  name="{{ $pivot['table'] }}" multiple>
+                {{'@'}}foreach(\App\Models\{{Str::singular(ucfirst(str_replace('_id','',$pivot['table'])))}}::all() as $item)
+                    <option  wire:key="{!! $openBlade !!} $item->id {!! $closeBlade !!}" value="{!! $openBlade !!} $item->id {!! $closeBlade !!}"> {!! $openBlade !!}  $item->{{$recordTitleMap[Str::plural(str_replace('_id', '', $pivot['table']))]}} {!! $closeBlade !!}</option>
+                {{'@'}}endforeach
+            </select>
+            {{'@'}}error('{{$pivot['table']}}') <span> {!! $openBlade !!} $message {!! $closeBlade !!} </span> {{'@'}}enderror
+        </div>
+    </div>
 @endforeach
 
