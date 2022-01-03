@@ -57,3 +57,13 @@ In your list component change the column to a callback to display an image
 In your form.blade.php for the model simply add the input type as file and multiple on it.
 
 For your unit test replace the column values for a fake uploaded file in an array as files are threated as multiple uploads for a model `[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]` and also in your factories replace image column value with an array `'["file.jpeg"]'`
+
+
+##Laravel Jetstream
+With the integration of laravel jetstream, ensure you run the following commands
+`npm install`
+`npm run dev`
+
+##Landing Page
+In other to force delete the current landing page run
+`php artisan vendor:publish --tags=views --force`
