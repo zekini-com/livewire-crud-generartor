@@ -30,6 +30,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         // my custom str mixin
        Str::mixin(new StrMixin);
 
+
         $this->registerCommands();
 
         $this->publishAdminViews();
