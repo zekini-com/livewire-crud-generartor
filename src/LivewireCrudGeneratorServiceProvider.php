@@ -33,7 +33,11 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
         $this->registerCommands();
 
+        $this->publishLandingPage();
+
         $this->publishAdminViews();
+
+       
 
         $this->publishAdminControllers();
 
@@ -65,6 +69,18 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/zekini'),
+        ], 'views');
+    }
+
+    /**
+     * Publishes admin views
+     *
+     * @return void
+     */
+    protected function publishLandingPage()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/views/welcome.blade.php' => resource_path('views/welcome.blade.php'),
         ], 'views');
     }
     
