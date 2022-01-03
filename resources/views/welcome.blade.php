@@ -52,9 +52,11 @@
                                     <li class="nav-item ml-5 lg:ml-11 text-center py-3">
                                         <a class="font-semibold" href="#">About Us</a>
                                     </li>
+                                    @if(Route::has('login'))
                                     <li class="nav-item ml-5 lg:ml-11 text-center py-3">
-                                        <a class="font-semibold" href="#">Login</a>
+                                        <a class="font-semibold" href="{{route('login')}}">Login</a>
                                     </li>
+                                    @endif
                                     <li class="nav-item ml-5 lg:ml-11 text-center py-3">
                                         <a class="font-semibold text-white bg-black py-2 px-3 rounded-xl" href="#">Request Demo</a>
                                     </li>
@@ -88,8 +90,12 @@
                     </h2>
                     <p class="mt-8 lg:mr-8">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.</p>
                     <div class="mt-10">
-                        <a class="rounded-lg font-bold px-4 py-2 text-2xl border border-black-200" href="#0">Get Started</a>
-                        <a class="rounded-lg font-bold px-4 py-2 text-2xl border border-black-200 text-white bg-black" href="#0">Login</a>
+                        @if(Route::has('register'))
+                        <a class="rounded-lg font-bold px-4 py-2 text-2xl border border-black-200" href="{{route('register')}}">Get Started</a>
+                        @endif
+                        @if(Route::has('login'))
+                        <a class="rounded-lg font-bold px-4 py-2 text-2xl border border-black-200 text-white bg-black" href="{{route('login')}}">Login</a>
+                        @endif
                     </div>
                 </div>
                 <div class="header_image flex items-center lg:w-1/2">
