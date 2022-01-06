@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
-use Zekini\CrudGenerator\Traits\ResetsPasswords;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -16,7 +17,10 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-
+use Zekini\CrudGenerator\Traits\ResetsPasswords;
+/**
+ * @psalm-suppress UndefinedClass
+ */
 class ResetPasswordController extends Controller
 {
     /*
@@ -55,8 +59,6 @@ class ResetPasswordController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -71,23 +73,62 @@ class ResetPasswordController extends Controller
      *
      * If no token is present, display the link request form.
      *
-     * @param Request $request
      * @param string|null $token
      * @return Factory|View
      */
     public function showResetForm(Request $request, $token = null)
     {
         return view('zekini/livewire-crud-generator::admin.auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email]
+            [
+                'token' => $token,
+                'email' => $request->email,
+            ]
         );
     }
 
     /**
      * Reset the given user's password.
      *
-     * @param CanResetPassword $user
+     * @throws ValidationException
+     * @return RedirectResponse|JsonResponse
+     */
+    public function reset(Request $request)
+    {
+        $this->validate($request, $this->rules(), $this->validationErrorMessages());
+
+        // Here we will attempt to reset the user's password. If it is successful we
+        // will update the password on an actual user model and persist it to the
+        // database. Otherwise we will parse the error and return the response.
+        $response = $this->broker()->reset(
+            $this->credentials($request),
+            function ($user, $password) {
+                $this->resetPassword($user, $password);
+            }
+        );
+
+        // If the password was successfully reset, we will redirect the user back to
+        // the application's home authenticated view. If there is an error we can
+        // redirect them back to where they came from with their error message.
+        return $response === Password::PASSWORD_RESET
+            ? $this->sendResetResponse($request, $response)
+            : $this->sendResetFailedResponse($request, $response);
+    }
+
+    /**
+     * Get the broker to be used during password reset.
+     *
+     * @return PasswordBrokerContract
+     */
+    public function broker(): ?PasswordBrokerContract
+    {
+        return Password::broker($this->passwordBroker);
+    }
+
+    /**
+     * Reset the given user's password.
+     *
+     * @param \Illuminate\Contracts\Auth\Authenticatable | \Illuminate\Contracts\Auth\CanResetPassword $user
      * @param string $password
-     * @return void
      */
     protected function resetPassword($user, $password)
     {
@@ -102,39 +143,8 @@ class ResetPasswordController extends Controller
     }
 
     /**
-     * Reset the given user's password.
-     *
-     * @param Request $request
-     * @throws ValidationException
-     * @return RedirectResponse|JsonResponse
-     */
-    public function reset(Request $request)
-    {
-       
-        $this->validate($request, $this->rules(), $this->validationErrorMessages());
-       
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $response = $this->broker()->reset(
-            $this->credentials($request),
-            function ($user, $password) {
-                $this->resetPassword($user, $password);
-            }
-        );
-      
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $response == Password::PASSWORD_RESET
-            ? $this->sendResetResponse($request, $response)
-            : $this->sendResetFailedResponse($request, $response);
-    }
-
-    /**
      * Get the response for a successful password reset.
      *
-     * @param Request $request
      * @param string $response
      * @return RedirectResponse
      */
@@ -142,9 +152,9 @@ class ResetPasswordController extends Controller
     {
         $message = trans($response);
         if ($response === Password::PASSWORD_RESET) {
-            $message = "Password reset was successful";
+            $message = 'Password reset was successful';
         }
-       
+
         return redirect($this->redirectPath())
             ->with('status', $message);
     }
@@ -152,35 +162,31 @@ class ResetPasswordController extends Controller
     /**
      * Get the response for a failed password reset.
      *
-     * @param Request
      * @param string $response
-     * @param Request $request
      * @return RedirectResponse
      */
     protected function sendResetFailedResponse(Request $request, $response)
     {
         $message = trans($response);
         if ($response === Password::INVALID_TOKEN) {
-            $message = trans('brackets/zekini-admin::admin.passwords.invalid_token');
+            $message = 'The token given is invalid';
         } else {
             if ($response === Password::INVALID_USER) {
-                $message = trans('brackets/zekini-admin::admin.passwords.invalid_user');
+                $message = 'The user credentials given is invalid';
             } else {
-                if ($response === Password::INVALID_PASSWORD) {
-                    $message = trans('brackets/admin-auth::admin.passwords.invalid_password');
-                }
+                $message = 'The password given is invalid';
             }
         }
-       
+
         return redirect()->back()
             ->withInput($request->only('email'))
-            ->withErrors(['email' => $message]);
+            ->withErrors([
+                'email' => $message,
+            ]);
     }
 
     /**
      * Get the password reset validation rules.
-     *
-     * @return array
      */
     protected function rules(): array
     {
@@ -195,21 +201,10 @@ class ResetPasswordController extends Controller
      * Check if provided user can be logged in
      *
      * @param CanResetPassword $user
-     * @return bool
      */
     protected function loginCheck($user): bool
     {
-        return ($user->activated === null || $user->activated) && ($user->forbidden === null || !$user->forbidden);
-    }
-
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return PasswordBrokerContract
-     */
-    public function broker(): ?PasswordBrokerContract
-    {
-        return Password::broker($this->passwordBroker);
+        return ($user->activated === null || $user->activated) && ($user->forbidden === null || ! $user->forbidden);
     }
 
     /**
