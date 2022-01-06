@@ -7,7 +7,9 @@ use OwenIt\Auditing\Models\Audit;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Contracts\View\Factory;
-
+/**
+ * @psalm-suppress UndefinedClass
+ */
 class AdminHomepageController extends Controller
 {
     /**
