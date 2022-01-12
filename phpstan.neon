@@ -9,11 +9,7 @@ parameters:
     # The level 9 is the highest level
     level: 5
 
-    ignoreErrors:
-        - '#Unsafe usage of new static#'
-        - '#Reflection error: .+ not found#'
-
     excludePaths:
-        - ./*/*/FileToBeExcluded.php
+        - ./src/Http/Controllers
 
     checkMissingIterableValueType: false
