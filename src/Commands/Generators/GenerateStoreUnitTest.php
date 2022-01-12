@@ -59,7 +59,7 @@ class GenerateStoreUnitTest extends BaseGenerator
        @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777, true, true);
       
        $filename = $path.DIRECTORY_SEPARATOR.$this->testBaseName.'.php';
-      
+       
        $this->files->put($filename, $templateContent);
 
         return Command::SUCCESS;
