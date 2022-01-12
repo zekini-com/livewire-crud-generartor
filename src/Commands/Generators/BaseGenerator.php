@@ -80,7 +80,7 @@ abstract class BaseGenerator extends Command
     protected function getPathFromNamespace($namespace)
     {
         // replace the slashes in the namespace
-        $namespace = str_replace('\\','/', trim($namespace, '\\'));
+        $namespace = str_replace('\\',DIRECTORY_SEPARATOR, trim($namespace, '\\'));
         $namespace = preg_replace('/^App/', 'app', $namespace);
         return $namespace;
     }
