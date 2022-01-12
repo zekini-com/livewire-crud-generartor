@@ -10,6 +10,8 @@ class GenerateFactory extends BaseGenerator
 
     protected $classType = 'factory';
 
+    protected $factoryBaseName;
+
      /**
      * The name and signature of the console command.
      *
@@ -27,8 +29,7 @@ class GenerateFactory extends BaseGenerator
     
       /**
      * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
+     * 
      * @return string
      */
     protected function getDefaultNamespace()

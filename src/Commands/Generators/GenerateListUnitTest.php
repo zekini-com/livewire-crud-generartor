@@ -11,6 +11,9 @@ class GenerateListUnitTest extends BaseGenerator
 
     protected $classType = 'list-test';
 
+
+    protected $testBaseName;
+
      /**
      * The name and signature of the console command.
      *
@@ -28,8 +31,6 @@ class GenerateListUnitTest extends BaseGenerator
     
       /**
      * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace()

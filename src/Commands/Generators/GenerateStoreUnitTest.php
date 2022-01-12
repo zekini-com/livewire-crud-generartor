@@ -11,6 +11,8 @@ class GenerateStoreUnitTest extends BaseGenerator
 
     protected $classType = 'store-test';
 
+    protected $testBaseName;
+
      /**
      * The name and signature of the console command.
      *
@@ -29,7 +31,6 @@ class GenerateStoreUnitTest extends BaseGenerator
       /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace()

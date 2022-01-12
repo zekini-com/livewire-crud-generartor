@@ -11,6 +11,8 @@ class GenerateUpdateUnitTest extends BaseGenerator
 
     protected $classType = 'update-test';
 
+    protected $testBaseName;
+
      /**
      * The name and signature of the console command.
      *
@@ -29,7 +31,7 @@ class GenerateUpdateUnitTest extends BaseGenerator
       /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * 
      * @return string
      */
     protected function getDefaultNamespace()

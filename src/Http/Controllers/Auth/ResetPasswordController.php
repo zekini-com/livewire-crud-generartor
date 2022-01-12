@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller; /** @phpstan-ignore-line */
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -21,7 +21,7 @@ use Zekini\CrudGenerator\Traits\ResetsPasswords;
 /**
  * @psalm-suppress UndefinedClass
  */
-class ResetPasswordController extends Controller
+class ResetPasswordController extends Controller /** @phpstan-ignore-line */
 {
     /*
     |--------------------------------------------------------------------------

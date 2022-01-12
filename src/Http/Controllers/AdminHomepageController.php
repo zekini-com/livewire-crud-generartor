@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\View\View;
 use OwenIt\Auditing\Models\Audit;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller; /** @phpstan-ignore-line */
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Contracts\View\Factory;
 /**
  * @psalm-suppress UndefinedClass
  */
-class AdminHomepageController extends Controller
+class AdminHomepageController extends Controller /** @phpstan-ignore-line */
 {
     /**
      * Display default admin home page

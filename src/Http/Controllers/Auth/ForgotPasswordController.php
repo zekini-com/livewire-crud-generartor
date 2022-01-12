@@ -16,7 +16,7 @@ use Zekini\CrudGenerator\Traits\SendsPasswordResetEmails;
 /**
  * @psalm-suppress UndefinedClass
  */
-class ForgotPasswordController extends Controller
+class ForgotPasswordController extends Controller /** @phpstan-ignore-line */
 {
     /*
     |--------------------------------------------------------------------------
