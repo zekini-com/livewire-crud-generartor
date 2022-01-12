@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67dc6160c63968419745648907164b5c",
+    "content-hash": "0dcb7beca95c0d2489e8d95b38c30234",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -348,12 +348,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "70e22a5a22df8d159142090647c8a8d70f35488f"
+                "reference": "8e02959c5d637e5c43ce273618b1a0e33d170b39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/70e22a5a22df8d159142090647c8a8d70f35488f",
-                "reference": "70e22a5a22df8d159142090647c8a8d70f35488f",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/8e02959c5d637e5c43ce273618b1a0e33d170b39",
+                "reference": "8e02959c5d637e5c43ce273618b1a0e33d170b39",
                 "shasum": ""
             },
             "require": {
@@ -451,7 +451,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T08:41:28+00:00"
+            "time": "2022-01-06T20:31:35+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -2169,12 +2169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/MedicOneSystems/livewire-datatables.git",
-                "reference": "c991b15ca4500d0938465f2f71c261864f4f0e59"
+                "reference": "098fb1b3ee03b9b52fb383bf4f3c470e92fd8e06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MedicOneSystems/livewire-datatables/zipball/c991b15ca4500d0938465f2f71c261864f4f0e59",
-                "reference": "c991b15ca4500d0938465f2f71c261864f4f0e59",
+                "url": "https://api.github.com/repos/MedicOneSystems/livewire-datatables/zipball/098fb1b3ee03b9b52fb383bf4f3c470e92fd8e06",
+                "reference": "098fb1b3ee03b9b52fb383bf4f3c470e92fd8e06",
                 "shasum": ""
             },
             "require": {
@@ -2225,7 +2225,7 @@
                 "issues": "https://github.com/MedicOneSystems/livewire-datatables/issues",
                 "source": "https://github.com/MedicOneSystems/livewire-datatables/tree/master"
             },
-            "time": "2022-01-05T19:02:08+00:00"
+            "time": "2022-01-06T21:58:27+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -5846,12 +5846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "0607b48bfbd9c2310915c79ffc2a853a655f4819"
+                "reference": "ecb78a083ae764cfe8dc4554b80d4f35c3f12280"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/0607b48bfbd9c2310915c79ffc2a853a655f4819",
-                "reference": "0607b48bfbd9c2310915c79ffc2a853a655f4819",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/ecb78a083ae764cfe8dc4554b80d4f35c3f12280",
+                "reference": "ecb78a083ae764cfe8dc4554b80d4f35c3f12280",
                 "shasum": ""
             },
             "require": {
@@ -5933,7 +5933,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:56:25+00:00"
+            "time": "2022-01-07T00:29:17+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -7422,16 +7422,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.14.4",
+            "version": "2.14.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "f056f1fe935d9ed86e698905a957334029899895"
+                "reference": "a63e5e8f26ebbebf8ed3c5c691637325512eb0dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/f056f1fe935d9ed86e698905a957334029899895",
-                "reference": "f056f1fe935d9ed86e698905a957334029899895",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/a63e5e8f26ebbebf8ed3c5c691637325512eb0dc",
+                "reference": "a63e5e8f26ebbebf8ed3c5c691637325512eb0dc",
                 "shasum": ""
             },
             "require": {
@@ -7481,7 +7481,7 @@
             ],
             "support": {
                 "issues": "https://github.com/filp/whoops/issues",
-                "source": "https://github.com/filp/whoops/tree/2.14.4"
+                "source": "https://github.com/filp/whoops/tree/2.14.5"
             },
             "funding": [
                 {
@@ -7489,7 +7489,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-03T12:00:00+00:00"
+            "time": "2022-01-07T12:00:00+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -8058,16 +8058,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "dev-master",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "08c4f4f4c714b4adaa4fa2bc944db88d2d20471e"
+                "reference": "179d7565674d4e264e60296d1b5b75413b7461b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/08c4f4f4c714b4adaa4fa2bc944db88d2d20471e",
-                "reference": "08c4f4f4c714b4adaa4fa2bc944db88d2d20471e",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/179d7565674d4e264e60296d1b5b75413b7461b6",
+                "reference": "179d7565674d4e264e60296d1b5b75413b7461b6",
                 "shasum": ""
             },
             "require": {
@@ -8082,22 +8082,20 @@
                 "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "mockery/mockery": "^0.9 || ^1.0",
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.0",
-                "symfony/process": "^4.3 || ^5.0 || ^6.0"
+                "phpstan/phpstan": "^0.12.70",
+                "symfony/process": "^4.3 || ^5.0"
             },
             "require-dev": {
-                "nikic/php-parser": "^4.13.0",
                 "orchestra/testbench": "^4.0 || ^5.0 || ^6.0 || ^7.0",
                 "phpunit/phpunit": "^7.3 || ^8.2 || ^9.3"
             },
             "suggest": {
-                "orchestra/testbench": "Using Larastan for analysing a package needs Testbench"
+                "orchestra/testbench": "^4.0 || ^5.0"
             },
-            "default-branch": true,
             "type": "phpstan-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "0.6-dev"
                 },
                 "phpstan": {
                     "includes": [
@@ -8133,11 +8131,11 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/master"
+                "source": "https://github.com/nunomaduro/larastan/tree/v0.7.0"
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.com/paypalme/enunomaduro",
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
                     "type": "custom"
                 },
                 {
@@ -8153,7 +8151,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-12-10T11:33:20+00:00"
+            "time": "2021-02-01T22:08:11+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
@@ -8709,16 +8707,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "dev-master",
+            "version": "0.12.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "84eaa569d48ea79d3bebe2c3ec5d302537a6ae8a"
+                "reference": "b4d40f1d759942f523be267a1bab6884f46ca3f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/84eaa569d48ea79d3bebe2c3ec5d302537a6ae8a",
-                "reference": "84eaa569d48ea79d3bebe2c3ec5d302537a6ae8a",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b4d40f1d759942f523be267a1bab6884f46ca3f7",
+                "reference": "b4d40f1d759942f523be267a1bab6884f46ca3f7",
                 "shasum": ""
             },
             "require": {
@@ -8727,7 +8725,6 @@
             "conflict": {
                 "phpstan/phpstan-shim": "*"
             },
-            "default-branch": true,
             "bin": [
                 "phpstan",
                 "phpstan.phar"
@@ -8735,7 +8732,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "0.12-dev"
                 }
             },
             "autoload": {
@@ -8750,7 +8747,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.3.2"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.99"
             },
             "funding": [
                 {
@@ -8770,7 +8767,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-06T17:11:15+00:00"
+            "time": "2021-09-12T20:09:55+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -11313,8 +11310,7 @@
         "orchestra/testbench": 20,
         "nunomaduro/collision": 20,
         "phpunit/phpunit": 20,
-        "vimeo/psalm": 20,
-        "nunomaduro/larastan": 20
+        "vimeo/psalm": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

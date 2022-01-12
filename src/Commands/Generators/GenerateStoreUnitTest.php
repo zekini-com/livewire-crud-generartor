@@ -34,7 +34,7 @@ class GenerateStoreUnitTest extends BaseGenerator
      */
     protected function getDefaultNamespace()
     {
-        return 'Tests\Unit\\';
+        return 'Tests\Unit';
     }
 
     /**
@@ -50,12 +50,14 @@ class GenerateStoreUnitTest extends BaseGenerator
 
        $this->testBaseName = $this->className.'StoreTest';
 
-       $this->namespace = $this->getDefaultNamespace().'\\'.ucfirst($this->className);
-
+       $this->namespace = $this->getDefaultNamespace().DIRECTORY_SEPARATOR.ucfirst($this->className);
+      
+    
        $templateContent = $this->replaceContent();
 
        @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
-       $filename = $path.'/'.$this->testBaseName.'.php';
+      
+       $filename = $path.DIRECTORY_SEPARATOR.$this->testBaseName.'.php';
       
        $this->files->put($filename, $templateContent);
 
