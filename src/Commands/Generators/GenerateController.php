@@ -55,6 +55,7 @@ class GenerateController extends BaseGenerator
        $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
        $templateContent = $this->replaceContent();
+       
 
        @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
        $filename = $path.'/'.$this->controllerNamespace.'.php';
