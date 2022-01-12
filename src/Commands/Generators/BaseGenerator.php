@@ -14,12 +14,30 @@ abstract class BaseGenerator extends Command
 
     protected $hidden = true;
 
+
+    protected $classType;
+
+    protected $className;
+
+    protected $classNameKebab;
+
+    protected $controllerNamespace;
+
+    protected $namespace;
+
+    protected $componentName;
+    
+    /**
+     * files
+     *
+     * @var \Illuminate\Filesystem\Filesystem
+     */
     protected $files;
     
     /**
      * __construct
      *
-     * @param  mixed $files
+     * @param  \Illuminate\Filesystem\Filesystem $files
      * @return void
      */
     public function __construct(Filesystem $files)
@@ -28,6 +46,9 @@ abstract class BaseGenerator extends Command
 
         $this->files = $files;
     }
+
+
+    protected abstract function getViewData();
     
     /**
      * rootNamespace
@@ -84,7 +105,7 @@ abstract class BaseGenerator extends Command
     /**
      * Get Column Faker Map
      *
-     * @return void
+     * @return \Illuminate\Support\Collection
      */
     protected function getColumnFakerMap()
     {
@@ -102,7 +123,8 @@ abstract class BaseGenerator extends Command
     /**
      * Decide what faker to user
      *
-     * @param  string $colName
+     * @param  string $type
+     * @param string $name
      * @return string
      */
     protected function decideFaker($type, $name)
@@ -113,33 +135,37 @@ abstract class BaseGenerator extends Command
         if ($name == 'image' || $name == 'file') return "[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]";
         if ($name == preg_match('/phone/', $name)) return '$this->faker->phoneNumber()';
 
+        $faker = '';
+
         switch($type){
             case 'string':
-                return '$this->faker->word()';
+                $faker =  '$this->faker->word()';
             break;
             case 'boolean':
-                return '$this->faker->boolean()';
+                $faker =  '$this->faker->boolean()';
             break;
             case 'char':
-                return '$this->faker->randomLetter()';
+                $faker =  '$this->faker->randomLetter()';
                 break;
             case 'datetime':
-                return '$this->faker->dateTime()';
+                $faker =  '$this->faker->dateTime()';
                 break;
             case 'float':
             case 'decimal':
-                return '200.05';
+                $faker =  '200.05';
                 break;
             case 'integer':
             case 'bigint':
-                return '$this->faker->randomNumber()';
+                $faker =  '$this->faker->randomNumber()';
                 break;
             case 'text':
-                return '$this->faker->sentence()';
+                $faker =  '$this->faker->sentence()';
             break;
             default: 
-                return '$this->faker->word()';
+                $faker =  '$this->faker->word()';
         }
+
+        return $faker;
     }
     
 

@@ -9,6 +9,8 @@ class GenerateModel extends BaseGenerator
 {
 
     protected $classType = 'model';
+
+    protected $model;
     
     /**
      * class name

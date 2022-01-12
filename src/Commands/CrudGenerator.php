@@ -50,7 +50,7 @@ class CrudGenerator extends Command
      
         if(! Schema::hasTable($tableName)) {
             $this->error('Cannot find table. exiting');
-            return;
+            return Command::FAILURE;
         }
 
         // Get all table columns and attributes

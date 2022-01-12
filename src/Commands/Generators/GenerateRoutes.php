@@ -11,6 +11,8 @@ class GenerateRoutes extends BaseGenerator
 
     protected $classType = "routes";
 
+    protected $resourceController;
+
      /**
      * The name and signature of the console command.
      *

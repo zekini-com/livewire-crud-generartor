@@ -5,12 +5,7 @@ namespace Zekini\CrudGenerator\Mixin;
 class StrMixin
 {
     
-    /**
-     * Checks a string can be considered as a column name
-     *
-     * @param  string $str
-     * @return bool
-     */
+  
     public function isRelation (){
 
         return function($str) {
@@ -19,12 +14,7 @@ class StrMixin
        
     }
     
-    /**
-     * Guesses the name of the relation from the column name
-     *
-     * @param  string $str
-     * @return string
-     */
+   
     public function relationName (){
 
         return function($str){
@@ -33,12 +23,7 @@ class StrMixin
        
     }
 
-    /**
-     * A string is likely the name of a file
-     *
-     * @param  string $str
-     * @return string
-     */
+   
     public function likelyFile (){
 
         return function($str){

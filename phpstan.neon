@@ -11,6 +11,7 @@ parameters:
 
     ignoreErrors:
         - '#Unsafe usage of new static#'
+        - '#Reflection error: .+ not found#'
 
     excludePaths:
         - ./*/*/FileToBeExcluded.php

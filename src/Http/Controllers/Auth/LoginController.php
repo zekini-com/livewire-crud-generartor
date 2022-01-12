@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller; /** @phpstan-ignore-line */
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ use Zekini\CrudGenerator\Traits\AuthenticatesUsers;
 /**
  * @psalm-suppress UndefinedClass
  */
-class LoginController extends Controller
+class LoginController extends Controller /** @phpstan-ignore-line */
 {
     /*
     |--------------------------------------------------------------------------

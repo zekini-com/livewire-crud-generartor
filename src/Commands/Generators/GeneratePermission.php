@@ -10,6 +10,8 @@ class GeneratePermission extends BaseGenerator
 {
 
     protected $classType = 'permission';
+
+    protected $model;
     
     /**
      * class name
