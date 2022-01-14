@@ -1,10 +1,11 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\View;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
 class GenerateListView extends BaseGenerator
 {
@@ -40,8 +41,8 @@ class GenerateListView extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
-       $filename = $path.'/list-'.$this->classNameKebab.'.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire/'.$this->classNameKebab), 0777);
+       $filename = $path.DIRECTORY_SEPARATOR.'index.blade.php';
       
        $this->files->put($filename, $templateContent);
 

@@ -110,21 +110,23 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateModel::class,
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
-            Commands\Generators\GenerateListView::class,
-            Commands\Generators\GenerateEditView::class,
-            Commands\Generators\GenerateCreateView::class,
+
+            Commands\Generators\View\GenerateListView::class,
+            Commands\Generators\View\GenerateEditView::class,
+            Commands\Generators\View\GenerateCreateView::class,
+            Commands\Generators\View\GenerateIndexView::class,
+
             Commands\Generators\GeneratePermission::class,
 
-            Commands\Generators\GenerateStoreUnitTest::class,
-            Commands\Generators\GenerateUpdateUnitTest::class,
-            Commands\Generators\GenerateListUnitTest::class,
+            Commands\Generators\Test\GenerateStoreUnitTest::class,
+            Commands\Generators\Test\GenerateUpdateUnitTest::class,
+            Commands\Generators\Test\GenerateListUnitTest::class,
             Commands\Generators\GenerateFactory::class,
            
             Commands\Generators\GenerateRoutes::class,
 
-            Commands\Generators\GenerateListComponent::class,
-            Commands\Generators\GenerateCreateComponent::class,
-            Commands\Generators\GenerateEditComponent::class
+            Commands\Generators\Component\GenerateDatatableComponent::class,
+            Commands\Generators\Component\GenerateIndexComponent::class,
         ]);
     }
     

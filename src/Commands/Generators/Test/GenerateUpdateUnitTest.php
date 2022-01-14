@@ -1,10 +1,11 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\Test;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
 class GenerateUpdateUnitTest extends BaseGenerator
 {

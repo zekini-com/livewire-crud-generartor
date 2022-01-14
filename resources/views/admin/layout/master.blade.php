@@ -14,6 +14,9 @@
 
     @livewireStyles
 
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}" defer></script>
+
 	@include('zekini/livewire-crud-generator::admin.partials.main-styles')
 
     @yield('styles')

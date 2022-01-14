@@ -70,6 +70,14 @@ abstract class BaseGenerator extends Command
         return Str::studly(Str::singular($this->argument('table')));    
     }
 
+
+    protected function getLivewireComponentDir($addedPath=null)
+    {
+        $namespace = $this->getDefaultNamespace($this->rootNamespace());
+        $path = $this->getPathFromNamespace($namespace).DIRECTORY_SEPARATOR.Str::plural($this->className);
+        return $addedPath ? $path.DIRECTORY_SEPARATOR.$addedPath : $path;
+    }
+
     
     /**
      * Get the path of a file from the namespace
