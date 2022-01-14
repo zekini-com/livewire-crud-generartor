@@ -80,17 +80,17 @@ class CrudGenerator extends Command
             'admin:generate:form',
 
             // livewire views
+            'admin:generate:views:index',
             'admin:generate:views:list',
             'admin:generate:views:edit',
             'admin:generate:views:create',
 
             // livewire components
-            'admin:generate:component:list',
-            'admin:generate:component:create',
-            'admin:generate:component:edit',
+            'admin:generate:component:datatable',
+            'admin:generate:component:index',
 
             //controller
-            'admin:generate:controller',
+            //'admin:generate:controller',
 
             'admin:generate:permission',
             

@@ -1,7 +1,7 @@
 @php echo "<?php";
 @endphp
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\{{Str::plural(ucfirst($modelBaseName))}};
 
 use Livewire\Component;
 use {{ $modelFullName }};
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\WithFileUploads;
 @endif
 
-class Create{{ucfirst($modelBaseName)}} extends Component
+class Create extends Component
 { 
     use
     @if($hasFile)

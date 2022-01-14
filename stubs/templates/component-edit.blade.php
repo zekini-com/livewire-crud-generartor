@@ -1,7 +1,7 @@
 @php echo "<?php";
 @endphp
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\{{Str::plural(ucfirst($modelBaseName))}};
 
 use Livewire\Component;
 use {{ $modelFullName }};
@@ -11,7 +11,7 @@ use Zekini\CrudGenerator\Traits\HandlesFile;
 use Livewire\WithFileUploads;
 use Livewire\TemporaryUploadedFile;
 @endif
-class Edit{{ucfirst($modelBaseName)}} extends Component
+class Edit extends Component
 {
     use
     @if($hasFile)

@@ -1,7 +1,7 @@
 @php echo "<?php";
 @endphp
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\{{Str::plural(ucfirst($modelBaseName))}}\Datatable;
 
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -15,7 +15,7 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
 
-class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
+class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 { 
 
     use HandlesFile, AuthorizesRequests;
@@ -127,7 +127,7 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
                     'model'=> '{{strtolower($modelBaseName)}}',
                     'canBeTrashed'=> $this->canBeTrashed
                 ]);
-            })->unsortable()->excludeFromExport()
+            })->label('Actions')->excludeFromExport()
         ];
     }
 
@@ -183,6 +183,11 @@ class List{{ucfirst($modelBaseName)}} extends LivewireDatatable
         }
 
         ${{strtolower($modelBaseName)}}->delete();
+    }
+
+    public function launch{{ucfirst($modelBaseName)}}EditModal({{ucfirst($modelBaseName)}} ${{$modelBaseName}})
+    {
+        $this->emit('launch{{ucfirst($modelBaseName)}}EditModal', ${{$modelBaseName}});
     }
 
 

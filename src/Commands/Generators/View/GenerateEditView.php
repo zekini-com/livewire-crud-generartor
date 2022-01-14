@@ -1,10 +1,11 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\View;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
 class GenerateEditView extends BaseGenerator
 {
@@ -41,8 +42,8 @@ class GenerateEditView extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
-       $filename = $path.'/edit-'.$this->classNameKebab.'.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire/'.$this->classNameKebab), 0777);
+       $filename = $path.DIRECTORY_SEPARATOR.'edit.blade.php';
       
        $this->files->put($filename, $templateContent);
 

@@ -1,15 +1,17 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\Test;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
-class GenerateStoreUnitTest extends BaseGenerator
+class GenerateListUnitTest extends BaseGenerator
 {
 
-    protected $classType = 'store-test';
+    protected $classType = 'list-test';
+
 
     protected $testBaseName;
 
@@ -18,7 +20,7 @@ class GenerateStoreUnitTest extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:test:store {table}';
+    protected $signature = 'admin:generate:test:list {table}';
 
     /**
      * The console command description.
@@ -30,12 +32,11 @@ class GenerateStoreUnitTest extends BaseGenerator
     
       /**
      * Get the default namespace for the class.
-     *
      * @return string
      */
     protected function getDefaultNamespace()
     {
-        return 'Tests\Unit';
+        return 'Tests\Unit\\';
     }
 
     /**
@@ -49,17 +50,15 @@ class GenerateStoreUnitTest extends BaseGenerator
        $this->className = $this->getClassName();
        $this->classNameKebab = Str::kebab($this->className);
 
-       $this->testBaseName = $this->className.'StoreTest';
+       $this->testBaseName = $this->className.'ListTest';
 
-       $this->namespace = $this->getDefaultNamespace().DIRECTORY_SEPARATOR.ucfirst($this->className);
-      
-    
+       $this->namespace = $this->getDefaultNamespace().'\\'.ucfirst($this->className);
+
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777, true, true);
+       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
+       $filename = $path.'/'.$this->testBaseName.'.php';
       
-       $filename = $path.DIRECTORY_SEPARATOR.$this->testBaseName.'.php';
-       
        $this->files->put($filename, $templateContent);
 
         return Command::SUCCESS;
@@ -79,7 +78,7 @@ class GenerateStoreUnitTest extends BaseGenerator
             'resource'=> $this->getClassName(),
             'tableName'=> $this->argument('table'),
             'columnFakerMappings'=> $this->getColumnFakerMap(),
-            'viewName'=> 'create-'.$this->classNameKebab,
+            'viewName'=> 'list-'.$this->classNameKebab,
             'modelDotNotation'=> Str::singular($this->argument('table'))
          
         ];

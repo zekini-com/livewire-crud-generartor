@@ -1,28 +1,29 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\Component;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
-class GenerateCreateComponent extends BaseGenerator
+class GenerateDatatableComponent extends BaseGenerator
 {
 
-    protected $classType = "component-create";
+    protected $classType = "component-datatable";
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:component:create {table}';
+    protected $signature = 'admin:generate:component:datatable {table}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generates a livewire create component for the model';
+    protected $description = 'Generates a datatable for a component';
 
 
     /**
@@ -44,19 +45,17 @@ class GenerateCreateComponent extends BaseGenerator
      */
     public function handle(Filesystem $files)
     {
-        $this->info('Generating Create Component Class');
+        $this->info('Generating Datatable Component Class');
        
-       //publish any vendor files to where they belong
        $this->className = $this->getClassName();
-
-       $this->componentName = 'Create'.$this->className;
-
-       $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
-       $filename = $path.'/'.$this->componentName.'.php';
+       $path = $this->getLivewireComponentDir('Datatable');
+       
+       @$this->files->makeDirectory($path, 0777, true, true);
+
+       $filename = $path.DIRECTORY_SEPARATOR.Str::plural($this->className).'Table.php';
       
        $this->files->put($filename, $templateContent);
         
@@ -71,10 +70,13 @@ class GenerateCreateComponent extends BaseGenerator
      */
     protected function getViewData()
     {
-        $pivots = $this->belongsToConfiguration()->filter(function($item){
-            return !empty($item['pivot']) && isset($item['pivot']);
-        });
-      
+        
+    // TODO
+    // I need to check when the relationship is a belongsto
+    $pivots = $this->belongsToConfiguration()->filter(function($item){
+        return !empty($item['pivot']) && isset($item['pivot']);
+    });
+        
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
@@ -84,8 +86,11 @@ class GenerateCreateComponent extends BaseGenerator
             'resource'=> strtolower($this->className),
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
-            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file'),
-            'pivots'=> $pivots ?? []
+            'relations'=>$this->belongsToConfiguration() ?? [],
+            'pivots'=> $pivots,
+            'tableTitleMap'=> $this->getRecordTitleTableMap(),
+            'canBeTrashed'=> $this->hasColumn('deleted_at'),
+            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')
         ];
     }
     

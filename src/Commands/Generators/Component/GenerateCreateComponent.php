@@ -1,28 +1,29 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\Component;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
-class GenerateEditComponent extends BaseGenerator
+class GenerateCreateComponent extends BaseGenerator
 {
 
-    protected $classType = "component-edit";
+    protected $classType = "component-create";
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:component:edit {table}';
+    protected $signature = 'admin:generate:component:create {table}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generates a livewire edit component for the model';
+    protected $description = 'Generates a livewire create component for the model';
 
 
     /**
@@ -46,17 +47,14 @@ class GenerateEditComponent extends BaseGenerator
     {
         $this->info('Generating Create Component Class');
        
-       //publish any vendor files to where they belong
        $this->className = $this->getClassName();
-
-       $this->componentName = 'Edit'.$this->className;
-
-       $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
-       $filename = $path.'/'.$this->componentName.'.php';
+       $path = $this->getLivewireComponentDir();
+
+       @$this->files->makeDirectory($path, 0777);
+       $filename = $path.DIRECTORY_SEPARATOR.'Create.php';
       
        $this->files->put($filename, $templateContent);
         
@@ -74,7 +72,7 @@ class GenerateEditComponent extends BaseGenerator
         $pivots = $this->belongsToConfiguration()->filter(function($item){
             return !empty($item['pivot']) && isset($item['pivot']);
         });
-
+      
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
