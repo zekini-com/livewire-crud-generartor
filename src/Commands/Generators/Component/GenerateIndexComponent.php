@@ -50,6 +50,8 @@ class GenerateIndexComponent extends BaseGenerator
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
 
+       $this->classNameKebab = Str::kebab($this->className);
+
        $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
        $templateContent = $this->replaceContent();
@@ -77,9 +79,9 @@ class GenerateIndexComponent extends BaseGenerator
         });
 
         return [
-    
             'controllerNamespace' => rtrim($this->namespace, '\\'),
             'modelBaseName' => $this->className,
+            'viewName'=> Str::plural($this->classNameKebab),
             'modelVariableName' => strtolower($this->className),
             'modelDotNotation' => Str::singular($this->argument('table')),
             'resource'=> strtolower($this->className),

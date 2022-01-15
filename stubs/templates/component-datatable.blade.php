@@ -128,7 +128,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                 return view('zekini/livewire-crud-generator::datatable.table-actions', [
                     'id' => $id, 
                     'view' => '{{strtolower(Str::kebab($modelBaseName))}}',
-                    'model'=> '{{strtolower($modelBaseName)}}',
+                    'model'=> '{{Str::camel($modelBaseName)}}',
                     'softdeletes'=> $this->softdeletes
                 ]);
             })->label('Actions')->excludeFromExport()

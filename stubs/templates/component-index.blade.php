@@ -12,7 +12,7 @@ use Livewire\WithFileUploads;
 use Livewire\TemporaryUploadedFile;
 @endif
 
-@php($lowerModelBaseName = strtolower($modelBaseName))
+@php($lowerModelBaseName = Str::camel($modelBaseName))
 
 class {{Str::plural($modelBaseName)}} extends Component
 {
@@ -38,7 +38,7 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     public function render()
     {
-        return view('livewire.{{Str::plural($lowerModelBaseName)}}.index')
+        return view('livewire.{{$viewName}}.index')
         ->extends('zekini/livewire-crud-generator::admin.layout.default')
         ->section('body');
     }

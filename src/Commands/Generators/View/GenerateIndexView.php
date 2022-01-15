@@ -59,16 +59,17 @@ class GenerateIndexView extends BaseGenerator
         
         return [
             'resource'=> Str::plural($this->getClassName()),
-            'modelVariableName'=> strtolower($this->getClassName()),
+            'modelVariableName'=> Str::camel($this->getClassName()),
             'componentName'=> $this->getComponentName(),
-            'wireEdit'=> strtolower($this->getClassName()).'EditModal',
-            'wireCreate'=> strtolower($this->getClassName()).'CreateModal',
+            'viewName'=> Str::plural($this->classNameKebab),
+            'wireEdit'=> Str::camel($this->getClassName()).'EditModal',
+            'wireCreate'=> Str::camel($this->getClassName()).'CreateModal',
         ];
     }
 
     protected function getComponentName()
     {
-        $name = strtolower(Str::plural($this->getClassName()));
+        $name = strtolower(Str::plural(Str::kebab($this->getClassName())));
         return "$name.datatable.$name-table";
     }
     
