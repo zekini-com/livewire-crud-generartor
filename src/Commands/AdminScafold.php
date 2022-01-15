@@ -60,6 +60,24 @@ class AdminScafold extends Command
         
         return Command::SUCCESS;
     }
+    
+    /**
+     * migrationExists
+     *
+     * @param  mixed $mgr
+     * @return bool
+     */
+    protected function migrationExists($mgr)
+    {
+        $path = database_path('migrations/');
+        $files = scandir($path);
+        $pos = false;
+        foreach ($files as &$value) {
+            $pos = strpos($value, $mgr);
+            if($pos !== false) return true;
+        }
+        return false;
+    }
 
     
     /**
@@ -71,7 +89,12 @@ class AdminScafold extends Command
     {
         $this->publishSpatieVendors();
 
-        $this->publishAuditVendor();
+
+        if(! $this->migrationExists('create_audits_table')) {
+            $this->publishAuditVendor();
+        }
+
+       
        
         $this->publishZekini();
     }
