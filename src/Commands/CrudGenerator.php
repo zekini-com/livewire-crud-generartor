@@ -15,7 +15,7 @@ class CrudGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:crud:generate {table}';
+    protected $signature = 'admin:crud:generate {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -58,11 +58,22 @@ class CrudGenerator extends Command
         $generators = $this->getGenerators();
         
         foreach($generators as $index=>$command) {
-            $this->call($command, ['table'=> $tableName]);
+            $this->call($command, $this->getOptionsArgument());
         }
 
 
         return Command::SUCCESS;
+    }
+
+
+    protected function getOptionsArgument()
+    {
+        $array = ['table'=> $this->argument('table')];
+        if($this->option('user')) {
+            $array['--user'] = $this->option('user');
+        }
+
+        return $array;
     }
 
     

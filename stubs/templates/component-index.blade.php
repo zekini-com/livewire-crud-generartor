@@ -16,6 +16,8 @@ use Livewire\TemporaryUploadedFile;
 
 class {{Str::plural($modelBaseName)}} extends Component
 {
+    use WithFileUploads;
+    use HandlesFile;
 
     public {{$modelBaseName}} ${{$lowerModelBaseName}};
 
@@ -97,7 +99,12 @@ class {{Str::plural($modelBaseName)}} extends Component
     {
         return [
             @foreach($vissibleColumns as $col)
+            @if($userModel && in_array($col['name'], ['email', 'name']))
+            'state.{{$col['name']}}'=> 'required|unique:{{$tableName}},{{$col["name"]}},'.optional($this->state)->id,
+            @else
             'state.{{$col['name']}}'=> 'required',
+            @endif
+            
             @endforeach
         ];
     }
@@ -109,13 +116,43 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     private function create($data)
     {
-        return {{$modelBaseName}}::create($data);
+        // image processing
+        @if($hasFile)
+            $data['{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}}'] = $this->getFile($data['{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}}']);
+        @endif
+
+        $model = {{$modelBaseName}}::create($data);
+        @foreach($pivots as $pivot)
+        @if($modelBaseName == 'ZekiniAdmin')
+        $model->{{Str::singular($pivot['table'])}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
+            'model_type'=> 'Zekini\CrudGenerator\Models\ZekiniAdmin'
+        ]);
+        @else
+        $model->{{Str::singular($pivot['table'])}}()->sync($this->state->{{$pivot['table']}});
+        @endif
+        @endforeach
     }
 
 
     private function update($data, $id)
     {
-        return {{$modelBaseName}}::findOrFail($id)->update($data);
+        $model = {{$modelBaseName}}::findOrFail($id);
+
+        //image processing
+        @if($hasFile)
+        if (@$data['{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}}'][0] instanceof TemporaryUploadedFile){
+            $data['{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}}'] = $this->getFile($data['{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}}']);
+
+            // delete the old image
+            $this->deleteFile($model->{{ $vissibleColumns->first(function($item){  return $item['name'] == 'image'; }) ? 'image' : 'file'}});
+        }
+           
+        @endif
+      
+        $model->update($data);
+        @foreach($pivots as $pivot)
+        $model->{{Str::singular($pivot['table'])}}()->sync($this->state['{{$pivot['table']}}']);
+        @endforeach
     }
    
 }
