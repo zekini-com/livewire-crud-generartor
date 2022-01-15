@@ -15,7 +15,7 @@ class CrudGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:crud:generate {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
+    protected $signature = 'admin:crud:generate {table : table to generate crud for } {--user : When added the crud is generated for a user model} {--exclude=* : An array of classes not generate}';
 
     /**
      * The console command description.
@@ -58,6 +58,7 @@ class CrudGenerator extends Command
         $generators = $this->getGenerators();
         
         foreach($generators as $index=>$command) {
+            if(in_array($index, $this->option('exclude'))) continue;
             $this->call($command, $this->getOptionsArgument());
         }
 
@@ -85,31 +86,31 @@ class CrudGenerator extends Command
     protected function getGenerators()
     {
         return [
-            'admin:generate:model',
+            'model'=> 'admin:generate:model',
 
-            'admin:generate:route',
-            'admin:generate:form',
+            'route'=>'admin:generate:route',
+            'form'=>'admin:generate:form',
 
             // livewire views
-            'admin:generate:views:index',
-            'admin:generate:views:list',
-            'admin:generate:views:edit',
-            'admin:generate:views:create',
+            'view-index'=>'admin:generate:views:index',
+            'view-list'=>'admin:generate:views:list',
+            'view-edit'=>'admin:generate:views:edit',
+            'view-create'=>'admin:generate:views:create',
 
             // livewire components
-            'admin:generate:component:datatable',
-            'admin:generate:component:index',
+            'component-datatable'=>'admin:generate:component:datatable',
+            'component-index'=>'admin:generate:component:index',
 
             //controller
             //'admin:generate:controller',
 
-            'admin:generate:permission',
+            'permission'=>'admin:generate:permission',
             
-            'admin:generate:test:store',
-            'admin:generate:test:update',
-            'admin:generate:test:list',
+            'test-store'=>'admin:generate:test:store',
+            'test-update'=>'admin:generate:test:update',
+            'test-list'=>'admin:generate:test:list',
 
-            'admin:generate:factory'
+            'factory'=>'admin:generate:factory'
         ];
     }
 
