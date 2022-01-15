@@ -19,24 +19,26 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 { 
 
     use HandlesFile, AuthorizesRequests;
-    
-    /**
-     * Checks to see if we can softdelete a model
-    */
-    @if ($canBeTrashed)
-    protected $canBeTrashed = true;
-    @else
-    protected $canBeTrashed = false;
-    @endif
+
 
     public $model = {{ucfirst($modelBaseName)}}::class;
 
     public $exportable = true;
 
+    public $softdeletes = false;
+
+    protected $customListeners = [
+        'toggleSoftDeletes'
+    ];
+
 
     public function builder()
     {
-        return {{ucfirst($modelBaseName)}}::query()
+        $query =  {{ucfirst($modelBaseName)}}::query();
+
+        $query = $this->softdeletes ? $query->onlyTrashed() : $query;
+
+        return $query
 
         @if(count($relations) > 0)
         @foreach($relations as $relation)
@@ -81,9 +83,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                     @break
                     @case('boolean')
                     BooleanColumn::name('{{$col['name']}}')
-                    ->label('{{ucfirst($col['name'])}}')
-                    ->format()
-                    ->filterable(),
+                    ->label('{{ucfirst($col['name'])}}'),
                     @break
                     @case('date')
                     @case('datetime')
@@ -125,23 +125,29 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                     'id' => $id, 
                     'view' => '{{strtolower(Str::kebab($modelBaseName))}}',
                     'model'=> '{{strtolower($modelBaseName)}}',
-                    'canBeTrashed'=> $this->canBeTrashed
+                    'softdeletes'=> $this->softdeletes
                 ]);
             })->label('Actions')->excludeFromExport()
         ];
     }
 
-    @if($canBeTrashed)
+    protected function getListeners()
+    {
+        return array_merge($this->listeners, $this->customListeners);
+    }
+
+   
     /**
      * Force deletes a model
      *
-     * @param  {{ucfirst($modelBaseName)}} ${{$modelBaseName}}
+     * @param  $id
      * @return void
      */
-    public function forceDelete({{ucfirst($modelBaseName)}} ${{strtolower($modelBaseName)}})
+    public function forceDelete($id)
     {
-
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
+
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){
@@ -149,8 +155,33 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         }
 
         ${{strtolower($modelBaseName)}}->forceDelete();
+
+        $this->emit('refreshLivewireDatatable');
     }
-    @endif
+
+    /**
+     * Restores a deleted model
+     *
+     * @param  $id
+     * @return void
+     */
+    public function restore($id)
+    {
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
+
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
+
+        $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
+        foreach($fileCols as $files){
+            $this->deleteFile($files);
+        }
+
+        ${{strtolower($modelBaseName)}}->restore();
+
+        $this->emit('refreshLivewireDatatable');
+    }
+
+
 
     
     /**
@@ -166,28 +197,18 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         })->toArray();
     }
 
-    /**
-     * Force deletes a model
-     *
-     * @param  {{ucfirst($modelBaseName)}} ${{$modelBaseName}}
-     * @return void
-     */
-    public function delete($id)
-    {
-        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
-        $this->authorize("admin.{{strtolower($modelDotNotation)}}.delete");
-
-        $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
-        foreach($fileCols as $files){
-            $this->deleteFile($files);
-        }
-
-        ${{strtolower($modelBaseName)}}->delete();
-    }
 
     public function launch{{ucfirst($modelBaseName)}}EditModal({{ucfirst($modelBaseName)}} ${{$modelBaseName}})
     {
         $this->emit('launch{{ucfirst($modelBaseName)}}EditModal', ${{$modelBaseName}});
+    }
+
+
+    public function toggleSoftDeletes()
+    {
+        $this->softdeletes = ! $this->softdeletes;
+
+        $this->emit('refreshLivewireDatatable');
     }
 
 
