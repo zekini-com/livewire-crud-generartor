@@ -27,6 +27,10 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
     public $softdeletes = false;
 
+    public $showBtns = true;
+
+    public $launchCreateEventModal = 'launch{{ucfirst($modelBaseName)}}CreateModal';
+
     protected $customListeners = [
         'toggleSoftDeletes'
     ];
@@ -209,6 +213,17 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         $this->softdeletes = ! $this->softdeletes;
 
         $this->emit('refreshLivewireDatatable');
+    }
+
+    public function render()
+    {
+        $this->emit('refreshDynamic');
+
+        if ($this->persistPerPage) {
+            session()->put([$this->sessionStorageKey() . '_perpage' => $this->perPage]);
+        }
+
+        return view('zekini/livewire-crud-generator::datatable.datatable')->layoutData(['title' => $this->title]);
     }
 
 
