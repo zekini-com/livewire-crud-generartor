@@ -50,7 +50,7 @@
                         <!--body-->
                         <div class="relative p-6 flex-auto">
 
-                            {{"@"}}include('livewire.{{strtolower($resource)}}.partials.form')
+                            {{"@"}}include('livewire.{{strtolower($viewName)}}.partials.form')
 
                         </div>
                         
@@ -60,7 +60,7 @@
                             <button type="submit" class="text-black-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
                                 Create
                             </button>
-                            <button wire:click="$toggle('{{strtolower($modelVariableName)}}CreateModal')" class="text-black-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                            <button wire:click="$toggle('{{$modelVariableName}}CreateModal')" class="text-black-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
                                 Close
                             </button>
 
@@ -101,7 +101,7 @@
                         <!--body-->
                         <div class="relative p-6 flex-auto">
 
-                            {{"@"}}include('livewire.{{strtolower($resource)}}.partials.form')
+                            {{"@"}}include('livewire.{{strtolower($viewName)}}.partials.form')
 
                         </div>
 
@@ -110,7 +110,7 @@
                             <button type="submit" class="text-black-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
                                 Update
                             </button>
-                            <button wire:click="$toggle('{{strtolower($modelVariableName)}}EditModal')" class="text-black-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                            <button wire:click="$toggle('{{$modelVariableName}}EditModal')" class="text-black-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
                                 Close
                             </button>
 
