@@ -66,6 +66,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     {
         return [
 
+           
+
             @foreach($vissibleColumns as $col)
 
                 @if(Str::isRelation($col['name']))
@@ -74,7 +76,6 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                 @endphp
                 Column::name('{{$relationTable}}.{{$tableTitleMap[$relationTable]}}')
                         ->label('{{ucfirst(Str::relationName($col['name']))}}')
-                        ->searchable()
                         ->hideable()
                         ->filterable(),
                 @continue
@@ -99,17 +100,19 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                     @case('string')
                     @default
                     @if(Str::likelyFile($col['name']))
-                    Column::callback(['{{$col['name']}}'], function (${{$col['name']}}) {
-                        return view('zekini/livewire-crud-generator::datatable.image-display', ['file' => ${{$col['name']}}]);
-                    })->unsortable()->excludeFromExport(),
+                        Column::callback(['{{$col['name']}}'], function (${{$col['name']}}) {
+                            return view('zekini/livewire-crud-generator::datatable.image-display', ['file' => ${{$col['name']}}]);
+                        })->unsortable()->excludeFromExport(),
                     @else
                     
-                    Column::name('{{$col['name']}}')
-                        ->label('{{ucfirst($col['name'])}}')
-                        ->defaultSort('asc')
-                        ->searchable()
-                        ->hideable()
-                        ->filterable(),
+                        Column::name('{{$col['name']}}')
+                            ->label('{{ucfirst($col['name'])}}')
+                            ->defaultSort('asc')
+                            @if($col['name'] == $vissibleColumns->first()['name'])
+                            ->searchable()
+                            @endif
+                            ->hideable()
+                            ->filterable(),
                     @endif
                     @break
                 @endswitch
