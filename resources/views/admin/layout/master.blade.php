@@ -9,6 +9,12 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <style>
+        [x-cloak] {
+    display: none;
+}
+    </style>
+
 	{{-- TODO translatable suffix --}}
     <title>@yield('title', 'Zekini Admin')</title>
 
