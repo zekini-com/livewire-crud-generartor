@@ -16,7 +16,7 @@ class GenerateIndexComponent extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:component:index {table}';
+    protected $signature = 'admin:generate:component:index {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -88,7 +88,9 @@ class GenerateIndexComponent extends BaseGenerator
             'modelFullName'=> "App\Models\\".$this->className,
             'vissibleColumns'=> $this->getColumnDetails(),
             'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file'),
-            'pivots'=> $pivots ?? []
+            'pivots'=> $pivots ?? [],
+            'userModel'=> $this->option('user'),
+            'tableName'=> $this->argument('table')
         ];
     }
     

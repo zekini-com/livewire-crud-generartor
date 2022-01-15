@@ -17,7 +17,7 @@ class GenerateFactory extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:factory {table}';
+    protected $signature = 'admin:generate:factory {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.

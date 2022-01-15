@@ -17,7 +17,7 @@ class GenerateListView extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:views:list {table}';
+    protected $signature = 'admin:generate:views:list {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.

@@ -31,7 +31,7 @@ class GenerateModel extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:model {table}';
+    protected $signature = 'admin:generate:model {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
