@@ -121,9 +121,9 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
             Commands\Generators\GeneratePermission::class,
 
-            Commands\Generators\Test\GenerateStoreUnitTest::class,
-            Commands\Generators\Test\GenerateUpdateUnitTest::class,
-            Commands\Generators\Test\GenerateListUnitTest::class,
+            Commands\Generators\Test\GenerateDatatableTest::class,
+            Commands\Generators\Test\GenerateIndexTest::class,
+        
             Commands\Generators\GenerateFactory::class,
            
             Commands\Generators\GenerateRoutes::class,

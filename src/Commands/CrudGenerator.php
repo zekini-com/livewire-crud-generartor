@@ -123,8 +123,10 @@ class CrudGenerator extends Command
 
             'permission'=>'admin:generate:permission',
             
-            // 'admin:generate:test',
-            'admin:generate:factory'
+            'test-datatable'=>'admin:generate:test:datatable',
+            'test-index'=>'admin:generate:test:index',
+
+            'factory'=>'admin:generate:factory'
         ];
     }
 

@@ -19,6 +19,7 @@ class {{Str::plural($modelBaseName)}} extends Component
     @if(! $isReadonly)
     use WithFileUploads;
     use HandlesFile;
+    use AuthorizesRequests;
 
     public {{$modelBaseName}} ${{$lowerModelBaseName}};
 
@@ -51,6 +52,9 @@ class {{Str::plural($modelBaseName)}} extends Component
     @if(! $isReadonly)
     public function submit()
     {
+        //access control
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.create');
+
         $this->validate();
 
         $this->create($this->state);
@@ -66,6 +70,9 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     public function editSubmit()
     {
+        //access control
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.edit');
+
         $this->validate();
 
         $this->update($this->state->toArray(), $this->state->id);
