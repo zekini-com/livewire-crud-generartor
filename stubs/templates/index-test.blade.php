@@ -44,6 +44,39 @@ class {{$modelBaseName}}Test extends TestCase
        
     }
 
+    /**
+     * Test we can update {{$resource}}
+     * @group {{$resource}}_test
+     * @return void
+     */
+    public function test_we_can_update_{{$resource}}()
+    {
+      $guard = config('zekini-admin.defaults.guard');
+      $admin  = {{$adminModel}}::factory()->create();
+      $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.edit');
+
+      $this->actingAs($admin, $guard);
+
+      $model = {{$modelBaseName}}::factory()->create();
+
+      $this->faker = \Faker\Factory::create();
+      $firstData = 'raw_data';
+      Livewire::test({{$datatableComponent}}::class)
+      ->call('launch{{ucfirst($modelBaseName)}}EditModal', [$model->id])
+      @foreach($columnFakerMappings as $index=>$col)
+        @if($index == 1)
+        ->set('state.{{$col['name']}}', $firstData)
+        @else
+        ->set('state.{{$col['name']}}', {!!$col['faker']!!})
+        @endif
+      @endforeach
+        
+        ->call('editSubmit');
+
+        $this->assertTrue({{ucfirst($modelBaseName)}}::where('{{$columnFakerMappings->first()['name']}}', $firstData)->exists());
+       
+    }
+
     
     /**
      * Test Required field
