@@ -51,6 +51,9 @@ class AdminScafold extends Command
         $this->info("Email : support@zekini.com");
         $this->info("Password : localpassword@zekini");
 
+        // migrate generated tables
+        $this->call('migrate');
+
         $this->generateDefaultModelCruds();
 
         //call jetstream installation
@@ -58,32 +61,15 @@ class AdminScafold extends Command
         
         return Command::SUCCESS;
     }
-    
-    /**
-     * migrationExists
-     *
-     * @param  mixed $mgr
-     * @return bool
-     */
-    protected function migrationExists($mgr)
-    {
-        $path = database_path('migrations/');
-        $files = scandir($path);
-        $pos = false;
-        foreach ($files as &$value) {
-            $pos = strpos($value, $mgr);
-            if($pos !== false) return true;
-        }
-        return false;
-    }
 
 
     protected function generateDefaultModelCruds()
     {
+       
         $this->call('admin:crud:generate', ['table'=> 'zekini_admins', '--user']);
         $this->call('admin:crud:generate', ['table'=> 'permissions']);
         $this->call('admin:crud:generate', ['table'=> 'roles']);
-        $this->call('admin:crud:generate', ['table'=> 'audits']);
+        $this->call('admin:crud:generate', ['table'=> config('activitylog.table_name')]);
 
     }
 
@@ -95,16 +81,12 @@ class AdminScafold extends Command
      */
     protected function publishVendors()
     {
-        $this->publishSpatieVendors();
+        $this->publishSpatiePermissionVendor();
 
+        $this->publishSpatieLogVendor();
 
-        if(! $this->migrationExists('create_audits_table')) {
-            $this->publishAuditVendor();
-        }
-
-       
-       
         $this->publishZekini();
+
     }
     
     /**
@@ -112,7 +94,7 @@ class AdminScafold extends Command
      *
      * @return void
      */
-    protected function publishSpatieVendors()
+    protected function publishSpatiePermissionVendor()
     {
          //Spatie Permission
          $this->call('vendor:publish', [
@@ -132,17 +114,17 @@ class AdminScafold extends Command
      *
      * @return void
      */
-    protected function publishAuditVendor()
+    protected function publishSpatieLogVendor()
     {
          //Spatie Permission
          $this->call('vendor:publish', [
-            '--provider' => "OwenIt\\Auditing\\AuditingServiceProvider",
-            '--tag' => 'migrations'
+            '--provider' => "Spatie\Activitylog\ActivitylogServiceProvider",
+            '--tag' => 'activitylog-migrations'
         ]);
        
         $this->call('vendor:publish', [
-            '--provider' => "OwenIt\\Auditing\\AuditingServiceProvider",
-            '--tag' => 'config'
+            '--provider' => "Spatie\Activitylog\ActivitylogServiceProvider",
+            '--tag' => 'activitylog-config'
         ]);
 
     }

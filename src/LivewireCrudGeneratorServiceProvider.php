@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
@@ -36,6 +37,8 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->publishLandingPage();
 
         $this->publishAdminViews();
+
+        $this->setConfigValues();
 
        
 
@@ -175,7 +178,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             'create_zekini_admin_password_resets_table.php',
             'add_softdeletes_to_roles.php',
             'add_softdeletes_to_permissions.php',
-            'add_softdeletes_to_audits.php'
+            'add_softdeletes_to_activity_log_table.php'
         ];
 
         foreach($publishableMigrations as $migrationFileName) {
@@ -193,7 +196,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     protected function getMigrationFileName($migrationFileName): string
     {
-        $timestamp = date('Y_m_d_His');
+        $timestamp = Carbon::now()->addSeconds(3)->format('Y_m_d_His');
 
         $filesystem = $this->app->make(Filesystem::class);
 
@@ -203,6 +206,12 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             })
             ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
+    }
+
+
+    protected function setConfigValues()
+    {
+        config(['activitylog.table_name'=> 'activity_logs']);
     }
 
     

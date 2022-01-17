@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dcb7beca95c0d2489e8d95b38c30234",
+    "content-hash": "606724309db92dd5565feacbe3fb9a8a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2761,93 +2761,6 @@
             "time": "2021-04-09T13:42:10+00:00"
         },
         {
-            "name": "owen-it/laravel-auditing",
-            "version": "v12.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/owen-it/laravel-auditing.git",
-                "reference": "5659c736f17aa75805b60c0d0a23783f3bf5c2a1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/owen-it/laravel-auditing/zipball/5659c736f17aa75805b60c0d0a23783f3bf5c2a1",
-                "reference": "5659c736f17aa75805b60c0d0a23783f3bf5c2a1",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "^6.0|^7.0|^8.0",
-                "illuminate/database": "^6.0|^7.0|^8.0",
-                "illuminate/filesystem": "^6.0|^7.0|^8.0",
-                "php": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^4.0",
-                "phpunit/phpunit": "^9.0",
-                "ramsey/uuid": "^3.0"
-            },
-            "suggest": {
-                "laravelista/lumen-vendor-publish": "Needed to publish the package configuration in Lumen"
-            },
-            "type": "package",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "10.0-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "OwenIt\\Auditing\\AuditingServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "OwenIt\\Auditing\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Antério Vieira",
-                    "email": "anteriovieira@gmail.com"
-                },
-                {
-                    "name": "Quetzy Garcia",
-                    "email": "quetzyg@altek.org"
-                },
-                {
-                    "name": "Raphael França",
-                    "email": "raphaelfrancabsb@gmail.com"
-                }
-            ],
-            "description": "Audit changes of your Eloquent models in Laravel/Lumen",
-            "homepage": "http://laravel-auditing.com",
-            "keywords": [
-                "Accountability",
-                "Audit",
-                "auditing",
-                "changes",
-                "eloquent",
-                "history",
-                "laravel",
-                "log",
-                "logging",
-                "lumen",
-                "observer",
-                "record",
-                "revision",
-                "tracking"
-            ],
-            "support": {
-                "issues": "https://github.com/owen-it/laravel-auditing/issues",
-                "source": "https://github.com/owen-it/laravel-auditing"
-            },
-            "time": "2020-12-15T19:19:43+00:00"
-        },
-        {
             "name": "paragonie/constant_time_encoding",
             "version": "v2.4.0",
             "source": {
@@ -3738,6 +3651,157 @@
                 }
             ],
             "time": "2022-01-05T01:27:30+00:00"
+        },
+        {
+            "name": "spatie/laravel-activitylog",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-activitylog.git",
+                "reference": "1e41edc4c724c93ce927e0e5eb9e9ec3ae840fdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/1e41edc4c724c93ce927e0e5eb9e9ec3ae840fdb",
+                "reference": "1e41edc4c724c93ce927e0e5eb9e9ec3ae840fdb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "^8.0 || ^9.0",
+                "illuminate/database": "^8.53 || ^9.0",
+                "illuminate/support": "^8.0 || ^9.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.6.3"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "orchestra/testbench": "^6.23 || ^7.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Activitylog\\ActivitylogServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Activitylog\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tom Witkowski",
+                    "email": "dev.gummibeer@gmail.com",
+                    "homepage": "https://gummibeer.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A very simple activity logger to monitor the users of your website or application",
+            "homepage": "https://github.com/spatie/activitylog",
+            "keywords": [
+                "activity",
+                "laravel",
+                "log",
+                "spatie",
+                "user"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-activitylog/issues",
+                "source": "https://github.com/spatie/laravel-activitylog/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-12T17:34:33+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "fd75af77d0bbf221f33369186df16da704bebebd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/fd75af77d0bbf221f33369186df16da704bebebd",
+                "reference": "fd75af77d0bbf221f33369186df16da704bebebd",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^7.0|^8.0|^9.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^5.0|^6.23|^7.0",
+                "phpunit/phpunit": "^9.4",
+                "spatie/test-time": "^1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.11.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-11T16:14:23+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -11307,6 +11371,7 @@
     "stability-flags": {
         "mediconesystems/livewire-datatables": 20,
         "laravel/jetstream": 20,
+        "spatie/laravel-activitylog": 20,
         "orchestra/testbench": 20,
         "nunomaduro/collision": 20,
         "phpunit/phpunit": 20,
