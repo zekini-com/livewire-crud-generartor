@@ -15,7 +15,11 @@ class CrudGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:crud:generate {table : table to generate crud for } {--user : When added the crud is generated for a user model} {--exclude=* : An array of classes not generate}';
+    protected $signature = 'admin:crud:generate 
+                            {table : table to generate crud for } 
+                            {--user : When added the crud is generated for a user model} 
+                            {--exclude=* : An array of classes not generate}
+                            {--readonly : The datatable is read only no create and edit buttons}';
 
     /**
      * The console command description.
@@ -42,6 +46,8 @@ class CrudGenerator extends Command
      */
     public function handle()
     {
+      
+
         // TODOS
         //check if table exists
         $this->info('Checking if table exists');
@@ -59,7 +65,7 @@ class CrudGenerator extends Command
         
         foreach($generators as $index=>$command) {
             if(in_array($index, $this->option('exclude'))) continue;
-            $this->call($command, $this->getOptionsArgument());
+            $this->call($command, $this->getOptionsArgument($command));
         }
 
 
@@ -67,11 +73,17 @@ class CrudGenerator extends Command
     }
 
 
-    protected function getOptionsArgument()
+    protected function getOptionsArgument($command)
     {
         $array = ['table'=> $this->argument('table')];
         if($this->option('user')) {
             $array['--user'] = $this->option('user');
+        }
+       
+
+        if($this->option('readonly') && ($command == 'admin:generate:component:datatable')){
+          
+            $array['--readonly'] = $this->option('readonly');
         }
 
         return $array;
