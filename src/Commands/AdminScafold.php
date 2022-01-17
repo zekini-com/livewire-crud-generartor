@@ -54,7 +54,7 @@ class AdminScafold extends Command
         $this->generateDefaultModelCruds();
 
         //call jetstream installation
-        $this->call('jetstream:install', ['stack'=> 'livewire']);
+        //$this->call('jetstream:install', ['stack'=> 'livewire']);
         
         return Command::SUCCESS;
     }
@@ -83,6 +83,8 @@ class AdminScafold extends Command
         $this->call('admin:crud:generate', ['table'=> 'zekini_admins', '--user']);
         $this->call('admin:crud:generate', ['table'=> 'permissions']);
         $this->call('admin:crud:generate', ['table'=> 'roles']);
+        $this->call('admin:crud:generate', ['table'=> 'audits']);
+
     }
 
     

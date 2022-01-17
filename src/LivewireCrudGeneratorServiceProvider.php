@@ -168,17 +168,21 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-        $this->publishes([
-            __DIR__ . '/../database/migrations/fill_zekini_admin_default.php' => $this->getMigrationFileName('fill_zekini_admin_default.php'),
-        ], 'migrations');
-        
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_zekini_admins_table.php' => $this->getMigrationFileName('create_zekini_admins_table.php'),
-        ], 'migrations');
-        
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_zekini_admin_password_resets.php' => $this->getMigrationFileName('create_zekini_admin_password_resets_table.php'),
-        ], 'migrations');
+
+        $publishableMigrations = [
+            'fill_zekini_admin_default.php',
+            'create_zekini_admins_table.php',
+            'create_zekini_admin_password_resets.php',
+            'add_softdeletes_to_roles.php',
+            'add_softdeletes_to_permissions.php',
+            'add_softdeletes_to_audits.php'
+        ];
+
+        foreach($publishableMigrations as $migrationFileName) {
+            $this->publishes([
+                __DIR__ . "/../database/migrations/$migrationFileName" => $this->getMigrationFileName($migrationFileName),
+            ], 'migrations');
+        }
         
     }
 

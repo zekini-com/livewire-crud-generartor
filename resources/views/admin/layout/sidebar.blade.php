@@ -18,11 +18,6 @@
            
             {{--@AutoGenerator--}} 
 
-        <li class="nav-item"><a class="nav-link" href="{{ url('/admin/audit/logs') }}">
-                <svg class="nav-icon">
-                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-                </svg> Audit Logs</a></li>
-
         <li class="nav-item"><a class="nav-link" href="{{ url('/admin/logout') }}">
                 <svg class="nav-icon">
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
