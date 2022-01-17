@@ -7,10 +7,10 @@ use Livewire\Component;
 use {{ $modelFullName }};
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Zekini\CrudGenerator\Traits\HandlesFile;
-@if($hasFile)
+
 use Livewire\WithFileUploads;
 use Livewire\TemporaryUploadedFile;
-@endif
+
 
 @php($lowerModelBaseName = Str::camel($modelBaseName))
 

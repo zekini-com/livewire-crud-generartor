@@ -24,16 +24,4 @@ class AdminHomepageController extends Controller /** @phpstan-ignore-line */
         ]);
     }
 
-    
-    /**
-     * Audit Logs
-     *
-     * @return View
-     */
-    public function audit()
-    {
-        return view('zekini/livewire-crud-generator::admin.homepage.audit', [
-            'logs' => Audit::all()
-        ]);
-    }
 }

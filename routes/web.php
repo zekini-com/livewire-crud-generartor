@@ -34,6 +34,5 @@ Route::middleware(['web', 'admin:'.config('zekini-admin.defaults.guard')])->grou
 Route::middleware(['web', 'admin:'.config('zekini-admin.defaults.guard')])->group(static function () {
     Route::namespace('App\Http\Controllers\Admin')->group(static function () {
         Route::get('/admin', 'AdminHomepageController@index')->name('zekini/livewire-crud-generator::admin');
-        Route::get('/admin/audit/logs', 'AdminHomepageController@audit')->name('zekini/livewire-crud-generator::admin/audit/logs');
     });
 });
