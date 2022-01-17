@@ -172,7 +172,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $publishableMigrations = [
             'fill_zekini_admin_default.php',
             'create_zekini_admins_table.php',
-            'create_zekini_admin_password_resets.php',
+            'create_zekini_admin_password_resets_table.php',
             'add_softdeletes_to_roles.php',
             'add_softdeletes_to_permissions.php',
             'add_softdeletes_to_audits.php'

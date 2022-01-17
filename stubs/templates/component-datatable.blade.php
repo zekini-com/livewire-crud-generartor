@@ -71,14 +71,16 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
             @foreach($vissibleColumns as $col)
 
                 @if(Str::isRelation($col['name']))
-                @php
-                    $relationTable = Str::plural(Str::relationName($col['name']));
-                @endphp
-                Column::name('{{$relationTable}}.{{$tableTitleMap[$relationTable]}}')
-                        ->label('{{ucfirst(Str::relationName($col['name']))}}')
-                        ->hideable()
-                        ->filterable(),
-                @continue
+                    @php
+                        $relationTable = Str::plural(Str::relationName($col['name']));
+                    @endphp
+                    @if(in_array($relationTable, $tableTitleMap))
+                        Column::name('{{$relationTable}}.{{$tableTitleMap[$relationTable]}}')
+                                ->label('{{ucfirst(Str::relationName($col['name']))}}')
+                                ->hideable()
+                                ->filterable(),
+                    @endif
+                    @continue
                 @endif
 
                 @switch($col['type'])

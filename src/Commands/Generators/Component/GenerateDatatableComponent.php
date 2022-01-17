@@ -71,7 +71,6 @@ class GenerateDatatableComponent extends BaseGenerator
     protected function getViewData()
     {
         
-    // TODO
     // I need to check when the relationship is a belongsto
     $pivots = $this->belongsToConfiguration()->filter(function($item){
         return !empty($item['pivot']) && isset($item['pivot']);
