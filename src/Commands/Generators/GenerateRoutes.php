@@ -3,6 +3,7 @@ namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Route;
 use Zekini\CrudGenerator\Traits\CreatesSidebar;
 
 class GenerateRoutes extends BaseGenerator
@@ -35,10 +36,16 @@ class GenerateRoutes extends BaseGenerator
      */
     public function handle(Filesystem $files)
     {
+        
         $this->info('Generating routes for crud');
        
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
+       $routeName = "admin/".strtolower($this->className)."/index";
+       if(Route::has($routeName)) {
+            $this->info('Skipping Routes. Route already exists');
+           return Command::SUCCESS;
+       }
 
        $this->resourceController = $this->className.'Controller';
 
