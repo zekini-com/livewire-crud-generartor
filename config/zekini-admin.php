@@ -71,6 +71,7 @@ return [
                 'pivot' => 'role_has_permissions'
             ]
         ],
+        
         'zekini_admins'=> [
             [
                 'name' => 'belongs_to_many',

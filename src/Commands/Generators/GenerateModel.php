@@ -88,7 +88,8 @@ class GenerateModel extends BaseGenerator
             'modelBaseName' => ucfirst($this->className),
             'hasDeletedAt'=> $this->hasColumn('deleted_at'),
             'vissibleColumns'=> $this->getColumnDetails(),
-            'relations'=> $this->getRelations() ?? []
+            'relations'=> $this->getRelations() ?? [],
+            'isUser'=> $this->option('user')
         ];
     }
 
