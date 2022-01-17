@@ -82,7 +82,9 @@ class CrudGenerator extends Command
 
         $readonlyCommands = [
             'admin:generate:component:datatable',
-            'component-index'=>'admin:generate:component:index'
+            'admin:generate:component:index',
+            'admin:generate:test:datatable',
+            'admin:generate:test:index',
         ];
        
 

@@ -19,7 +19,10 @@ class GenerateDatatableTest extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:test:datatable {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
+    protected $signature = 'admin:generate:test:datatable 
+                            {table : table to generate crud for } 
+                            {--user : When added the crud is generated for a user model}
+                            {--readonly : The datatable is read only no create and edit buttons}';
 
     /**
      * The console command description.
@@ -46,6 +49,11 @@ class GenerateDatatableTest extends BaseGenerator
      */
     public function handle(Filesystem $files)
     {
+        if($this->option('readonly')) {
+            $this->info('Skipping generating datatable test for readonly classes');
+            return Command::SUCCESS;
+        }
+
        //publish any vendor files to where they belong
        $this->className = $this->getClassName();
        $this->classNameKebab = Str::kebab($this->className);
