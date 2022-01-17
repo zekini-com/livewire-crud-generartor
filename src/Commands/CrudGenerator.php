@@ -79,9 +79,14 @@ class CrudGenerator extends Command
         if($this->option('user')) {
             $array['--user'] = $this->option('user');
         }
+
+        $readonlyCommands = [
+            'admin:generate:component:datatable',
+            'component-index'=>'admin:generate:component:index'
+        ];
        
 
-        if($this->option('readonly') && ($command == 'admin:generate:component:datatable')){
+        if($this->option('readonly') && in_array($command, $readonlyCommands)){
           
             $array['--readonly'] = $this->option('readonly');
         }

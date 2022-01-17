@@ -16,6 +16,7 @@ use Livewire\TemporaryUploadedFile;
 
 class {{Str::plural($modelBaseName)}} extends Component
 {
+    @if(! $isReadonly)
     use WithFileUploads;
     use HandlesFile;
 
@@ -37,6 +38,7 @@ class {{Str::plural($modelBaseName)}} extends Component
     {
        $this->state = [];
     }
+    @endif
 
     public function render()
     {
@@ -46,7 +48,7 @@ class {{Str::plural($modelBaseName)}} extends Component
     }
 
     
-
+    @if(! $isReadonly)
     public function submit()
     {
         $this->validate();
@@ -154,5 +156,6 @@ class {{Str::plural($modelBaseName)}} extends Component
         $model->{{Str::singular($pivot['table'])}}()->sync($this->state['{{$pivot['table']}}']);
         @endforeach
     }
+    @endif
    
 }

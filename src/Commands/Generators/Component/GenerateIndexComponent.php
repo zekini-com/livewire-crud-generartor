@@ -16,7 +16,10 @@ class GenerateIndexComponent extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:component:index {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
+    protected $signature = 'admin:generate:component:index 
+                            {table : table to generate crud for } 
+                            {--user : When added the crud is generated for a user model}
+                            {--readonly : The datatable is read only no create and edit buttons}';
 
     /**
      * The console command description.
@@ -90,7 +93,8 @@ class GenerateIndexComponent extends BaseGenerator
             'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file'),
             'pivots'=> $pivots ?? [],
             'userModel'=> $this->option('user'),
-            'tableName'=> $this->argument('table')
+            'tableName'=> $this->argument('table'),
+            'isReadonly'=> $this->option('readonly')
         ];
     }
     
