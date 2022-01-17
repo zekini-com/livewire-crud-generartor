@@ -16,7 +16,10 @@ class GenerateDatatableComponent extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:component:datatable {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
+    protected $signature = 'admin:generate:component:datatable 
+                            {table : table to generate crud for } 
+                            {--user : When added the crud is generated for a user model}
+                            {--readonly : The datatable is read only no create and edit buttons}';
 
     /**
      * The console command description.
@@ -89,7 +92,8 @@ class GenerateDatatableComponent extends BaseGenerator
             'pivots'=> $pivots,
             'tableTitleMap'=> $this->getRecordTitleTableMap(),
             'canBeTrashed'=> $this->hasColumn('deleted_at'),
-            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file')
+            'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file'),
+            'isReadonly'=> $this->option('readonly')
         ];
     }
     

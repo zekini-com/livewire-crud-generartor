@@ -66,10 +66,10 @@ class AdminScafold extends Command
     protected function generateDefaultModelCruds()
     {
        
-        $this->call('admin:crud:generate', ['table'=> 'zekini_admins', '--user']);
+        $this->call('admin:crud:generate', ['table'=> 'zekini_admins', '--user'=>true]);
         $this->call('admin:crud:generate', ['table'=> 'permissions']);
         $this->call('admin:crud:generate', ['table'=> 'roles']);
-        $this->call('admin:crud:generate', ['table'=> config('activitylog.table_name')]);
+        $this->call('admin:crud:generate', ['table'=> config('activitylog.table_name'), '--readonly'=>true]);
 
     }
 
