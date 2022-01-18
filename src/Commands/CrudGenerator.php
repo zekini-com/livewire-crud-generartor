@@ -112,9 +112,7 @@ class CrudGenerator extends Command
 
             // livewire views
             'view-index'=>'admin:generate:views:index',
-            'view-list'=>'admin:generate:views:list',
-            'view-edit'=>'admin:generate:views:edit',
-            'view-create'=>'admin:generate:views:create',
+     
 
             // livewire components
             'component-datatable'=>'admin:generate:component:datatable',
