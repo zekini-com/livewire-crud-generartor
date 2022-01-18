@@ -31,15 +31,19 @@ trait HasRelations
     protected function belongsToConfiguration()
     {
         $relations = collect($this->getRelations());
+       
         $belongsTo = $relations->filter(function($relation){
             return strpos($relation['name'], 'belongs_to') !== false;
         });
+
+        
        
         return $belongsTo->map(function($relation){
             return [ 
                 'column'=>Str::singular($relation['table']).'_id',
                 'table'=> $relation['table'],
-                'pivot'=> $relation['pivot'] ?? ''
+                'pivot'=> $relation['pivot'] ?? '',
+                'name'=> $relation['name']
             ];
 
         }) ?? [];

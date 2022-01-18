@@ -1,6 +1,8 @@
 <?php
 namespace Zekini\CrudGenerator\Mixin;
 
+use Illuminate\Support\Str;
+
 
 class StrMixin
 {
@@ -12,6 +14,13 @@ class StrMixin
             return strpos($str, '_id') !==false;
         };
        
+    }
+
+    public function getRelationship()
+    {
+        return function($arr){
+            return in_array($arr['name'], ['belongs_to_many', 'has_many']) ? $arr['table'] : Str::singular($arr['table']);
+        };
     }
     
    

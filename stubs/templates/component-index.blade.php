@@ -75,7 +75,7 @@ class {{Str::plural($modelBaseName)}} extends Component
 
         $this->validate();
 
-        $this->update($this->state->toArray(), $this->state->id);
+        $this->update($this->state, $this->state['id']);
 
         $this->emit('showAlert', 'Updated');
 
@@ -99,7 +99,11 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     public function launch{{$modelBaseName}}EditModal({{$modelBaseName}} ${{$lowerModelBaseName}})
     {
-        $this->state = ${{$lowerModelBaseName}};
+
+        $this->state = ${{$lowerModelBaseName}}->toArray();
+        @foreach($pivots as $pivot)
+         $this->state['{{$pivot["table"]}}'] = ${{$lowerModelBaseName}}->{{$pivot["table"]}}()->allRelatedIds()->toArray();
+        @endforeach
         $this->{{$lowerModelBaseName}}EditModal = true;
     }
 
@@ -109,7 +113,7 @@ class {{Str::plural($modelBaseName)}} extends Component
         return [
             @foreach($vissibleColumns as $col)
             @if($userModel && in_array($col['name'], ['email', 'name']))
-            'state.{{$col['name']}}'=> 'required|unique:{{$tableName}},{{$col["name"]}},'.optional($this->state)->id,
+            'state.{{$col['name']}}'=> 'required|unique:{{$tableName}},{{$col["name"]}},'.@$this->state['id'],
             @else
             'state.{{$col['name']}}'=> 'required',
             @endif
@@ -133,11 +137,11 @@ class {{Str::plural($modelBaseName)}} extends Component
         $model = {{$modelBaseName}}::create($data);
         @foreach($pivots as $pivot)
         @if($modelBaseName == 'ZekiniAdmin')
-        $model->{{Str::singular($pivot['table'])}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
+        $model->{{$pivot['table']}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
             'model_type'=> 'Zekini\CrudGenerator\Models\ZekiniAdmin'
         ]);
         @else
-        $model->{{Str::singular($pivot['table'])}}()->sync($this->state->{{$pivot['table']}});
+        $model->{{$pivot['table']}}()->sync($this->state['{{$pivot['table']}}']);
         @endif
         @endforeach
     }
@@ -160,7 +164,14 @@ class {{Str::plural($modelBaseName)}} extends Component
       
         $model->update($data);
         @foreach($pivots as $pivot)
-        $model->{{Str::singular($pivot['table'])}}()->sync($this->state['{{$pivot['table']}}']);
+        @if($modelBaseName == 'ZekiniAdmin')
+        $model->{{$pivot['table']}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
+            'model_type'=> 'Zekini\CrudGenerator\Models\ZekiniAdmin'
+        ]);
+        @else
+        $model->{{$pivot['table']}}()->sync($this->state['{{$pivot['table']}}']);
+        @endif
+        
         @endforeach
     }
     @endif

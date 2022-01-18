@@ -71,9 +71,11 @@ class {{$modelBaseName}} extends Model
     // Relationships start here
     @if(count($relations)> 0)
     @foreach($relations as $index=>$relation)
+
+        
        
         @php
-            $relationName = strpos($relation['name'], 'belong') === false ? $relation['table'] : Str::singular($relation['table']);
+            $relationName = Str::getRelationship($relation);
         @endphp
         public function {{$relationName}}()
         {
