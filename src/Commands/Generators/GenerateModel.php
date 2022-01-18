@@ -9,6 +9,8 @@ class GenerateModel extends BaseGenerator
 {
 
     protected $classType = 'model';
+
+    protected $model;
     
     /**
      * class name
@@ -29,7 +31,7 @@ class GenerateModel extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:model {table}';
+    protected $signature = 'admin:generate:model {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -81,12 +83,13 @@ class GenerateModel extends BaseGenerator
      */
     protected function getViewData()
     {
-        
+       
         return [
             'modelBaseName' => ucfirst($this->className),
             'hasDeletedAt'=> $this->hasColumn('deleted_at'),
             'vissibleColumns'=> $this->getColumnDetails(),
-            'relations'=> $this->getRelations() ?? []
+            'relations'=> $this->getRelations() ?? [],
+            'isUser'=> $this->option('user')
         ];
     }
 

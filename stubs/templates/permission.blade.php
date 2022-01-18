@@ -108,7 +108,10 @@ class {{ $className }} extends Migration
                 'permission_id'=> $permission->id,
                 'role_id'=> $roleId
             ];
-            DB::table('role_has_permissions')->insert($rolePermission);
+            // we check if role exists
+            if (! DB::table('role_has_permissions')->where($rolePermission)->exists()) {
+                DB::table('role_has_permissions')->insert($rolePermission);
+             }
         }
         
     }

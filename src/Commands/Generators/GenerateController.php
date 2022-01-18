@@ -15,7 +15,7 @@ class GenerateController extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:controller {table}';
+    protected $signature = 'admin:generate:controller {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -55,6 +55,7 @@ class GenerateController extends BaseGenerator
        $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
        $templateContent = $this->replaceContent();
+       
 
        @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
        $filename = $path.'/'.$this->controllerNamespace.'.php';

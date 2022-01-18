@@ -1,6 +1,7 @@
 <?php
 namespace Zekini\CrudGenerator;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
@@ -37,6 +38,8 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 
         $this->publishAdminViews();
 
+        $this->setConfigValues();
+
        
 
         $this->publishAdminControllers();
@@ -46,6 +49,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->app['view']->addNamespace('zekini/livewire-crud-generator', resource_path('views/vendor/zekini'));
 
         Blade::component('zekini/livewire-crud-generator::components.modal', 'c.modal');
+        Blade::component('zekini/livewire-crud-generator::components.alert-message', 'c.alert-message');
         
         $this->loadRoutesFrom(__DIR__.'./../routes/web.php');
 
@@ -110,21 +114,23 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateModel::class,
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
-            Commands\Generators\GenerateListView::class,
-            Commands\Generators\GenerateEditView::class,
-            Commands\Generators\GenerateCreateView::class,
+
+            Commands\Generators\View\GenerateListView::class,
+            Commands\Generators\View\GenerateEditView::class,
+            Commands\Generators\View\GenerateCreateView::class,
+            Commands\Generators\View\GenerateIndexView::class,
+
             Commands\Generators\GeneratePermission::class,
 
-            Commands\Generators\GenerateStoreUnitTest::class,
-            Commands\Generators\GenerateUpdateUnitTest::class,
-            Commands\Generators\GenerateListUnitTest::class,
+            Commands\Generators\Test\GenerateDatatableTest::class,
+            Commands\Generators\Test\GenerateIndexTest::class,
+        
             Commands\Generators\GenerateFactory::class,
            
             Commands\Generators\GenerateRoutes::class,
 
-            Commands\Generators\GenerateListComponent::class,
-            Commands\Generators\GenerateCreateComponent::class,
-            Commands\Generators\GenerateEditComponent::class
+            Commands\Generators\Component\GenerateDatatableComponent::class,
+            Commands\Generators\Component\GenerateIndexComponent::class,
         ]);
     }
     
@@ -166,17 +172,21 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-        $this->publishes([
-            __DIR__ . '/../database/migrations/fill_zekini_admin_default.php' => $this->getMigrationFileName('fill_zekini_admin_default.php'),
-        ], 'migrations');
-        
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_zekini_admins_table.php' => $this->getMigrationFileName('create_zekini_admins_table.php'),
-        ], 'migrations');
-        
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_zekini_admin_password_resets.php' => $this->getMigrationFileName('create_zekini_admin_password_resets_table.php'),
-        ], 'migrations');
+
+        $publishableMigrations = [
+            'fill_zekini_admin_default.php',
+            'create_zekini_admins_table.php',
+            'create_zekini_admin_password_resets_table.php',
+            'add_softdeletes_to_roles.php',
+            'add_softdeletes_to_permissions.php',
+            'add_softdeletes_to_activity_log_table.php'
+        ];
+
+        foreach($publishableMigrations as $migrationFileName) {
+            $this->publishes([
+                __DIR__ . "/../database/migrations/$migrationFileName" => $this->getMigrationFileName($migrationFileName),
+            ], 'migrations');
+        }
         
     }
 
@@ -187,7 +197,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     protected function getMigrationFileName($migrationFileName): string
     {
-        $timestamp = date('Y_m_d_His');
+        $timestamp = Carbon::now()->addSeconds(3)->format('Y_m_d_His');
 
         $filesystem = $this->app->make(Filesystem::class);
 
@@ -197,6 +207,12 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             })
             ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
+    }
+
+
+    protected function setConfigValues()
+    {
+        config(['activitylog.table_name'=> 'activity_logs']);
     }
 
     

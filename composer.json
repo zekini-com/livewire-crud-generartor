@@ -28,7 +28,7 @@
             "Zekini\\CrudGenerator\\Tests\\": "tests"
         }
     },
-    "require-dev": {
+
     },
     "require": {
         "zekini/laravel-generics": "dev-master"

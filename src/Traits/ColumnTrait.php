@@ -18,7 +18,7 @@ trait ColumnTrait
     /**
      * Gets column details of table
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getColumnDetails()
     {
@@ -43,7 +43,7 @@ trait ColumnTrait
     /**
      * Gets column details of table
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getColumnWithDates()
     {
@@ -68,7 +68,7 @@ trait ColumnTrait
      /**
      * Gets column details of table
      *
-     * @return Collection
+     * @return array
      */
     public function getColumnDetailsWithRelations()
     {

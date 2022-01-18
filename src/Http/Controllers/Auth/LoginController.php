@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin\Auth;
 
-use App\Http\Controllers\Controller;
-use Zekini\CrudGenerator\Traits\AuthenticatesUsers;
+use App\Http\Controllers\Controller; /** @phpstan-ignore-line */
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-
-class LoginController extends Controller
+use Zekini\CrudGenerator\Traits\AuthenticatesUsers;
+/**
+ * @psalm-suppress UndefinedClass
+ */
+class LoginController extends Controller /** @phpstan-ignore-line */
 {
     /*
     |--------------------------------------------------------------------------
@@ -47,8 +50,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -60,7 +61,7 @@ class LoginController extends Controller
     /**
      * Show the application's login form.
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory | \Illuminate\Contracts\View\View
      */
     public function showLoginForm()
     {
@@ -70,8 +71,7 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function logout(Request $request)
     {
@@ -86,8 +86,6 @@ class LoginController extends Controller
 
     /**
      * Get the post register / login redirect path.
-     *
-     * @return string
      */
     public function redirectAfterLogoutPath(): string
     {

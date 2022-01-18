@@ -1,10 +1,11 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\View;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
 class GenerateCreateView extends BaseGenerator
 {
@@ -16,7 +17,7 @@ class GenerateCreateView extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:views:create {table}';
+    protected $signature = 'admin:generate:views:create {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -40,8 +41,8 @@ class GenerateCreateView extends BaseGenerator
 
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
-       $filename = $path.'/create-'.$this->classNameKebab.'.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire/'.$this->classNameKebab), 0777);
+       $filename = $path.DIRECTORY_SEPARATOR.'create.blade.php';
       
        $this->files->put($filename, $templateContent);
 

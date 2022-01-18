@@ -101,6 +101,9 @@
             </div>
         </header>
         <div class="body flex-grow-1 px-3">
+
+            <c.alert-message></c.alert-message>
+            
            @yield('body')
         </div>
         <footer class="footer">

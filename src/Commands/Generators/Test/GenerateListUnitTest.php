@@ -1,22 +1,26 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\Test;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
-class GenerateStoreUnitTest extends BaseGenerator
+class GenerateListUnitTest extends BaseGenerator
 {
 
-    protected $classType = 'store-test';
+    protected $classType = 'list-test';
+
+
+    protected $testBaseName;
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:test:store {table}';
+    protected $signature = 'admin:generate:test:list {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -28,8 +32,6 @@ class GenerateStoreUnitTest extends BaseGenerator
     
       /**
      * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace()
@@ -48,7 +50,7 @@ class GenerateStoreUnitTest extends BaseGenerator
        $this->className = $this->getClassName();
        $this->classNameKebab = Str::kebab($this->className);
 
-       $this->testBaseName = $this->className.'StoreTest';
+       $this->testBaseName = $this->className.'ListTest';
 
        $this->namespace = $this->getDefaultNamespace().'\\'.ucfirst($this->className);
 
@@ -76,7 +78,7 @@ class GenerateStoreUnitTest extends BaseGenerator
             'resource'=> $this->getClassName(),
             'tableName'=> $this->argument('table'),
             'columnFakerMappings'=> $this->getColumnFakerMap(),
-            'viewName'=> 'create-'.$this->classNameKebab,
+            'viewName'=> 'list-'.$this->classNameKebab,
             'modelDotNotation'=> Str::singular($this->argument('table'))
          
         ];

@@ -33,7 +33,7 @@ class Utilities
      * getRelations
      *
      * @param  mixed $model
-     * @return void
+     * @return array
      */
     public static function getRelations($model)
     {

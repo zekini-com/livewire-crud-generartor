@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\View\View;
 use OwenIt\Auditing\Models\Audit;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller; /** @phpstan-ignore-line */
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Contracts\View\Factory;
-
-class AdminHomepageController extends Controller
+/**
+ * @psalm-suppress UndefinedClass
+ */
+class AdminHomepageController extends Controller /** @phpstan-ignore-line */
 {
     /**
      * Display default admin home page
@@ -22,16 +24,4 @@ class AdminHomepageController extends Controller
         ]);
     }
 
-    
-    /**
-     * Audit Logs
-     *
-     * @return View
-     */
-    public function audit()
-    {
-        return view('zekini/livewire-crud-generator::admin.homepage.audit', [
-            'logs' => Audit::all()
-        ]);
-    }
 }

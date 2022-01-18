@@ -10,6 +10,8 @@ class GeneratePermission extends BaseGenerator
 {
 
     protected $classType = 'permission';
+
+    protected $model;
     
     /**
      * class name
@@ -30,7 +32,7 @@ class GeneratePermission extends BaseGenerator
      *
      * @var string
      */
-    protected $signature = 'admin:generate:permission {table}';
+    protected $signature = 'admin:generate:permission {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.

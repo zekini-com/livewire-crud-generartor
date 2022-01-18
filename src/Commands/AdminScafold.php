@@ -51,14 +51,26 @@ class AdminScafold extends Command
         $this->info("Email : support@zekini.com");
         $this->info("Password : localpassword@zekini");
 
-        $this->call('admin:crud:generate', ['table'=> 'zekini_admins']);
-        $this->call('admin:crud:generate', ['table'=> 'permissions']);
-        $this->call('admin:crud:generate', ['table'=> 'roles']);
+        // migrate generated tables
+        $this->call('migrate');
+
+        $this->generateDefaultModelCruds();
 
         //call jetstream installation
-        $this->call('jetstream:install', ['stack'=> 'livewire']);
+        //$this->call('jetstream:install', ['stack'=> 'livewire']);
         
         return Command::SUCCESS;
+    }
+
+
+    protected function generateDefaultModelCruds()
+    {
+       
+        $this->call('admin:crud:generate', ['table'=> 'zekini_admins', '--user'=>true]);
+        $this->call('admin:crud:generate', ['table'=> 'permissions']);
+        $this->call('admin:crud:generate', ['table'=> 'roles']);
+        $this->call('admin:crud:generate', ['table'=> config('activitylog.table_name'), '--readonly'=>true]);
+
     }
 
     
@@ -69,11 +81,12 @@ class AdminScafold extends Command
      */
     protected function publishVendors()
     {
-        $this->publishSpatieVendors();
+        $this->publishSpatiePermissionVendor();
 
-        $this->publishAuditVendor();
-       
+        $this->publishSpatieLogVendor();
+
         $this->publishZekini();
+
     }
     
     /**
@@ -81,7 +94,7 @@ class AdminScafold extends Command
      *
      * @return void
      */
-    protected function publishSpatieVendors()
+    protected function publishSpatiePermissionVendor()
     {
          //Spatie Permission
          $this->call('vendor:publish', [
@@ -101,17 +114,17 @@ class AdminScafold extends Command
      *
      * @return void
      */
-    protected function publishAuditVendor()
+    protected function publishSpatieLogVendor()
     {
          //Spatie Permission
          $this->call('vendor:publish', [
-            '--provider' => "OwenIt\\Auditing\\AuditingServiceProvider",
-            '--tag' => 'migrations'
+            '--provider' => "Spatie\Activitylog\ActivitylogServiceProvider",
+            '--tag' => 'activitylog-migrations'
         ]);
        
         $this->call('vendor:publish', [
-            '--provider' => "OwenIt\\Auditing\\AuditingServiceProvider",
-            '--tag' => 'config'
+            '--provider' => "Spatie\Activitylog\ActivitylogServiceProvider",
+            '--tag' => 'activitylog-config'
         ]);
 
     }

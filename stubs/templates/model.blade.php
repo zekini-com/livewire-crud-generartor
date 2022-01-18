@@ -7,22 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 @if($hasDeletedAt)
     use Illuminate\Database\Eloquent\SoftDeletes;
 @endif
-use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Auditable as AuditableTrait;
-use OwenIt\Auditing\Exceptions\AuditingException;
-use OwenIt\Auditing\Resolvers\UserResolver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Zekini\CrudGenerator\Traits\HasModelRelations;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
-class {{$modelBaseName}} extends Model implements Auditable
+class {{$modelBaseName}} extends Model 
 {
 
     use 
     @if($hasDeletedAt)
          SoftDeletes,
      @endif
-     HasFactory, HasModelRelations,
-     AuditableTrait;
+     HasFactory, HasModelRelations;
+     @if($modelBaseName !== 'ActivityLog')
+     use LogsActivity;
+     @endif
     
     /**
      * Allowed fillable items
@@ -35,57 +35,47 @@ class {{$modelBaseName}} extends Model implements Auditable
     @endforeach
     ];
 
-    
-    /**
-     * Creates the query builder query needed for a relational search
-     *
-     * @param  string $search
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeSearch($query, $search)
-    {
-        if(empty($search)){
-            return $query;
-        }
-      
-        $query->where('{{\Zekini\CrudGenerator\Helpers\Utilities::getSearchKey($modelBaseName)}}', 'like', '%'.$search.'%')
-        @foreach(\Zekini\CrudGenerator\Helpers\Utilities::getRelations($modelBaseName) as $relation)
-        ->OrWhereHas('{{$relation}}', function($rQuery) use ($search){
-            $rQuery->where('{{\Zekini\CrudGenerator\Helpers\Utilities::getSearchKey($relation)}}', 'like', '%'.$search.'%');
-        })
-        @endforeach
-        ;
-    }
 
+    @if($modelBaseName !== 'ActivityLog')
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
+    @endif
+
+    @if($modelBaseName == 'ActivityLog')
+        public function causer(){
+            return $this->morphTo();
+        }
+
+        public function subject(){
+            return $this->morphTo();
+        }
+    @endif
+
+    @if($isUser) 
+        public function audits()
+        {
+            return $this->morphMany(\App\Models\ActivityLog::class, 'causer');
+        }
+    @endif
+
+    
    
 
-
-
-
-    /**
-     * Resolve the User.
-     *
-     * @throws AuditingException
-     *
-     * @return mixed|null
-     */
-    protected function resolveUser()
-    {
-        $userResolver = \Zekini\CrudGenerator\Resolvers\ZekiniAdminResolver::class;
-
-        if (is_subclass_of($userResolver, UserResolver::class)) {
-            return call_user_func([$userResolver, 'resolve']);
-        }
-
-        throw new AuditingException('Invalid UserResolver implementation');
-    }
+   
 
     // Relationships start here
     @if(count($relations)> 0)
     @foreach($relations as $index=>$relation)
+
+        
        
         @php
-            $relationName = strpos($relation['name'], 'belong') === false ? $relation['table'] : Str::singular($relation['table']);
+            $relationName = Str::getRelationship($relation);
         @endphp
         public function {{$relationName}}()
         {

@@ -10,12 +10,14 @@ class GenerateFactory extends BaseGenerator
 
     protected $classType = 'factory';
 
+    protected $factoryBaseName;
+
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:factory {table}';
+    protected $signature = 'admin:generate:factory {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
@@ -27,8 +29,7 @@ class GenerateFactory extends BaseGenerator
     
       /**
      * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
+     * 
      * @return string
      */
     protected function getDefaultNamespace()

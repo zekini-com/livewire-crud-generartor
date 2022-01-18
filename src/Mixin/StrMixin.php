@@ -1,16 +1,13 @@
 <?php
 namespace Zekini\CrudGenerator\Mixin;
 
+use Illuminate\Support\Str;
+
 
 class StrMixin
 {
     
-    /**
-     * Checks a string can be considered as a column name
-     *
-     * @param  string $str
-     * @return bool
-     */
+  
     public function isRelation (){
 
         return function($str) {
@@ -18,13 +15,15 @@ class StrMixin
         };
        
     }
+
+    public function getRelationship()
+    {
+        return function($arr){
+            return in_array($arr['name'], ['belongs_to_many', 'has_many']) ? $arr['table'] : Str::singular($arr['table']);
+        };
+    }
     
-    /**
-     * Guesses the name of the relation from the column name
-     *
-     * @param  string $str
-     * @return string
-     */
+   
     public function relationName (){
 
         return function($str){
@@ -33,12 +32,7 @@ class StrMixin
        
     }
 
-    /**
-     * A string is likely the name of a file
-     *
-     * @param  string $str
-     * @return string
-     */
+   
     public function likelyFile (){
 
         return function($str){

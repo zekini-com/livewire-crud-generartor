@@ -1,29 +1,30 @@
 <?php
-namespace Zekini\CrudGenerator\Commands\Generators;
+namespace Zekini\CrudGenerator\Commands\Generators\View;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
+use Zekini\CrudGenerator\Commands\Generators\BaseGenerator;
 
-class GenerateListView extends BaseGenerator
+class GenerateEditView extends BaseGenerator
 {
 
-    protected $classType = 'list-view';
+    protected $classType = 'edit-view';
 
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:generate:views:list {table}';
+    protected $signature = 'admin:generate:views:edit {table : table to generate crud for } {--user : When added the crud is generated for a user model}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generates a index for the model';
+    protected $description = 'Generates a edit page  for the model';
 
     
 
@@ -38,10 +39,11 @@ class GenerateListView extends BaseGenerator
        $this->className = $this->getClassName();
        $this->classNameKebab = Str::kebab($this->className);
 
+
        $templateContent = $this->replaceContent();
 
-       @$this->files->makeDirectory($path = resource_path('views/livewire'), 0777);
-       $filename = $path.'/list-'.$this->classNameKebab.'.blade.php';
+       @$this->files->makeDirectory($path = resource_path('views/livewire/'.$this->classNameKebab), 0777);
+       $filename = $path.DIRECTORY_SEPARATOR.'edit.blade.php';
       
        $this->files->put($filename, $templateContent);
 
@@ -55,13 +57,10 @@ class GenerateListView extends BaseGenerator
      */
     protected function getViewData()
     {
-        
         return [
-            'componentName'=> ('list-'.$this->classNameKebab),
-            'resource'=> strtolower($this->className),
-            'createView'=> strtolower('create-'.$this->classNameKebab)
+            'vissibleColumns'=> $this->getColumnDetails(),
+            'modelVariableName'=> strtolower($this->getClassName())
         ];
-   
     }
     
 

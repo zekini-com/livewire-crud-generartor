@@ -15,7 +15,11 @@ class CrudGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:crud:generate {table}';
+    protected $signature = 'admin:crud:generate 
+                            {table : table to generate crud for } 
+                            {--user : When added the crud is generated for a user model} 
+                            {--exclude=* : An array of classes not generate}
+                            {--readonly : The datatable is read only no create and edit buttons}';
 
     /**
      * The console command description.
@@ -42,6 +46,8 @@ class CrudGenerator extends Command
      */
     public function handle()
     {
+      
+
         // TODOS
         //check if table exists
         $this->info('Checking if table exists');
@@ -50,7 +56,7 @@ class CrudGenerator extends Command
      
         if(! Schema::hasTable($tableName)) {
             $this->error('Cannot find table. exiting');
-            return;
+            return Command::FAILURE;
         }
 
         // Get all table columns and attributes
@@ -58,11 +64,36 @@ class CrudGenerator extends Command
         $generators = $this->getGenerators();
         
         foreach($generators as $index=>$command) {
-            $this->call($command, ['table'=> $tableName]);
+            if(in_array($index, $this->option('exclude'))) continue;
+            $this->call($command, $this->getOptionsArgument($command));
         }
 
 
         return Command::SUCCESS;
+    }
+
+
+    protected function getOptionsArgument($command)
+    {
+        $array = ['table'=> $this->argument('table')];
+        if($this->option('user')) {
+            $array['--user'] = $this->option('user');
+        }
+
+        $readonlyCommands = [
+            'admin:generate:component:datatable',
+            'admin:generate:component:index',
+            'admin:generate:test:datatable',
+            'admin:generate:test:index',
+        ];
+       
+
+        if($this->option('readonly') && in_array($command, $readonlyCommands)){
+          
+            $array['--readonly'] = $this->option('readonly');
+        }
+
+        return $array;
     }
 
     
@@ -74,31 +105,30 @@ class CrudGenerator extends Command
     protected function getGenerators()
     {
         return [
-            'admin:generate:model',
+            'model'=> 'admin:generate:model',
 
-            'admin:generate:route',
-            'admin:generate:form',
+            'route'=>'admin:generate:route',
+            'form'=>'admin:generate:form',
 
             // livewire views
-            'admin:generate:views:list',
-            'admin:generate:views:edit',
-            'admin:generate:views:create',
+            'view-index'=>'admin:generate:views:index',
+            'view-list'=>'admin:generate:views:list',
+            'view-edit'=>'admin:generate:views:edit',
+            'view-create'=>'admin:generate:views:create',
 
             // livewire components
-            'admin:generate:component:list',
-            'admin:generate:component:create',
-            'admin:generate:component:edit',
+            'component-datatable'=>'admin:generate:component:datatable',
+            'component-index'=>'admin:generate:component:index',
 
             //controller
-            'admin:generate:controller',
+            //'admin:generate:controller',
 
-            'admin:generate:permission',
+            'permission'=>'admin:generate:permission',
             
-            'admin:generate:test:store',
-            'admin:generate:test:update',
-            'admin:generate:test:list',
+            'test-datatable'=>'admin:generate:test:datatable',
+            'test-index'=>'admin:generate:test:index',
 
-            'admin:generate:factory'
+            'factory'=>'admin:generate:factory'
         ];
     }
 
