@@ -57,7 +57,7 @@ class AdminScafold extends Command
         $this->generateDefaultModelCruds();
 
         //call jetstream installation
-        //$this->call('jetstream:install', ['stack'=> 'livewire']);
+        $this->call('jetstream:install', ['stack'=> 'livewire']);
         
         return Command::SUCCESS;
     }
