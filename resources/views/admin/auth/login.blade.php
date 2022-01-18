@@ -44,7 +44,7 @@
 					<div class="card-body text-center">
 						<div>
 							<h2>Zekini Admin</h2>
-							<p>Automatically generated CRUD Admin panel to carter for your web projects</p>
+							<p>Automatically generated CRUD Admin panel to cater for your web projects</p>
 						
 						</div>
 					</div>
