@@ -85,13 +85,15 @@ class FillZekiniAdminDefault extends Migration
     /**
      * The role admin would be assuming
      *
-     * @return array
+     * @return void
      */
     protected function setupRoles()
     {
         foreach($this->roles as $role) {
             // we check if role exists
            
+            $roleId = null;
+
             if (! DB::table('roles')->where(['name'=>$role['name'],'guard_name'=>$this->guard])->exists()) {
 
                 $roleId = DB::table('roles')->insertGetId([
