@@ -78,7 +78,11 @@ class GenerateDatatableComponent extends BaseGenerator
     $pivots = $this->belongsToConfiguration()->filter(function($item){
         return !empty($item['pivot']) && isset($item['pivot']);
     });
-        
+
+    $nonPivotBelongsTo = $this->belongsToConfiguration()->filter(function($item){
+        return empty($item['pivot']);
+    });
+       
         return [
     
             'controllerNamespace' => rtrim($this->namespace, '\\'),
@@ -90,6 +94,7 @@ class GenerateDatatableComponent extends BaseGenerator
             'vissibleColumns'=> $this->getColumnDetails(),
             'relations'=>$this->belongsToConfiguration() ?? [],
             'pivots'=> $pivots,
+            'nonPivotBelongsTo'=> $nonPivotBelongsTo,
             'tableTitleMap'=> $this->getRecordTitleTableMap(),
             'canBeTrashed'=> $this->hasColumn('deleted_at'),
             'hasFile'=> $this->hasColumn('image') || $this->hasColumn('file'),

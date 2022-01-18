@@ -51,15 +51,15 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         return $query
 
         @if(count($relations) > 0)
+        ->with([
         @foreach($relations as $relation)
-            @if(!empty($relation['pivot']) && isset($relation['pivot']))
-    
-            ->join('{{$relation['pivot']}}', '{{strtolower(Str::plural($modelDotNotation))}}.id', '=', "{{$relation['pivot']}}.{{$modelDotNotation == 'zekini_admin' ? 'model': strtolower(Str::singular($modelDotNotation))}}_id")
-            ->join('{{$relation['table']}}', '{{$relation['pivot']}}.{{$relation['column']}}', '=', '{{$relation['table']}}.id')
-            @else
-            ->leftJoin('{{$relation['table']}}', '{{$relation['table']}}.id', "{{strtolower(Str::plural($modelDotNotation))}}.{{$relation['column']}}")
-            @endif
+            @if($loop->last)
+           '{{Str::getRelationship($relation)}}'
+           @else
+           '{{Str::getRelationship($relation)}}',
+           @endif
         @endforeach
+        ])
         @else
         ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id')
         @endif
@@ -129,8 +129,15 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
             // belongs to many relationship tables
             @foreach($pivots as $pivot)
-                Column::name('{{Str::singular($pivot['table'])}}.{{$tableTitleMap[$pivot['table']]}}')
+                Column::name('{{$pivot['table']}}.{{$tableTitleMap[$pivot['table']]}}')
                 ->label('{{Str::singular($pivot['table'])}}')
+            ,
+            @endforeach
+
+            // Non pivot belongs to relationships
+            @foreach($nonPivotBelongsTo as $npRelation)
+                Column::name('{{Str::getRelationship($npRelation)}}.{{$tableTitleMap[$npRelation['table']]}}')
+                ->label('{{Str::singular($npRelation['table'])}}')
             ,
             @endforeach
 

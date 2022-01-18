@@ -61,11 +61,15 @@ class GenerateForm extends BaseGenerator
        $pivots = $this->belongsToConfiguration()->filter(function($item){
             return !empty($item['pivot']) && isset($item['pivot']);
         });
+
+        $belongsTo = $this->belongsToConfiguration()->pluck('column')->toArray();
+
+       
        
         return [
             'vissibleColumns'=> $this->getColumnDetails(),
             'relations'=>  $this->getRelations(),
-            'belongsTo'=> $this->belongsToConfiguration()->pluck('column')->toArray(),
+            'belongsTo'=> $belongsTo,
             'recordTitleMap'=> $this->getRecordTitleTableMap(),
             'pivots'=> $pivots ?? []
         ];
