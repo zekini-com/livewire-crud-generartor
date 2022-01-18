@@ -179,6 +179,32 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
         ${{strtolower($modelBaseName)}}->forceDelete();
 
+        $this->emit('flashMessageEvent', 'Item Deleted succesfully');
+
+        $this->emit('refreshLivewireDatatable');
+    }
+
+    /**
+     * Deletes  a model
+     *
+     * @param  $id
+     * @return void
+     */
+    public function delete($id)
+    {
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
+
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
+
+        $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
+        foreach($fileCols as $files){
+            $this->deleteFile($files);
+        }
+
+        ${{strtolower($modelBaseName)}}->delete();
+
+        $this->emit('flashMessageEvent', 'Item Trashed succesfully');
+
         $this->emit('refreshLivewireDatatable');
     }
 
@@ -200,6 +226,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         }
 
         ${{strtolower($modelBaseName)}}->restore();
+
+        $this->emit('flashMessageEvent', 'Item Restored succesfully');
 
         $this->emit('refreshLivewireDatatable');
     }

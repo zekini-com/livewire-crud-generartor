@@ -32,7 +32,8 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     protected $listeners = [
         'launch{{$modelBaseName}}CreateModal',
-        'launch{{$modelBaseName}}EditModal'
+        'launch{{$modelBaseName}}EditModal',
+        'flashMessageEvent'=> 'flashMessageEvent'
     ];
 
     public function mount()
@@ -59,7 +60,7 @@ class {{Str::plural($modelBaseName)}} extends Component
 
         $this->create($this->state);
 
-        $this->emit('showAlert', 'Created');
+        $this->flashMessageEvent('Item successfully created');
 
         $this->emit('refreshLivewireDatatable');
 
@@ -77,13 +78,18 @@ class {{Str::plural($modelBaseName)}} extends Component
 
         $this->update($this->state, $this->state['id']);
 
-        $this->emit('showAlert', 'Updated');
+        $this->flashMessageEvent('Item successfully updated');
 
         $this->emit('refreshLivewireDatatable');
 
         $this->resetState();
 
         $this->closeModalButton();
+    }
+
+    public function flashMessageEvent($message)
+    {
+        flash($message)->success()->livewire($this);
     }
 
     public function closeModalButton()
