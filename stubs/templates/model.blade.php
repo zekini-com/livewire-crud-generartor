@@ -64,7 +64,8 @@ class {{$modelBaseName}} extends Model
 
         public function getNameAttribute()
         {
-            return $this->hasAttribute('name') ? $this->name : $this->first_name.' '.$this->last_name;
+            $attr = $this->getAttributes();
+            return array_key_exists('name', $attr) ? $attr['name'] : "{$attr['first_name']} {$attr['last_name']}";
         }
     @endif
 

@@ -2,14 +2,14 @@
 @endphp
 
 namespace Tests\Unit\{{$modelBaseName}};
-@php($datatableComponent = ucfirst(Str::plural($modelBaseName)))
+@php $datatableComponent = ucfirst(Str::plural($modelBaseName)); @endphp
 use Tests\TestCase;
 use App\Models\{{$modelBaseName}};
 use App\Http\Livewire\Create{{$modelBaseName}};
 use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\{{$datatableComponent}};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-
+@php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 class {{$modelBaseName}}Test extends TestCase
 {
 
@@ -35,9 +35,19 @@ class {{$modelBaseName}}Test extends TestCase
         @if($index == 1)
         ->set('state.{{$col['name']}}', $firstData)
         @else
+          @if($isActivityLogModel && $col['name'] == 'subject_id')
+          ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
+          @continue
+          @endif
         ->set('state.{{$col['name']}}', {!!$col['faker']!!})
         @endif
       @endforeach
+      @foreach($pivots as $pivot)
+          @php
+            $pivotModelFactory = '\App\Models\\'.ucfirst(Str::singular($pivot['table']));
+          @endphp
+          ->set('state.{{$pivot["table"]}}', {{ $pivotModelFactory }}::factory()->create()->id)
+       @endforeach
         ->call('submit');
 
         $this->assertTrue({{ucfirst($modelBaseName)}}::where('{{$columnFakerMappings->first()['name']}}', $firstData)->exists());
@@ -67,9 +77,19 @@ class {{$modelBaseName}}Test extends TestCase
         @if($index == 1)
         ->set('state.{{$col['name']}}', $firstData)
         @else
+        @if($isActivityLogModel && $col['name'] == 'subject_id')
+          ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
+          @continue
+          @endif
         ->set('state.{{$col['name']}}', {!!$col['faker']!!})
         @endif
       @endforeach
+      @foreach($pivots as $pivot)
+          @php
+            $pivotModelFactory = '\App\Models\\'.ucfirst(Str::singular($pivot['table']));
+          @endphp
+          ->set('state.{{$pivot["table"]}}', {{ $pivotModelFactory }}::factory()->create()->id)
+       @endforeach
         
         ->call('editSubmit');
 
@@ -97,9 +117,19 @@ class {{$modelBaseName}}Test extends TestCase
           @if($index == 1)
           ->set('state.{{$col['name']}}', '')
           @else
+          @if($isActivityLogModel && $col['name'] == 'subject_id')
+          ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
+          @continue
+          @endif
           ->set('state.{{$col['name']}}', {!!$col['faker']!!})
           @endif
         @endforeach
+        @foreach($pivots as $pivot)
+          @php
+            $pivotModelFactory = '\App\Models\\'.ucfirst(Str::singular($pivot['table']));
+          @endphp
+          ->set('state.{{$pivot["table"]}}', {{ $pivotModelFactory }}::factory()->create()->id)
+       @endforeach
           ->call('submit')
           ->assertHasErrors(['state.{{$columnFakerMappings->first()['name']}}'=> 'required']);
     }
@@ -123,9 +153,19 @@ class {{$modelBaseName}}Test extends TestCase
           @if($index == 1)
           ->set('state.{{$col['name']}}', '')
           @else
+          @if($isActivityLogModel && $col['name'] == 'subject_id')
+          ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
+          @continue
+          @endif
           ->set('state.{{$col['name']}}', {!!$col['faker']!!})
           @endif
         @endforeach
+        @foreach($pivots as $pivot)
+          @php
+            $pivotModelFactory = '\App\Models\\'.ucfirst(Str::singular($pivot['table']));
+          @endphp
+          ->set('state.{{$pivot["table"]}}', {{ $pivotModelFactory }}::factory()->create()->id)
+       @endforeach
           ->call('submit')
           ->assertForbidden();
     }
