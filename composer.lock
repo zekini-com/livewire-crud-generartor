@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "606724309db92dd5565feacbe3fb9a8a",
+    "content-hash": "62035419b8f5961b8e58679d9ec629f1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2162,6 +2162,66 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0"
             },
             "time": "2021-07-01T18:43:50+00:00"
+        },
+        {
+            "name": "mattlibera/livewire-flash",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mattlibera/livewire-flash.git",
+                "reference": "d242d3cbba3fb0b6ea0a497f10f70a1e586a2f07"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mattlibera/livewire-flash/zipball/d242d3cbba3fb0b6ea0a497f10f70a1e586a2f07",
+                "reference": "d242d3cbba3fb0b6ea0a497f10f70a1e586a2f07",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^7.0|^8.0",
+                "livewire/livewire": "^1.2|^2.0",
+                "php": ">=7.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "^6.1"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MattLibera\\LivewireFlash\\LivewireFlashServiceProvider"
+                    ],
+                    "aliases": {
+                        "LivewireFlash": "MattLibera\\LivewireFlash\\LivewireFlash"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MattLibera\\LivewireFlash\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Libera",
+                    "email": "me@mattlibera.com"
+                }
+            ],
+            "description": "Flash notifications using Livewire",
+            "support": {
+                "issues": "https://github.com/mattlibera/livewire-flash/issues",
+                "source": "https://github.com/mattlibera/livewire-flash/tree/v0.5.1"
+            },
+            "time": "2021-07-16T21:00:11+00:00"
         },
         {
             "name": "mediconesystems/livewire-datatables",
@@ -11372,6 +11432,7 @@
         "mediconesystems/livewire-datatables": 20,
         "laravel/jetstream": 20,
         "spatie/laravel-activitylog": 20,
+        "mattlibera/livewire-flash": 20,
         "orchestra/testbench": 20,
         "nunomaduro/collision": 20,
         "phpunit/phpunit": 20,

@@ -49,7 +49,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->app['view']->addNamespace('zekini/livewire-crud-generator', resource_path('views/vendor/zekini'));
 
         Blade::component('zekini/livewire-crud-generator::components.modal', 'c.modal');
-        Blade::component('zekini/livewire-crud-generator::components.alert-message', 'c.alert-message');
         
         $this->loadRoutesFrom(__DIR__.'./../routes/web.php');
 
@@ -115,9 +114,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
 
-            Commands\Generators\View\GenerateListView::class,
-            Commands\Generators\View\GenerateEditView::class,
-            Commands\Generators\View\GenerateCreateView::class,
+           
             Commands\Generators\View\GenerateIndexView::class,
 
             Commands\Generators\GeneratePermission::class,

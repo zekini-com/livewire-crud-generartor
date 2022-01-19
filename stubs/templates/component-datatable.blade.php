@@ -15,6 +15,9 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
 
+@php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
+
+
 class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 { 
 
@@ -50,6 +53,12 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
         return $query
 
+        @if($isActivityLogModel)
+
+            ->with(['causer', 'subject'])
+
+        @else
+
         @if(count($relations) > 0)
         ->with([
         @foreach($relations as $relation)
@@ -63,6 +72,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         @else
         ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id')
         @endif
+
+        @endif
        
        ;
         
@@ -73,10 +84,28 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         return [
 
            
+            // adding causer and subject for logs
+            @if($isActivityLogModel)
+            Column::callback(['id', 'causer_type'], function($id, $causer_type){
+                $causer = {{ucfirst($modelBaseName)}}::withTrashed()->findOrFail($id)->causer;
+                $explode = explode("\\", $causer_type);
+                $type = $explode[array_key_last($explode)];
+                return "$causer->name ($type)";
+            })->label('Causer')
+                ,
+            @endif
 
             @foreach($vissibleColumns as $col)
 
+                
+                @if(in_array($col['name'], ['causer_type']) && $isActivityLogModel)
+                // for activitylog polymorphic relations we skip so we handle differently
+                    @continue
+                @endif
+
+                
                 @if(Str::isRelation($col['name']))
+                // checks if the column name is a relation  eg table_id
                     @php
                         $relationTable = Str::plural(Str::relationName($col['name']));
                     @endphp
@@ -126,6 +155,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                 @endswitch
 
             @endforeach
+
+           
 
             // belongs to many relationship tables
             @foreach($pivots as $pivot)
@@ -179,6 +210,32 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
         ${{strtolower($modelBaseName)}}->forceDelete();
 
+        $this->emit('flashMessageEvent', 'Item Deleted succesfully');
+
+        $this->emit('refreshLivewireDatatable');
+    }
+
+    /**
+     * Deletes  a model
+     *
+     * @param  $id
+     * @return void
+     */
+    public function delete($id)
+    {
+        $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
+
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::find($id);
+
+        $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
+        foreach($fileCols as $files){
+            $this->deleteFile($files);
+        }
+
+        ${{strtolower($modelBaseName)}}->delete();
+
+        $this->emit('flashMessageEvent', 'Item Trashed succesfully');
+
         $this->emit('refreshLivewireDatatable');
     }
 
@@ -200,6 +257,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         }
 
         ${{strtolower($modelBaseName)}}->restore();
+
+        $this->emit('flashMessageEvent', 'Item Restored succesfully');
 
         $this->emit('refreshLivewireDatatable');
     }

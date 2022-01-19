@@ -61,6 +61,12 @@ class {{$modelBaseName}} extends Model
         {
             return $this->morphMany(\App\Models\ActivityLog::class, 'causer');
         }
+
+        public function getNameAttribute()
+        {
+            $attr = $this->getAttributes();
+            return array_key_exists('name', $attr) ? $attr['name'] : "{$attr['first_name']} {$attr['last_name']}";
+        }
     @endif
 
     
