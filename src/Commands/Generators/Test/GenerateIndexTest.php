@@ -81,7 +81,11 @@ class GenerateIndexTest extends BaseGenerator
      */
     protected function getViewData()
     {
-        
+
+        $pivots = $this->belongsToConfiguration()->filter(function($item){
+            return !empty($item['pivot']) && isset($item['pivot']);
+        });
+       
         return [
             'modelBaseName' => ucfirst($this->getClassName()),
             'adminModel'=> '\\'.config('zekini-admin.providers.zekini_admins.model'),
@@ -91,6 +95,7 @@ class GenerateIndexTest extends BaseGenerator
             'viewName'=> 'create-'.$this->classNameKebab,
             'modelDotNotation'=> Str::singular($this->argument('table')),
             'componentName'=> $this->getComponentName(),
+            'pivots'=> $pivots
          
         ];
     }
