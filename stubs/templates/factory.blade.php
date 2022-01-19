@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use {{$factoryModelNamespace}};
 
+@php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
+
+
+
 class {{$factoryBaseName}} extends Factory
 {
     /**
@@ -19,6 +23,12 @@ class {{$factoryBaseName}} extends Factory
         return [
 
             @foreach($fakerAttributes as $attribute)
+           
+            @if($isActivityLogModel && in_array($attribute['name'], ['subject_id', 'causer_id']))
+           
+            "{{$attribute['name']}}" => $this->faker->randomDigit(),
+            @continue
+            @endif
             @if($attribute['name'] == 'file' || $attribute['name']== 'image')
                 "{{$attribute['name']}}" => '["img.jpg"]',
             @else
