@@ -114,9 +114,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
 
-            Commands\Generators\View\GenerateListView::class,
-            Commands\Generators\View\GenerateEditView::class,
-            Commands\Generators\View\GenerateCreateView::class,
+           
             Commands\Generators\View\GenerateIndexView::class,
 
             Commands\Generators\GeneratePermission::class,
