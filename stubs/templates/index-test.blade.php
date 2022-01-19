@@ -35,7 +35,7 @@ class {{$modelBaseName}}Test extends TestCase
         @if($index == 1)
         ->set('state.{{$col['name']}}', $firstData)
         @else
-          @if($isActivityLogModel && $col['name'] == 'subject_id')
+          @if($isActivityLogModel && in_array($col['name'], ['subject_id', 'causer_id']))
           ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
           @continue
           @endif
@@ -77,7 +77,7 @@ class {{$modelBaseName}}Test extends TestCase
         @if($index == 1)
         ->set('state.{{$col['name']}}', $firstData)
         @else
-        @if($isActivityLogModel && $col['name'] == 'subject_id')
+        @if($isActivityLogModel && in_array($col['name'], ['subject_id', 'causer_id']))
           ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
           @continue
           @endif
@@ -117,7 +117,7 @@ class {{$modelBaseName}}Test extends TestCase
           @if($index == 1)
           ->set('state.{{$col['name']}}', '')
           @else
-          @if($isActivityLogModel && $col['name'] == 'subject_id')
+          @if($isActivityLogModel && in_array($col['name'], ['subject_id', 'causer_id']))
           ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
           @continue
           @endif
@@ -153,7 +153,7 @@ class {{$modelBaseName}}Test extends TestCase
           @if($index == 1)
           ->set('state.{{$col['name']}}', '')
           @else
-          @if($isActivityLogModel && $col['name'] == 'subject_id')
+          @if($isActivityLogModel && in_array($col['name'], ['subject_id', 'causer_id']))
           ->set('state.{{$col['name']}}', {!!'$this->faker->randomDigit()'!!})
           @continue
           @endif

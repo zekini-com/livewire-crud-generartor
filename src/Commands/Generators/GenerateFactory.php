@@ -72,7 +72,8 @@ class GenerateFactory extends BaseGenerator
             'factoryBaseName' => $this->factoryBaseName,
             'factoryNamespace' => rtrim($this->namespace, '\\'),
             'fakerAttributes'=> $this->getColumnFakerMap(),
-            'factoryModelNamespace'=> "App\Models\\".$this->className
+            'factoryModelNamespace'=> "App\Models\\".$this->className,
+            'modelBaseName'=> ucfirst($this->className)
         ];
     }
 

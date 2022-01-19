@@ -169,6 +169,9 @@ abstract class BaseGenerator extends Command
             case 'text':
                 $faker =  '$this->faker->sentence()';
             break;
+            case 'json':
+                $faker = 'json_encode(["faker_data"])';
+            break;
             default: 
                 $faker =  '$this->faker->word()';
         }
