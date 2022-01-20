@@ -145,7 +145,6 @@ class {{ $className }} extends Migration
      */
     public function up(): void
     {
-
         DB::transaction(function(){
 
             // Setup Permissions
@@ -173,14 +172,11 @@ class {{ $className }} extends Migration
             $this->clearRoleHasPermissions();
 
             $this->clearPermissions();
-
-            
         });
         
         app()['cache']->forget(config('permission.cache.key'));
     }
 
-    
     /**
      * clearRoleHasPermissions
      *
@@ -192,7 +188,6 @@ class {{ $className }} extends Migration
         $permissions = $permissions->pluck('id')->toArray();
         DB::table('role_has_permissions')->whereIn('permission_id', $permissions)->delete();
     }
-
     
     /**
      * clearPermissions

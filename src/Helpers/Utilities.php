@@ -43,8 +43,8 @@ class Utilities
            
             $relationName =  strpos($relation['name'], 'belong') === false ? $relation['table'] : Str::singular($relation['table']);
             return $relationName;
-        })->toArray();
-        
+        })
+            ->toArray();
     }
 
 
@@ -64,11 +64,11 @@ class Utilities
             'updated_at',
             'remember_token'
         ];
+
         if (! $searchKey) {
             $searchKey = collect(Schema::getColumnListing($table))->first(function($col) use($dontShow){
                 return !in_array($col, $dontShow);
             });
-
         }
        
         return $searchKey;
