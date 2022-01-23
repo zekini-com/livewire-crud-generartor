@@ -193,11 +193,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
    
     /**
      * Force deletes a model
-     *
-     * @param  $id
-     * @return void
      */
-    public function forceDelete($id)
+    public function forceDelete(int $id): void
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
@@ -218,10 +215,9 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     /**
      * Deletes  a model
      *
-     * @param  $id
-     * @return void
+     * @param int $id
      */
-    public function delete($id)
+    public function delete($id): void
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
@@ -241,11 +237,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
     /**
      * Restores a deleted model
-     *
-     * @param  $id
-     * @return void
      */
-    public function restore($id)
+    public function restore(int $id): void
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 

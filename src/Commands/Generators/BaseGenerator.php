@@ -137,7 +137,7 @@ abstract class BaseGenerator extends Command
      */
     protected function decideFaker($type, $name)
     {
-        if(Str::isRelation($name)) return "\App\Models\\".ucfirst(Str::relationName($name))."::factory()->create()->id";
+        if(Str::isRelation($name)) return "\App\Models\\".ucfirst(Str::relationName($name))."::inRandomOrder()->firstOrFail()->id";
         if ($name == 'name') return '$this->faker->name()';
         if ($name == 'email') return '$this->faker->unique()->safeEmail()';
         if ($name == 'image' || $name == 'file') return "[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]";
