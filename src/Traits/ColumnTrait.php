@@ -74,9 +74,7 @@ trait ColumnTrait
     {
        $columns = $this->getColumnDetails();
       
-       $belongsTo = $this->belongsToConfiguration()->pluck('column')->toArray();
-       
-       return $belongsTo;
+       return $this->belongsToConfiguration()->pluck('column')->toArray();
     }
 
     
@@ -90,5 +88,4 @@ trait ColumnTrait
     {
         return Schema::hasColumn($this->argument('table'), $col);
     }
-
 }

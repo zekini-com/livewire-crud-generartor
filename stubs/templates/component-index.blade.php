@@ -118,22 +118,23 @@ class {{Str::plural($modelBaseName)}} extends Component
     {
         return [
             @foreach($vissibleColumns as $col)
-            @if($userModel && in_array($col['name'], ['email', 'name']))
-            'state.{{$col['name']}}'=> 'required|unique:{{$tableName}},{{$col["name"]}},'.@$this->state['id'],
+            @if($userModel && in_array($col['name'], ['name']))
+            'state.{{$col['name']}}'=> 'required|min:3|max:255|unique:{{$tableName}},{{$col["name"]}},'.@$this->state['id'],
+            @elseif($userModel && $col['name'] === 'email'))
+            'state.{{$col['name']}}'=> 'required|email:rfc|min:3|max:255|unique:{{$tableName}},{{$col["name"]}},'.@$this->state['id'],
             @else
             'state.{{$col['name']}}'=> 'required',
             @endif
-            
             @endforeach
         ];
     }
 
-    protected function resetState()
+    protected function resetState(): void
     {
         $this->state = [];
     }
 
-    private function create($data)
+    private function create($data): void
     {
         // image processing
         @if($hasFile)
@@ -153,7 +154,7 @@ class {{Str::plural($modelBaseName)}} extends Component
     }
 
 
-    private function update($data, $id)
+    private function update($data, $id): void
     {
         $model = {{$modelBaseName}}::findOrFail($id);
 
