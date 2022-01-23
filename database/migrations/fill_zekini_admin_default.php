@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class FillZekiniAdminDefault extends Migration
 {
-
     public function __construct()
     {
         // TODO read this from an admin configuration file
@@ -23,6 +22,7 @@ class FillZekiniAdminDefault extends Migration
             'administer.user.edit',
             'administer.user.delete',
         ]);
+
         $this->roles = collect([[
             'name'=> 'Administrator',
             'permissions'=> $this->permissions->toArray()]
@@ -32,7 +32,7 @@ class FillZekiniAdminDefault extends Migration
             'name'=> 'Administrator',
             'email'=> 'support@zekini.com',
             'email_verified_at'=> now(),
-            'password'=> Hash::make('localpassword@zekini')
+            'password'=> Hash::make(config('zekini-admin.defaults.default-password'))
         ];
        
     }

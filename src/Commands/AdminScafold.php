@@ -41,7 +41,6 @@ class AdminScafold extends Command
      */
     public function handle()
     {
-       
         // Setup the zekiniAdmin authentication guard
         $this->setupAdminAuthGuard();
         
@@ -49,7 +48,7 @@ class AdminScafold extends Command
         $this->publishVendors();
       
         $this->info("Email : support@zekini.com");
-        $this->info("Password : localpassword@zekini");
+        $this->info('Password : '. config('zekini-admin.defaults.default-password'));
 
         // migrate generated tables
         $this->call('migrate');
@@ -62,10 +61,8 @@ class AdminScafold extends Command
         return Command::SUCCESS;
     }
 
-
     protected function generateDefaultModelCruds()
     {
-       
         $this->call('admin:crud:generate', ['table'=> 'zekini_admins', '--user'=>true]);
         $this->call('admin:crud:generate', ['table'=> 'permissions']);
         $this->call('admin:crud:generate', ['table'=> 'roles']);
