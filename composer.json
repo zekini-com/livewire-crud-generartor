@@ -9,10 +9,6 @@
     }],
     "minimum-stability": "dev",
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ee0599749aa41abfad05fa75f5c22c839e553198
     "autoload": {
         "psr-4": {
             "Zekini\\CrudGenerator\\": "src/"
@@ -33,8 +29,4 @@
     "require": {
         "zekini/laravel-generics": "dev-master"
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ee0599749aa41abfad05fa75f5c22c839e553198
