@@ -9,6 +9,7 @@
     }],
     "minimum-stability": "dev",
 
+
     "autoload": {
         "psr-4": {
             "Zekini\\CrudGenerator\\": "src/"
@@ -17,9 +18,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider",
-                "Spatie\\Permission\\PermissionServiceProvider",
-                "Livewire\\LivewireServiceProvider"
+                "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider"
             ]
         }
     },
@@ -28,7 +27,6 @@
             "Zekini\\CrudGenerator\\Tests\\": "tests"
         }
     },
-
     "require": {
         "zekini/laravel-generics": "dev-master"
     }
