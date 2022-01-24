@@ -15,6 +15,8 @@ class {{$modelBaseName}}DatatableTest extends TestCase
 
     use RefreshDatabase;
 
+     protected $faker;
+
     /**
      * Test we can create {{$resource}}
      * @group {{$resource}}_test

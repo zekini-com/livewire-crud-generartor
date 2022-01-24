@@ -33,7 +33,7 @@ class {{$factoryBaseName}} extends Factory
                 "{{$attribute['name']}}" => '["img.jpg"]',
             @else
             
-            "{{$attribute['name']}}"=> {!! $attribute['faker'] !!},
+            "{{$attribute['name']}}"=> {!! $attribute['faker'] !!}, /** @phpstan-ignore-line */
         
             @endif
             @endforeach

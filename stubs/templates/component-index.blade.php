@@ -10,6 +10,7 @@ use Zekini\CrudGenerator\Traits\HandlesFile;
 
 use Livewire\WithFileUploads;
 use Livewire\TemporaryUploadedFile;
+use Zekini\Generics\Helpers\FlashHelper;
 
 
 @php($lowerModelBaseName = Str::camel($modelBaseName))
@@ -89,7 +90,7 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     public function flashMessageEvent($message)
     {
-        flash($message)->success()->livewire($this);
+        FlashHelper::success($message, $this);
     }
 
     public function closeModalButton()

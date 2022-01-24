@@ -9,18 +9,16 @@ use Illuminate\Support\Facades\DB;
 
 class {{ $className }} extends Migration
 {
-    /**
-     * {{'@'}}var Repository|mixed
-     */
-    protected $guardName;
-    /**
-     * {{'@'}}var array
-     */
+   
+   
+   
     protected $permissions;
-    /**
-     * {{'@'}}var array
-     */
+    
     protected $roles;
+
+    protected $guard;
+
+    protected $className;
 
     /**
      * {{ $className }} constructor.
@@ -94,7 +92,7 @@ class {{ $className }} extends Migration
     /**
      * The role admin would be assuming
      *
-     * @return array
+     * @return void
      */
     protected function attachPermissiontoAdminRole()
     {
