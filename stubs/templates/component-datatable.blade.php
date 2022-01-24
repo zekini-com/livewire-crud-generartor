@@ -49,7 +49,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     {
         $query =  {{ucfirst($modelBaseName)}}::query();
 
-        $query = $this->softdeletes ? $query->onlyTrashed() : $query;
+        $query = $this->softdeletes ? $query->onlyTrashed() : $query; 
 
         return $query
 
@@ -194,14 +194,14 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     /**
      * Force deletes a model
      *
-     * @param  $id
+     * @param  int $id
      * @return void
      */
     public function forceDelete($id)
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
-        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);/** @phpstan-ignore-line */
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){
@@ -218,7 +218,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     /**
      * Deletes  a model
      *
-     * @param  $id
+     * @param int $id
      * @return void
      */
     public function delete($id)
@@ -242,7 +242,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     /**
      * Restores a deleted model
      *
-     * @param  $id
+     * @param  int $id
      * @return void
      */
     public function restore($id)
