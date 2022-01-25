@@ -4,15 +4,16 @@
 namespace App\Imports;
 
 use App\Models\{{ucfirst($modelBaseName)}};
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Livewire\TemporaryUploadedFile;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class {{Str::plural(ucfirst($modelBaseName))}}Import implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
+class {{Str::plural(ucfirst($modelBaseName))}}Import implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation, WithChunkReading
 {
     use RemembersRowNumber;
 
@@ -24,32 +25,32 @@ class {{Str::plural(ucfirst($modelBaseName))}}Import implements ToModel, WithHea
     /**
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row)
+    public function model(array $row): void
     {
         logger('Row: ' . $this->getRowNumber());
 
-        Validator::make($row, [
-            @foreach($vissibleColumns as $col)
-                '*.{{$col['name']}}'=> 'required',
-            @endforeach
-        ])
-            ->validate();
-
         @php $firstCol = $vissibleColumns->first(); @endphp
-        return {{ucfirst($modelBaseName)}}::updateOrCreate(
+         DB::table('{{Str::plural(strtolower($modelBaseName))}}')->whereNull('deleted_at')->updateOrInsert(
             [
                 '{{$firstCol['name']}}' => $row['{{$firstCol['name']}}'],
             ],
             [
                 @foreach($vissibleColumns as $col)
-                    @if($firstCol['name'] == $col['name'])
-                        @continue
-                    @endif
                     '{{$col['name']}}'=> $row['{{$col['name']}}'],
                 @endforeach
             ]
         );
     }
+
+    public function rules(): array
+    {
+        return [
+            @foreach($vissibleColumns as $col)
+                '*.{{$col['name']}}'=> 'required',
+            @endforeach
+        ];
+    }
+
 
     public function batchSize(): int
     {

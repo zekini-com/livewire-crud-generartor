@@ -9,6 +9,8 @@ use App\Models\{{$modelBaseName}};
 use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\Datatable\{{$datatableComponent}};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use App\Imports\{{Str::plural(ucfirst($modelBaseName))}}Import;
+use Maatwebsite\Excel\Facades\Excel;
 
 class {{$modelBaseName}}DatatableTest extends TestCase
 {
@@ -90,6 +92,8 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     
           $this->assertTrue({{ucfirst($modelBaseName)}}::where('id', $model->id)->exists());
     }
+
+    
 
 
    

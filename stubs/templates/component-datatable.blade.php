@@ -31,7 +31,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
     public $model = {{ucfirst($modelBaseName)}}::class;
 
-    public $beforeTableSlot = 'partials.import-button';
+    public $importBtn = true;
 
     public $exportable = true;
 
@@ -311,9 +311,9 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         $filename = '{{strtolower($modelBaseName)}}.xlsx';
 
         if (!Storage::disk('templates')->exists($filename)) {
-            $errorMessage = 'Failed to find template ' . $filename;
-            $this->emit('flashMessageEvent', $errorMessage);
-            Log::error($errorMessage);
+
+            $this->emit('flashMessageEvent', "Failed to find template $filename");
+            
             return;
         }
 
@@ -324,7 +324,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     {
         $filename = $this->file->store('imports');
 
-        Excel::import(new ClientsImport($this->file), $filename);
+        Excel::import(new {{Str::plural(ucfirst($modelBaseName))}}Import($this->file), $filename);
 
         $this->emit('flashMessageEvent', 'Imported');
         $this->emit('refreshLivewireDatatable');

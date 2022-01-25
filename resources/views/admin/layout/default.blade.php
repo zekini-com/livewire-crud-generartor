@@ -123,7 +123,6 @@
         </header>
         <div class="body flex-grow-1 px-3">
 
-            <livewire:flash-container />
 
             @yield('body')
         </div>
