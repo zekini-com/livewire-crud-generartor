@@ -139,6 +139,9 @@ class CrudGenerator extends Command
             //controller
             //'admin:generate:controller',
 
+            //imports
+            'import'=> 'admin:generate:import',
+
             'permission'=>'admin:generate:permission',
             
             'test-datatable'=>'admin:generate:test:datatable',
