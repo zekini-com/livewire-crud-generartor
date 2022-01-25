@@ -19,7 +19,8 @@ class CrudGenerator extends Command
                             {table : table to generate crud for } 
                             {--user : When added the crud is generated for a user model} 
                             {--exclude=* : An array of classes not generate}
-                            {--readonly : The datatable is read only no create and edit buttons}';
+                            {--readonly : The datatable is read only no create and edit buttons}
+                            {--only= : generates a single component}';
 
     /**
      * The console command description.
@@ -46,30 +47,47 @@ class CrudGenerator extends Command
      */
     public function handle()
     {
-      
-
-        // TODOS
-        //check if table exists
-        $this->info('Checking if table exists');
 
         $tableName = $this->argument('table');
      
-        if(! Schema::hasTable($tableName)) {
-            $this->error('Cannot find table. exiting');
+        if (! $this->tableExists($tableName)) {
+            
             return Command::FAILURE;
-        }
+        } 
 
-        // Get all table columns and attributes
-        $columns = Schema::getColumnListing($tableName);
-        $generators = $this->getGenerators();
-        
-        foreach($generators as $index=>$command) {
+        // if we are generating a single component
+        // we stop here and continue
+        $component = $this->option('only');
+
+        $component ?  $this->generateSingleComponent($component) : $this->generateMultipleComponents();
+
+        return Command::SUCCESS;
+    }
+
+    protected function generateSingleComponent($component)
+    {
+        $command = $this->getGenerators()[$component];
+
+        $this->call($command, $this->getOptionsArgument($command));
+    }
+
+    protected function generateMultipleComponents()
+    {
+        foreach($this->getGenerators() as $index=>$command) {
             if(in_array($index, $this->option('exclude'))) continue;
             $this->call($command, $this->getOptionsArgument($command));
         }
+    }
 
 
-        return Command::SUCCESS;
+    protected function tableExists($tableName):  ?bool
+    {
+        if(! Schema::hasTable($tableName)) {
+            $this->error('Cannot find table. exiting');
+           return false;
+        }
+
+        return true;
     }
 
 
