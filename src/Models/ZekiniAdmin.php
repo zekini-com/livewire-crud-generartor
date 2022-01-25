@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Zekini\CrudGenerator\Factory\ZekiniAdminFactory;
 
-class ZekiniAdmin extends Authenticatable
+class ZekiniAdmin extends Authenticatable implements \Illuminate\Contracts\Auth\Authenticatable
 {
 
     use HasFactory, Notifiable, HasRoles;

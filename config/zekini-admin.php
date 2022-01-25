@@ -8,7 +8,7 @@ return [
 
         // used for development
         'default-email'=> 'support@zekini.com',
-        'default-password'=> 'localpassword@zekini'
+        'default-password'=> 'password'
     ],
 
     'guards'=> [

@@ -3,12 +3,17 @@
 
 namespace App\Http\Livewire\{{Str::plural(ucfirst($modelBaseName))}}\Datatable;
 
+use App\Imports\{{Str::plural(ucfirst($modelBaseName))}}Import;
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Zekini\CrudGenerator\Traits\HandlesFile;
 use Zekini\CrudGenerator\Helpers\CrudModelList;
 use {{ $modelFullName }};
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\NumberColumn;
@@ -19,31 +24,33 @@ use Mediconesystems\LivewireDatatables\BooleanColumn;
 
 
 class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
-{ 
-
-    use HandlesFile, AuthorizesRequests;
-
+{
+    use AuthorizesRequests;
+    use HandlesFile;
+    use WithFileUploads;
 
     public $model = {{ucfirst($modelBaseName)}}::class;
 
+    public $beforeTableSlot = 'partials.import-button';
+
     public $exportable = true;
+
+    public $file;
 
     public $softdeletes = false;
 
-   
     @if($isReadonly)
     public $showBtns  = false;
     @else
     public $showBtns = true;
     @endif
- 
 
     public $launchCreateEventModal = 'launch{{ucfirst($modelBaseName)}}CreateModal';
 
     protected $customListeners = [
-        'toggleSoftDeletes'
+        'downloadTemplate',
+        'toggleSoftDeletes',
     ];
-
 
     public function builder()
     {
@@ -190,14 +197,13 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         return array_merge($this->listeners, $this->customListeners);
     }
 
-   
     /**
      * Force deletes a model
      *
      * @param  int $id
      * @return void
      */
-    public function forceDelete($id)
+    public function forceDelete(int $id): void
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
@@ -221,7 +227,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
      * @param int $id
      * @return void
      */
-    public function delete($id)
+    public function delete($id): void
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
@@ -245,7 +251,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
      * @param  int $id
      * @return void
      */
-    public function restore($id)
+    public function restore(int $id): void
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
@@ -263,9 +269,6 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         $this->emit('refreshLivewireDatatable');
     }
 
-
-
-    
     /**
      * Checks if a model has files or images and deletes it
      *
@@ -276,15 +279,14 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     {
         return collect($model->getAttributes())->filter(function($col, $index){
             return Str::likelyFile($index);
-        })->toArray();
+        })
+            ->toArray();
     }
-
 
     public function launch{{ucfirst($modelBaseName)}}EditModal({{ucfirst($modelBaseName)}} ${{$modelBaseName}})
     {
         $this->emit('launch{{ucfirst($modelBaseName)}}EditModal', ${{$modelBaseName}});
     }
-
 
     public function toggleSoftDeletes()
     {
@@ -304,6 +306,27 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         return view('zekini/livewire-crud-generator::datatable.datatable')->layoutData(['title' => $this->title]);
     }
 
+    public function downloadTemplate()
+    {
+        $filename = '{{strtolower($modelBaseName)}}.xlsx';
 
-   
+        if (!Storage::disk('templates')->exists($filename)) {
+            $errorMessage = 'Failed to find template ' . $filename;
+            $this->emit('flashMessageEvent', $errorMessage);
+            Log::error($errorMessage);
+            return;
+        }
+
+        return response()->download(storage_path('app/public/templates/' . $filename));
+    }
+
+    public function updatedFile()
+    {
+        $filename = $this->file->store('imports');
+
+        Excel::import(new ClientsImport($this->file), $filename);
+
+        $this->emit('flashMessageEvent', 'Imported');
+        $this->emit('refreshLivewireDatatable');
+    }
 }
