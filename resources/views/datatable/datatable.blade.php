@@ -24,6 +24,9 @@
                     </div>
                 </div>
                 @endif
+                @if(isset($importBtn))
+                    @include('zekini/livewire-crud-generator::partials.import-btn')
+                @endif
             </div>
 
             @if($this->activeFilters)
