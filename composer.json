@@ -1,34 +1,32 @@
 {
-	"name": "zekini/livewire-crud-generator",
-	"description": "This helps in scafolding the necessary CRUD and admin panel for applications",
-	"type": "library",
-	"license": "MIT",
-	"authors": [{
-		"name": "Keania Niate Eric",
-		"email": "support@zekini.com"
-	}],
-	"minimum-stability": "dev",
+    "name": "zekini/livewire-crud-generator",
+    "description": "This helps in scafolding the necessary CRUD and admin panel for applications",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Keania Niate Eric",
+        "email": "support@zekini.com"
+    }],
+    "minimum-stability": "dev",
 
-
-	"autoload": {
-		"psr-4": {
-			"Zekini\\CrudGenerator\\": "src/"
-		}
-	},
-	"extra": {
-		"laravel": {
-			"providers": [
-				"Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider"
-			]
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Zekini\\CrudGenerator\\Tests\\": "tests"
-		}
-	},
-	"require": {
-		"zekini/laravel-generics": "dev-master"
-	}
+    "autoload": {
+        "psr-4": {
+            "Zekini\\CrudGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zekini\\CrudGenerator\\LivewireCrudGeneratorServiceProvider"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zekini\\CrudGenerator\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "zekini/laravel-generics": "dev-master"
+    }
 }
-

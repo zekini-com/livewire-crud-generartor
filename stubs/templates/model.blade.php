@@ -24,11 +24,7 @@ class {{$modelBaseName}} extends Model
      use LogsActivity;
      @endif
     
-    /**
-     * Allowed fillable items
-     *
-     * @var array
-     */
+   
     protected $fillable = [ 
     @foreach($vissibleColumns as $col)
     "{{$col['name']}}",
