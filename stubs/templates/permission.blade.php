@@ -5,15 +5,11 @@
 use Carbon\Carbon;
 use Illuminate\Config\Repository;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class {{ $className }} extends Migration
 {
-   
-   
-   
-    protected $permissions;
-    
     protected $roles;
 
     protected $guard;
@@ -25,7 +21,7 @@ class {{ $className }} extends Migration
      */
     public function __construct()
     {
-        $this->guard = config('zekini-admin.defaults.guard');
+        $this->guardName = config('zekini-admin.defaults.guard');
         $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
         $this->permissions = collect([
             'admin.{{ $modelDotNotation }}',
@@ -40,7 +36,7 @@ class {{ $className }} extends Migration
         $this->roles = [
             [
                 'name' => 'Administrator',
-                'guard_name' => $this->guard,
+                'guard_name' => $this->guardName,
                 'permissions' => $this->permissions->toArray(),
             ],
         ];
@@ -94,24 +90,30 @@ class {{ $className }} extends Migration
      *
      * @return void
      */
-    protected function attachPermissiontoAdminRole()
+    protected function attachPermissiontoAdminRole(): void
     {
         $role = DB::table('roles')->where('name', 'Administrator')->first();
         $roleId = $role->id;
 
         // map role to permisssions
         foreach($this->permissions as $rolePermission) {
-            $permission = DB::table('permissions')->where(['name'=> $rolePermission, 'guard_name'=> $this->guard])->first();
+            $permission = DB::table('permissions')
+                ->where([
+                    'name' => $rolePermission,
+                    'guard_name' => $this->guardName,
+                ])
+                ->first();
+
             $rolePermission = [
                 'permission_id'=> $permission->id,
                 'role_id'=> $roleId
             ];
+
             // we check if role exists
             if (! DB::table('role_has_permissions')->where($rolePermission)->exists()) {
                 DB::table('role_has_permissions')->insert($rolePermission);
              }
         }
-        
     }
 
     /**
@@ -123,11 +125,11 @@ class {{ $className }} extends Migration
     {
         foreach($this->permissions as $permission) {
             // we check if permission exists
-            if (! DB::table('permissions')->where(['name'=>$permission, 'guard_name'=>$this->guard])->exists()) {
+            if (! DB::table('permissions')->where(['name'=>$permission, 'guard_name'=>$this->guardName])->exists()) {
 
                 DB::table('permissions')->insert([
                     'name'=> $permission,
-                    'guard_name'=> $this->guard,
+                    'guard_name'=> $this->guardName,
                     'created_at'=> Carbon::now(),
                     'updated_at'=> Carbon::now()
                 ]);
@@ -143,7 +145,6 @@ class {{ $className }} extends Migration
      */
     public function up(): void
     {
-
         DB::transaction(function(){
 
             // Setup Permissions
@@ -171,14 +172,11 @@ class {{ $className }} extends Migration
             $this->clearRoleHasPermissions();
 
             $this->clearPermissions();
-
-            
         });
         
         app()['cache']->forget(config('permission.cache.key'));
     }
 
-    
     /**
      * clearRoleHasPermissions
      *
@@ -190,7 +188,6 @@ class {{ $className }} extends Migration
         $permissions = $permissions->pluck('id')->toArray();
         DB::table('role_has_permissions')->whereIn('permission_id', $permissions)->delete();
     }
-
     
     /**
      * clearPermissions
