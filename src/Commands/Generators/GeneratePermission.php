@@ -9,7 +9,6 @@ use Illuminate\Filesystem\Filesystem;
 
 class GeneratePermission extends BaseGenerator
 {
-
     protected $classType = 'permission';
 
     protected $model;
@@ -61,7 +60,7 @@ class GeneratePermission extends BaseGenerator
      */
     protected function getClassName()
     {
-        return 'FillPermissionsFor' . Str::pluralStudly($this->argument('table')) . 'Table';
+        return 'FillPermissionsFor' . Str::plural($this->argument('table')) . 'Table';
     }
 
     /**
@@ -75,7 +74,7 @@ class GeneratePermission extends BaseGenerator
 
         $this->className = $this->getClassName();
 
-        $this->model = Str::singular($this->className);
+        $this->model = Str::singular(Str::studly($this->argument('table')));
 
         $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
@@ -94,8 +93,6 @@ class GeneratePermission extends BaseGenerator
         return Command::SUCCESS;
     }
 
-
-
     /**
      * Get filename
      *
@@ -106,6 +103,7 @@ class GeneratePermission extends BaseGenerator
         $filesystem = $this->files;
         $migrationFileName = Str::snake($this->className, '_') . ".php";
         $timestamp = date('Y_m_d_His');
+
         return Collection::make(database_path() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR)
             ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
                 return $filesystem->glob($path . '*_' . $migrationFileName);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Zekini\CrudGenerator\Commands;
 
 use Illuminate\Console\Command;
@@ -9,7 +10,6 @@ use Zekini\CrudGenerator\Helpers\Utilities;
 
 class CrudGenerator extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -37,7 +37,6 @@ class CrudGenerator extends Command
     public function __construct()
     {
         parent::__construct();
-
     }
 
     /**
@@ -47,19 +46,15 @@ class CrudGenerator extends Command
      */
     public function handle()
     {
-
-        $tableName = $this->argument('table');
-     
-        if (! $this->tableExists($tableName)) {
-            
+        if (!$this->tableExists($this->argument('table'))) {
             return Command::FAILURE;
-        } 
+        }
 
         // if we are generating a single component
         // we stop here and continue
         $component = $this->option('only');
 
-        $component ?  $this->generateSingleComponent($component) : $this->generateMultipleComponents();
+        $component ? $this->generateSingleComponent($component) : $this->generateMultipleComponents();
 
         return Command::SUCCESS;
     }
@@ -73,28 +68,27 @@ class CrudGenerator extends Command
 
     protected function generateMultipleComponents()
     {
-        foreach($this->getGenerators() as $index=>$command) {
-            if(in_array($index, $this->option('exclude'))) continue;
+        foreach ($this->getGenerators() as $index => $command) {
+            if (in_array($index, $this->option('exclude'))) continue;
             $this->call($command, $this->getOptionsArgument($command));
         }
     }
 
-
-    protected function tableExists($tableName):  ?bool
+    protected function tableExists($tableName): bool
     {
-        if(! Schema::hasTable($tableName)) {
-            $this->error('Cannot find table. exiting');
-           return false;
+        if (!Schema::hasTable($tableName)) {
+            $this->error('Cannot find table. Exiting');
+            return false;
         }
 
         return true;
     }
 
-
     protected function getOptionsArgument($command)
     {
-        $array = ['table'=> $this->argument('table')];
-        if($this->option('user')) {
+        $array = ['table' => $this->argument('table')];
+
+        if ($this->option('user')) {
             $array['--user'] = $this->option('user');
         }
 
@@ -104,17 +98,15 @@ class CrudGenerator extends Command
             'admin:generate:test:datatable',
             'admin:generate:test:index',
         ];
-       
 
-        if($this->option('readonly') && in_array($command, $readonlyCommands)){
-          
+        if ($this->option('readonly') && in_array($command, $readonlyCommands)) {
             $array['--readonly'] = $this->option('readonly');
         }
 
         return $array;
     }
 
-    
+
     /**
      * Get Generators
      *
@@ -123,33 +115,30 @@ class CrudGenerator extends Command
     protected function getGenerators()
     {
         return [
-            'model'=> 'admin:generate:model',
+            'model' => 'admin:generate:model',
 
-            'route'=>'admin:generate:route',
-            'form'=>'admin:generate:form',
+            'route' => 'admin:generate:route',
+            'form' => 'admin:generate:form',
 
             // livewire views
-            'view-index'=>'admin:generate:views:index',
-     
+            'view-index' => 'admin:generate:views:index',
 
             // livewire components
-            'component-datatable'=>'admin:generate:component:datatable',
-            'component-index'=>'admin:generate:component:index',
+            'component-datatable' => 'admin:generate:component:datatable',
+            'component-index' => 'admin:generate:component:index',
 
             //controller
             //'admin:generate:controller',
 
             //imports
-            'import'=> 'admin:generate:import',
+            'import' => 'admin:generate:import',
 
-            'permission'=>'admin:generate:permission',
-            
-            'test-datatable'=>'admin:generate:test:datatable',
-            'test-index'=>'admin:generate:test:index',
+            'permission' => 'admin:generate:permission',
 
-            'factory'=>'admin:generate:factory'
+            'test-datatable' => 'admin:generate:test:datatable',
+            'test-index' => 'admin:generate:test:index',
+
+            'factory' => 'admin:generate:factory'
         ];
     }
-
- 
 }
