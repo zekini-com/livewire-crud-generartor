@@ -3,8 +3,9 @@
 namespace Zekini\CrudGenerator\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use Zekini\CrudGenerator\Helpers\Utilities;
 
 class AdminScaffold extends Command
