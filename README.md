@@ -12,8 +12,8 @@ The **zekini/livewire-crud-generator** package allows us to generate an admin pa
 `composer require --dev zekini/livewire-crud-generator`
 
 ## Usage
-To scafold admin ui and authentication
-`php artisan admin:scafold`
+To scaffold admin ui and authentication
+`php artisan admin:scaffold`
 
 To run the created migrations and access admin
 `php artisan migrate`

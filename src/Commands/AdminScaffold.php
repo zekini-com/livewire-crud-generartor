@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
 use Zekini\CrudGenerator\Helpers\Utilities;
 
-class AdminScafold extends Command
+class AdminScaffold extends Command
 {
 
     /**
