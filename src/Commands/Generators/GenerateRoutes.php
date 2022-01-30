@@ -83,10 +83,13 @@ class GenerateRoutes extends BaseGenerator
      */
     protected function getViewData()
     {
+        $modelVariableName = Str::studly($this->className);
+
         return [
             'resourceController' => $this->resourceController,
             'resource' => strtolower($this->className),
-            'modelVariableName' => Str::studly($this->className)
+            'modelVariableName' => $modelVariableName,
+            'livewireFolderName' => Str::plural($modelVariableName)
         ];
     }
 }
