@@ -32,7 +32,7 @@ Eg for a post relationship belonging to users. where record title is the record 
 
 	'posts'=> [
 		[
-		'name'=>'belongs_to',
+		'name' => 'belongs_to',
 		'table'=> 'users',
 		'record_title'=> 'name'
 		]
@@ -87,16 +87,16 @@ The above will generate all components with a readonly datatable
 
 A full list of keys is given below
 
-            'model'=> 'Model Component',
-            'route'=>'Route and Sidebar',
-            'form'=>'Generate Form',
-            'view-index'=>'Livewire Index view',
-            'component-datatable'=>'Livewire datatable component',
-            'component-index'=>'Livewire index component',
-            'permission'=>'Generate Permissions',
-            'test-datatable'=>'Datatable Test',
-            'test-index'=>'Index Component Test',
-            'factory'=>'Factory class'
+            'model' => 'Model Component',
+            'route' => 'Route and Sidebar',
+            'form' => 'Generate Form',
+            'view-index' => 'Livewire Index view',
+            'component-datatable' => 'Livewire datatable component',
+            'component-index' => 'Livewire index component',
+            'permission' => 'Generate Permissions',
+            'test-datatable' => 'Datatable Test',
+            'test-index' => 'Index Component Test',
+            'factory' => 'Factory class'
             
 ## Flash Message
 This package comes [mattlibera/livewire-flash](https://github.com/mattlibera/livewire-flash) to use our custome flash-message edit your livewire-flash config file change livewire-flash::livewire.flash-message to zekini/livewire-crud-generator::livewire-flash-message

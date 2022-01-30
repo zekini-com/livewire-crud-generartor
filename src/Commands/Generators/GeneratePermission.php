@@ -1,4 +1,5 @@
 <?php
+
 namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Support\Str;
@@ -12,14 +13,14 @@ class GeneratePermission extends BaseGenerator
     protected $classType = 'permission';
 
     protected $model;
-    
+
     /**
      * class name
      *
      * @var string
      */
     protected $className;
-    
+
     /**
      * class namespace
      *
@@ -27,7 +28,7 @@ class GeneratePermission extends BaseGenerator
      */
     protected $namespace;
 
-     /**
+    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -41,7 +42,7 @@ class GeneratePermission extends BaseGenerator
      */
     protected $description = 'Generates model permissions';
 
-    
+
     /**
      * Get the default namespace for the class.
      *
@@ -53,16 +54,15 @@ class GeneratePermission extends BaseGenerator
         return $rootNamespace;
     }
 
-     /**
+    /**
      * Get the name of the class
      *
      * @return string
      */
     protected function getClassName()
     {
-        return 'FillPermissionsFor'.rtrim(Str::studly($this->argument('table')), 's').'Table';    
+        return 'FillPermissionsFor' . Str::pluralStudly($this->argument('table')) . 'Table';
     }
-
 
     /**
      * Execute the console command.
@@ -75,27 +75,27 @@ class GeneratePermission extends BaseGenerator
 
         $this->className = $this->getClassName();
 
-        $this->model = rtrim($this->argument('table'), 's');
+        $this->model = Str::studly(Str::of($this->argument('table'))->singular());
 
         $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
         $templateContent = $this->replaceContent();
-      
+
         $stampedFilename = $this->getFileName();
-    
+
         $this->files->put($stampedFilename, $templateContent);
-        $pathToFile = str_replace('\\', '/',substr($stampedFilename, strpos($stampedFilename, 'database')));
-       
+        $pathToFile = str_replace('\\', '/', substr($stampedFilename, strpos($stampedFilename, 'database')));
+
         //the new permission
         $this->call('migrate', [
-            '--path'=> $pathToFile
+            '--path' => $pathToFile
         ]);
-       
+
         return Command::SUCCESS;
     }
 
 
-    
+
     /**
      * Get filename
      *
@@ -104,18 +104,18 @@ class GeneratePermission extends BaseGenerator
     protected function getFileName()
     {
         $filesystem = $this->files;
-        $migrationFileName = Str::snake($this->className, '_').".php";
+        $migrationFileName = Str::snake($this->className, '_') . ".php";
         $timestamp = date('Y_m_d_His');
-        return Collection::make(database_path().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+        return Collection::make(database_path() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR)
             ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
-                return $filesystem->glob($path.'*_'.$migrationFileName);
+                return $filesystem->glob($path . '*_' . $migrationFileName);
             })
-            ->push(database_path()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->push(database_path() . "/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
     }
 
 
-     /**
+    /**
      * Get view data
      *
      * @return array
@@ -124,12 +124,7 @@ class GeneratePermission extends BaseGenerator
     {
         return [
             'className' => $this->getClassName(),
-            'modelDotNotation'=> Str::singular($this->argument('table'))
+            'modelDotNotation' => Str::singular($this->argument('table'))
         ];
     }
-
-   
-    
-
-  
 }
