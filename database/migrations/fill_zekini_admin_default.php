@@ -13,7 +13,7 @@ class FillZekiniAdminDefault extends Migration
 
     public function __construct()
     {
-        $this->guardName = config('zekini-admin.defaults.guard', 'zekini_admin');
+        $this->guardName = 'zekini_admin';
         $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
 
         $this->permissions = collect([
@@ -33,9 +33,9 @@ class FillZekiniAdminDefault extends Migration
 
         $this->admin = [
             'name' => 'Administrator',
-            'email' => config('zekini-admin.defaults.default-email'),
+            'email' => 'support@zekini.com',
             'email_verified_at' => now(),
-            'password' => Hash::make(config('zekini-admin.defaults.default-password'))
+            'password' => Hash::make('password')
         ];
     }
 

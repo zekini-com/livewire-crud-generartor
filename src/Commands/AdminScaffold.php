@@ -47,10 +47,8 @@ class AdminScaffold extends Command
         // Create file migration for the default admin user
         $this->publishVendors();
 
-        $this->call('config:clear');
-
-        $this->info('Email:  ' . config('zekini-admin.defaults.default-email'));
-        $this->info('Password: ' . config('zekini-admin.defaults.default-password'));
+        $this->comment('Email: support@zekini.com');
+        $this->comment('Password: password');
 
         // migrate generated tables
         $this->call('migrate');
