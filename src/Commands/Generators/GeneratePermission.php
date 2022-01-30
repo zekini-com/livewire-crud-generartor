@@ -60,7 +60,7 @@ class GeneratePermission extends BaseGenerator
      */
     protected function getClassName()
     {
-        return 'FillPermissionsFor' . Str::plural($this->argument('table')) . 'Table';
+        return 'FillPermissionsFor' . Str::plural(Str::studly($this->argument('table'))) . 'Table';
     }
 
     /**
