@@ -46,7 +46,7 @@ class AdminScaffold extends Command
         // Create file migration for the default admin user
         $this->publishVendors();
 
-        $this->info("Email : support@zekini.com");
+        $this->info('Email :  ' . config('zekini-admin.defaults.default-email'));
         $this->info('Password : ' . config('zekini-admin.defaults.default-password'));
 
         // migrate generated tables
@@ -77,20 +77,17 @@ class AdminScaffold extends Command
     {
         $this->publishSpatiePermissionVendor();
 
-        $this->publishSpatieLogVendor();
+        $this->publishSpatieActivitylogVendor();
 
         $this->publishZekini();
     }
 
-    /**
-     * Publishes Spatie Vendors
-     *
-     * @return void
-     */
     protected function publishSpatiePermissionVendor(): void
     {
-        //Spatie Permission
-        $this->info('Publish Spatie Permission');
+        $this->info(__FUNCTION__);
+
+        Schema::dropIfExists('permissions');
+
         $this->call('vendor:publish', [
             '--provider' => 'Spatie\\Permission\\PermissionServiceProvider',
             '--tag' => 'migrations'
@@ -102,15 +99,12 @@ class AdminScaffold extends Command
         ]);
     }
 
-    /**
-     * Publishes Audit Vendor
-     *
-     * @return void
-     */
-    protected function publishSpatieLogVendor(): void
+    protected function publishSpatieActivitylogVendor(): void
     {
-        //Spatie Activitylog
-        $this->info('Publish Spatie Activitylog');
+        $this->info(__FUNCTION__);
+
+        Schema::dropIfExists('activity_logs');
+
         $this->call('vendor:publish', [
             '--provider' => "Spatie\Activitylog\ActivitylogServiceProvider",
             '--tag' => 'activitylog-migrations'
@@ -122,14 +116,10 @@ class AdminScaffold extends Command
         ]);
     }
 
-    /**
-     * Publish Zekini specific
-     *
-     * @return void
-     */
     protected function publishZekini(): void
     {
-        $this->info('Publish Zekini');
+        $this->info(__FUNCTION__);
+
         $tags = ['config', 'migrations', 'resources', 'views', 'controllers'];
 
         foreach ($tags as $tag) {
