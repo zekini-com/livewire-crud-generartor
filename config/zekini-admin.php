@@ -32,7 +32,7 @@ return [
             'expire' => 60,
             'throttle' => 60
         ]
-        ],
+    ],
 
     'auth_routes' => [
         'login_redirect' => '/admin',
@@ -84,7 +84,7 @@ return [
                 'related_pivot_key' => 'role_id'
             ]
         ],
-        
+
         'zekini_admins' => [
             [
                 'name' => 'belongs_to_many',
@@ -97,7 +97,7 @@ return [
         ]
     ],
 
-    'search_keys' => [
+    'search_keys' => [],
 
-    ]
+    'version' => '1.0',
 ];

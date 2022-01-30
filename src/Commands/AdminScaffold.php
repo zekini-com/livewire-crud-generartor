@@ -4,6 +4,7 @@ namespace Zekini\CrudGenerator\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Zekini\CrudGenerator\Helpers\Utilities;
@@ -86,12 +87,13 @@ class AdminScaffold extends Command
     {
         $this->info(__FUNCTION__);
 
-        Schema::dropIfExists('model_has_permissions');
-        Schema::dropIfExists('role_has_permissions');
-        Schema::dropIfExists('permissions');
-
-        Schema::dropIfExists('model_has_roles');
-        Schema::dropIfExists('roles');
+        self::undoPreviousMigrations([
+            'model_has_permissions',
+            'role_has_permissions',
+            'permissions',
+            'model_has_roles',
+            'roles',
+        ]);
 
         $this->call('vendor:publish', [
             '--provider' => 'Spatie\\Permission\\PermissionServiceProvider',
@@ -108,7 +110,7 @@ class AdminScaffold extends Command
     {
         $this->info(__FUNCTION__);
 
-        Schema::dropIfExists('activity_logs');
+        self::undoPreviousMigrations(['activity_logs']);
 
         $this->call('vendor:publish', [
             '--provider' => "Spatie\Activitylog\ActivitylogServiceProvider",
@@ -177,5 +179,13 @@ class AdminScaffold extends Command
         ],';
 
         Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
+    }
+
+    private static function undoPreviousMigrations(array $tablesArray): void
+    {
+        foreach ($tablesArray as $table) {
+            Schema::dropIfExists($table);
+            DB::table('migrations')->where('migration', 'like', '%' . $table . '%')->delete();
+        }
     }
 }
