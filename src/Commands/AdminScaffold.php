@@ -56,7 +56,7 @@ class AdminScaffold extends Command
 
         $this->generateDefaultModelCruds();
 
-        $this->call('jetstream:install', ['stack' => 'livewire']);
+        $this->call('jetstream:install --teams', ['stack' => 'livewire']);
 
         return Command::SUCCESS;
     }
@@ -142,7 +142,6 @@ class AdminScaffold extends Command
             ]);
         }
     }
-
 
     /**
      * We try to setup the admin guards for authentication same thing we will do manually

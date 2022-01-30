@@ -293,9 +293,8 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         $filename = '{{strtolower($modelBaseName)}}.xlsx';
 
         if (!Storage::disk('templates')->exists($filename)) {
-
             $this->emit('flashMessageEvent', "Failed to find template $filename");
-            
+
             return;
         }
 
