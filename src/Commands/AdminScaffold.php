@@ -87,6 +87,7 @@ class AdminScaffold extends Command
     {
         $this->info(__FUNCTION__);
 
+        Schema::dropIfExists('role_has_permissions');
         Schema::dropIfExists('permissions');
 
         $this->call('vendor:publish', [
