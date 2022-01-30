@@ -1,20 +1,22 @@
 <?php
+
 namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Zekini\CrudGenerator\Traits\CreatesSidebar;
 
 class GenerateRoutes extends BaseGenerator
 {
     use CreatesSidebar;
 
-    protected $classType = "routes";
+    protected $classType = 'routes';
 
     protected $resourceController;
 
-     /**
+    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -28,7 +30,6 @@ class GenerateRoutes extends BaseGenerator
      */
     protected $description = 'Generates routes';
 
-
     /**
      * Execute the console command.
      *
@@ -36,49 +37,45 @@ class GenerateRoutes extends BaseGenerator
      */
     public function handle(Filesystem $files)
     {
-        
-        $this->info('Generating routes for crud');
-       
-       //publish any vendor files to where they belong
-       $this->className = $this->getClassName();
-       $routeName = "admin/".strtolower($this->className)."/index";
-       if(Route::has($routeName)) {
+        $this->info('Generating CRUD Routes');
+
+        //publish any vendor files to where they belong
+        $this->className = $this->getClassName();
+
+        $routeName = "admin/" . strtolower($this->className) . "/index";
+
+        if (Route::has($routeName)) {
             $this->info('Skipping Routes. Route already exists');
-           return Command::SUCCESS;
-       }
+            return Command::SUCCESS;
+        }
 
-       $this->resourceController = $this->className.'Controller';
+        $this->resourceController = $this->className . 'Controller';
 
-       $templateContent = $this->appendContent();
+        $templateContent = $this->appendContent();
 
-       $filename = base_path('routes/web.php');
-      
-       $this->files->append($filename, $templateContent);
+        $filename = base_path('routes/web.php');
 
-       $this->makeSideBar();
-        
+        $this->files->append($filename, $templateContent);
+
+        $this->makeSideBar();
+
         return Command::SUCCESS;
     }
 
-     /**
+    /**
      * Append the content in the file
      *
      * @return string
      */
     protected function appendContent()
     {
-       
         $variables = $this->getViewData();
 
-        $view = "zekini/stubs::templates.".$this->classType;
+        $view = "zekini/stubs::templates." . $this->classType;
 
         return view($view, $variables)->render();
-
     }
-    
 
-
-    
     /**
      * Get view data
      *
@@ -88,11 +85,8 @@ class GenerateRoutes extends BaseGenerator
     {
         return [
             'resourceController' => $this->resourceController,
-            'resource'=> strtolower($this->className),
-            'modelVariableName'=>strtolower($this->className) 
+            'resource' => strtolower($this->className),
+            'modelVariableName' => Str::studly($this->className)
         ];
     }
-    
-
-  
 }
