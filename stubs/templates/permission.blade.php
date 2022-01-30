@@ -21,7 +21,7 @@ class {{ $className }} extends Migration
      */
     public function __construct()
     {
-        $this->guardName = config('zekini-admin.defaults.guard');
+        $this->guardName = 'zekini_admin';
         $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
         $this->permissions = collect([
             'admin.{{ $modelDotNotation }}',
