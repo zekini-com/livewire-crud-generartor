@@ -108,14 +108,13 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
-            Commands\AdminScafold::class,
+            Commands\AdminScaffold::class,
             Commands\CrudGenerator::class,
             Commands\Generators\GenerateModel::class,
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
 
             Commands\Generators\GenerateImport::class,
-
            
             Commands\Generators\View\GenerateIndexView::class,
 

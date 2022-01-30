@@ -1,6 +1,6 @@
 {
     "name": "zekini/livewire-crud-generator",
-    "description": "This helps in scafolding the necessary CRUD and admin panel for applications",
+    "description": "This helps in scaffolding the necessary CRUD and admin panel for applications",
     "type": "library",
     "license": "MIT",
     "authors": [{

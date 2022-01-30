@@ -14,7 +14,7 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         // setup application
-        $this->artisan('admin:scafold');
+        $this->artisan('admin:scaffold');
        
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
     }
