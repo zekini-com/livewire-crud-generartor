@@ -75,7 +75,7 @@ class GeneratePermission extends BaseGenerator
 
         $this->className = $this->getClassName();
 
-        $this->model = Str::studly(Str::of($this->argument('table'))->singular());
+        $this->model = Str::singular($this->className);
 
         $this->namespace = $this->getDefaultNamespace($this->rootNamespace());
 
