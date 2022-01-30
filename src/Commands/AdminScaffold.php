@@ -91,6 +91,9 @@ class AdminScaffold extends Command
         Schema::dropIfExists('role_has_permissions');
         Schema::dropIfExists('permissions');
 
+        Schema::dropIfExists('model_has_roles');
+        Schema::dropIfExists('roles');
+
         $this->call('vendor:publish', [
             '--provider' => 'Spatie\\Permission\\PermissionServiceProvider',
             '--tag' => 'migrations'
