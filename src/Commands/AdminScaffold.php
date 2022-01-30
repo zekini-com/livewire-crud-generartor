@@ -47,15 +47,16 @@ class AdminScaffold extends Command
         // Create file migration for the default admin user
         $this->publishVendors();
 
-        $this->info('Email :  ' . config('zekini-admin.defaults.default-email'));
-        $this->info('Password : ' . config('zekini-admin.defaults.default-password'));
+        // $this->call('optimize');
+
+        $this->info('Email:  ' . config('zekini-admin.defaults.default-email'));
+        $this->info('Password: ' . config('zekini-admin.defaults.default-password'));
 
         // migrate generated tables
         $this->call('migrate');
 
         $this->generateDefaultModelCruds();
 
-        //call jetstream installation
         $this->call('jetstream:install', ['stack' => 'livewire']);
 
         return Command::SUCCESS;
@@ -126,7 +127,13 @@ class AdminScaffold extends Command
     {
         $this->info(__FUNCTION__);
 
-        $tags = ['config', 'migrations', 'resources', 'views', 'controllers'];
+        $tags = [
+            'config',
+            'migrations',
+            'resources',
+            'views',
+            'controllers'
+        ];
 
         foreach ($tags as $tag) {
             $this->call('vendor:publish', [
@@ -139,8 +146,6 @@ class AdminScaffold extends Command
 
     /**
      * We try to setup the admin guards for authentication same thing we will do manually
-     *
-     * @return void
      */
     protected function setupAdminAuthGuard(): void
     {

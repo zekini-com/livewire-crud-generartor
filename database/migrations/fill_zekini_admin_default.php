@@ -13,8 +13,7 @@ class FillZekiniAdminDefault extends Migration
 
     public function __construct()
     {
-        // TODO read this from an admin configuration file
-        $this->guardName = config('zekini-admin.defaults.guard');
+        $this->guardName = config('zekini-admin.defaults.guard', 'zekini_admin');
         $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
 
         $this->permissions = collect([
