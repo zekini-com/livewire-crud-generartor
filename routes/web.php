@@ -20,8 +20,6 @@ Route::middleware(['web', 'admin.guest'])->group(static function () {
         Route::post('/admin/password-reset/send', 'ForgotPasswordController@sendResetLinkEmail');
         Route::get('/admin/password-reset/{token}', 'ResetPasswordController@showResetForm')->name('zekini/livewire-crud-generator::admin/password/showResetForm');
         Route::post('/admin/password-reset/reset', 'ResetPasswordController@reset');
-
-    
     });
 });
 

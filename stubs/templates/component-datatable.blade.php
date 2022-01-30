@@ -19,9 +19,7 @@ use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\NumberColumn;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
-
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
-
 
 class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 {
@@ -40,7 +38,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     public $softdeletes = false;
 
     @if($isReadonly)
-    public $showBtns  = false;
+    public $showBtns = false;
     @else
     public $showBtns = true;
     @endif
@@ -54,18 +52,14 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
 
     public function builder()
     {
-        $query =  {{ucfirst($modelBaseName)}}::query();
+        $query = {{ucfirst($modelBaseName)}}::query();
 
         $query = $this->softdeletes ? $query->onlyTrashed() : $query; 
 
         return $query
-
         @if($isActivityLogModel)
-
             ->with(['causer', 'subject'])
-
         @else
-
         @if(count($relations) > 0)
         ->with([
         @foreach($relations as $relation)
@@ -79,38 +73,29 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
         @else
         ->groupBy('{{strtolower(Str::snake(Str::plural($modelBaseName)))}}.id')
         @endif
-
         @endif
-       
        ;
-        
     }
 
     public function columns()
     {
         return [
-
-           
             // adding causer and subject for logs
             @if($isActivityLogModel)
-            Column::callback(['id', 'causer_type'], function($id, $causer_type){
+                Column::callback(['id', 'causer_type'], function($id, $causer_type){
                 $causer = {{ucfirst($modelBaseName)}}::withTrashed()->findOrFail($id)->causer;
                 $explode = explode("\\", $causer_type);
                 $type = $explode[array_key_last($explode)];
                 return "$causer->name ($type)";
-            })->label('Causer')
-                ,
+            })->label('Causer'),
             @endif
 
             @foreach($vissibleColumns as $col)
-
-                
                 @if(in_array($col['name'], ['causer_type']) && $isActivityLogModel)
                 // for activitylog polymorphic relations we skip so we handle differently
                     @continue
                 @endif
 
-                
                 @if(Str::isRelation($col['name']))
                 // checks if the column name is a relation  eg table_id
                     @php
@@ -153,17 +138,14 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
                             ->label('{{ucfirst($col['name'])}}')
                             ->defaultSort('asc')
                             @if($col['name'] == $vissibleColumns->first()['name'])
-                            ->searchable()
+                ->searchable()
                             @endif
-                            ->hideable()
+                ->hideable()
                             ->filterable(),
                     @endif
                     @break
                 @endswitch
-
             @endforeach
-
-           
 
             // belongs to many relationship tables
             @foreach($pivots as $pivot)
@@ -207,7 +189,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Table extends LivewireDatatable
     {
         $this->authorize('admin.{{strtolower($modelDotNotation)}}.delete');
 
-        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);/** @phpstan-ignore-line */
+        ${{strtolower($modelBaseName)}} = {{ucfirst($modelBaseName)}}::withTrashed()->find($id);
 
         $fileCols = $this->checkForFiles(${{strtolower($modelBaseName)}});
         foreach($fileCols as $files){

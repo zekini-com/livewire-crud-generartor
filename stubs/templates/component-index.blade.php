@@ -43,8 +43,8 @@ class {{Str::plural($modelBaseName)}} extends Component
     public function render()
     {
         return view('livewire.{{$viewName}}.index')
-        ->extends('zekini/livewire-crud-generator::admin.layout.default')
-        ->section('body');
+            ->extends('zekini/livewire-crud-generator::admin.layout.default')
+            ->section('body');
     }
 
     @if(! $isReadonly)

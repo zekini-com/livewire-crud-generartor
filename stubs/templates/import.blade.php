@@ -25,7 +25,7 @@ class {{Str::plural(ucfirst($modelBaseName))}}Import implements ToModel, WithHea
     /**
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row): void
+    public function model(array $row)
     {
         logger('Row: ' . $this->getRowNumber());
 
