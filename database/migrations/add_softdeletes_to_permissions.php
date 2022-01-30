@@ -6,12 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddSoftDeletesToPermissions extends Migration
 {
-
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::table('permissions', function (Blueprint $table) {
@@ -19,15 +13,9 @@ class AddSoftDeletesToPermissions extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('permissions', function (Blueprint $table) {
-            //
             $table->dropSoftDeletes();
         });
     }

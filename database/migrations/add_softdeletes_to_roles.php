@@ -6,12 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddSoftDeletesToRoles extends Migration
 {
-
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::table('roles', function (Blueprint $table) {
@@ -19,15 +13,9 @@ class AddSoftDeletesToRoles extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('roles', function (Blueprint $table) {
-            //
             $table->dropSoftDeletes();
         });
     }

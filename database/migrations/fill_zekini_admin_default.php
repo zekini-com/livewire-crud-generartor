@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class FillZekiniAdminDefault extends Migration
 {
+    protected $guardName;
+
     public function __construct()
     {
         // TODO read this from an admin configuration file
-        $this->guard = config('zekini-admin.defaults.guard');
+        $this->guardName = config('zekini-admin.defaults.guard');
         $this->className = Zekini\CrudGenerator\Models\ZekiniAdmin::class;
 
         $this->permissions = collect([
@@ -23,21 +25,21 @@ class FillZekiniAdminDefault extends Migration
             'administer.user.delete',
         ]);
 
-        $this->roles = collect([[
-            'name'=> 'Administrator',
-            'permissions'=> $this->permissions->toArray()]
+        $this->roles = collect([
+            [
+                'name' => 'Administrator',
+                'permissions' => $this->permissions->toArray()
+            ]
         ]);
 
         $this->admin = [
-            'name'=> 'Administrator',
-            'email'=> 'support@zekini.com',
-            'email_verified_at'=> now(),
-            'password'=> Hash::make(config('zekini-admin.defaults.default-password'))
+            'name' => 'Administrator',
+            'email' => config('zekini-admin.defaults.default-email'),
+            'email_verified_at' => now(),
+            'password' => Hash::make(config('zekini-admin.defaults.default-password'))
         ];
-       
     }
 
-    
     /**
      * Setup Super Admin with all roles and all permissions
      *
@@ -49,39 +51,39 @@ class FillZekiniAdminDefault extends Migration
         $adminId = DB::table('zekini_admins')->insertGetId($this->admin);
 
         $roles = DB::table('roles')->get();
-      
+
         $permissions = DB::table('permissions')->get();
 
         // setup admin roles
-        foreach($roles as $role) {
+        foreach ($roles as $role) {
             $role = (array)$role;
             $modelRole = [
-                'model_id'=> $adminId,
-                'model_type'=> $this->className,
-                'role_id'=> $role['id']
+                'model_id' => $adminId,
+                'model_type' => $this->className,
+                'role_id' => $role['id']
             ];
             // we check if role exists
-            if (! DB::table('model_has_roles')->where($modelRole)->exists()) {
-               DB::table('model_has_roles')->insert($modelRole);
+            if (!DB::table('model_has_roles')->where($modelRole)->exists()) {
+                DB::table('model_has_roles')->insert($modelRole);
             }
         }
 
         // setup admin permissions
-        foreach($permissions as $rolePermission) {
+        foreach ($permissions as $rolePermission) {
             $rolePermission  = (array)$rolePermission;
             $modelPermission = [
-                'model_id'=> $adminId,
-                'model_type'=> $this->className,
-                'permission_id'=> $rolePermission['id']
+                'model_id' => $adminId,
+                'model_type' => $this->className,
+                'permission_id' => $rolePermission['id']
             ];
+
             // we check if role exists
-            if (! DB::table('model_has_permissions')->where($modelPermission)->exists()) {
+            if (!DB::table('model_has_permissions')->where($modelPermission)->exists()) {
                 DB::table('model_has_permissions')->insert($modelPermission);
-             }
+            }
         }
     }
 
-    
     /**
      * The role admin would be assuming
      *
@@ -89,66 +91,78 @@ class FillZekiniAdminDefault extends Migration
      */
     protected function setupRoles()
     {
-        foreach($this->roles as $role) {
+        foreach ($this->roles as $role) {
             // we check if role exists
-           
+
             $roleId = null;
 
-            if (! DB::table('roles')->where(['name'=>$role['name'],'guard_name'=>$this->guard])->exists()) {
+            if (!DB::table('roles')
+                ->where([
+                    'name' => $role['name'],
+                    'guard_name' => $this->guardName
+                ])
+                ->exists()) {
 
-                $roleId = DB::table('roles')->insertGetId([
-                    'name'=> $role['name'],
-                    'guard_name'=> $this->guard,
-                    'created_at'=> Carbon::now(),
-                    'updated_at'=> Carbon::now()
-                ]);
+                $roleId = DB::table('roles')
+                    ->insertGetId([
+                        'name' => $role['name'],
+                        'guard_name' => $this->guardName,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
             }
 
-            if(! $roleId) $roleId = DB::table('roles')->where(['name'=>$role['name'],'guard_name'=>$this->guard])->first()->id;
+            if (!$roleId) $roleId = DB::table('roles')
+                ->where([
+                    'name' => $role['name'],
+                    'guard_name' => $this->guardName
+                ])
+                ->first()->id;
 
             // map role to permisssions
-            foreach($role['permissions'] as $rolePermission) {
-                $permission = DB::table('permissions')->where(['name'=> $rolePermission, 'guard_name'=> $this->guard])->first();
+            foreach ($role['permissions'] as $rolePermission) {
+                $permission = DB::table('permissions')
+                    ->where([
+                        'name' => $rolePermission,
+                        'guard_name' => $this->guardName
+                    ])
+                    ->first();
+
                 $rolePermission = [
-                    'permission_id'=> $permission->id,
-                    'role_id'=> $roleId
+                    'permission_id' => $permission->id,
+                    'role_id' => $roleId
                 ];
-                DB::table('role_has_permissions')->insert($rolePermission);
+
+                DB::table('role_has_permissions')
+                    ->insert($rolePermission);
             }
         }
     }
-    
-    /**
-     * Setup permissions
-     *
-     * @return void
-     */
-    protected function setupPermissions()
+
+    protected function setupPermissions(): void
     {
-        foreach($this->permissions as $permission) {
+        foreach ($this->permissions as $permission) {
             // we check if permission exists
-            if (! DB::table('permissions')->where(['name'=>$permission, 'guard_name'=>$this->guard])->exists()) {
+            if (!DB::table('permissions')
+                ->where([
+                    'name' => $permission,
+                    'guard_name' => $this->guardName
+                ])
+                ->exists()) {
 
                 DB::table('permissions')->insert([
-                    'name'=> $permission,
-                    'guard_name'=> $this->guard,
-                    'created_at'=> Carbon::now(),
-                    'updated_at'=> Carbon::now()
+                    'name' => $permission,
+                    'guard_name' => $this->guardName,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
                 ]);
             }
         }
-        
     }
-    
-   
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
-        DB::transaction(function(){
+        DB::transaction(function () {
 
             // Setup Permissions
             $this->setupPermissions();
@@ -158,19 +172,14 @@ class FillZekiniAdminDefault extends Migration
 
             // Setup Default Admin Role
             $this->setupSuperAdmin();
-
         });
+
         app()['cache']->forget(config('permission.cache.key'));
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        DB::transaction(function(){
+        DB::transaction(function () {
 
             $this->clearSuperAdmin();
 
@@ -182,48 +191,43 @@ class FillZekiniAdminDefault extends Migration
         app()['cache']->forget(config('permission.cache.key'));
     }
 
-    
-    /**
-     * clearSuperAdmin
-     *
-     * @return void
-     */
-    protected function clearSuperAdmin()
+    protected function clearSuperAdmin(): void
     {
-        $admin = DB::table('zekini_admins')->where('email', $this->admin['email'])->first();
+        $admin = DB::table('zekini_admins')
+            ->where('email', $this->admin['email'])
+            ->first();
+
         $adminId = $admin->id;
 
         $modelAttachments = [
-            'model_id'=> $adminId,
-            'model_type'=> $this->className
+            'model_id' => $adminId,
+            'model_type' => $this->className
         ];
 
         // clear all roles for this user
-        DB::table('model_has_roles')->where($modelAttachments)->delete();
+        DB::table('model_has_roles')
+            ->where($modelAttachments)
+            ->delete();
 
         // clear all permissions for this user
-        DB::table('model_has_permissions')->where($modelAttachments)->delete();
+        DB::table('model_has_permissions')
+            ->where($modelAttachments)
+            ->delete();
     }
-    
-    /**
-     * clearRoles
-     *
-     * @return void
-     */
-    protected function clearRoles()
+
+    protected function clearRoles(): void
     {
         $roles  = $this->roles->pluck('name')->toArray();
-        DB::table('roles')->whereIn('name', $roles)->delete();
+        DB::table('roles')
+            ->whereIn('name', $roles)
+            ->delete();
     }
-    
-    /**
-     * clearPermissions
-     *
-     * @return void
-     */
-    protected function clearPermissions()
+
+    protected function clearPermissions(): void
     {
         $permissions  = $this->permissions->pluck('name')->toArray();
-        DB::table('roles')->whereIn('name', $permissions)->delete();
+        DB::table('roles')
+            ->whereIn('name', $permissions)
+            ->delete();
     }
 }

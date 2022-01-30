@@ -6,13 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateZekiniAdminsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
+        $this->down();
+
         Schema::create('zekini_admins', function (Blueprint $table) {
             $table->id();
 
@@ -27,11 +24,6 @@ class CreateZekiniAdminsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('zekini_admins');

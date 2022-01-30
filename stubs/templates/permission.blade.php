@@ -12,7 +12,7 @@ class {{ $className }} extends Migration
 {
     protected $roles;
 
-    protected $guard;
+    protected $guardName;
 
     protected $className;
 
@@ -60,9 +60,9 @@ class {{ $className }} extends Migration
         foreach($roles as $role) {
             $role = (array)$role;
             $modelRole = [
-                'model_id'=> $adminId,
-                'model_type'=> $this->className,
-                'role_id'=> $role['id']
+                'model_id' => $adminId,
+                'model_type' => $this->className,
+                'role_id' => $role['id']
             ];
             // we check if role exists
             if (! DB::table('model_has_roles')->where($modelRole)->exists()) {
@@ -74,9 +74,9 @@ class {{ $className }} extends Migration
         foreach($permissions as $rolePermission) {
             $rolePermission  = (array)$rolePermission;
             $modelPermission = [
-                'model_id'=> $adminId,
-                'model_type'=> $this->className,
-                'permission_id'=> $rolePermission['id']
+                'model_id' => $adminId,
+                'model_type' => $this->className,
+                'permission_id' => $rolePermission['id']
             ];
             // we check if role exists
             if (! DB::table('model_has_permissions')->where($modelPermission)->exists()) {
@@ -105,8 +105,8 @@ class {{ $className }} extends Migration
                 ->first();
 
             $rolePermission = [
-                'permission_id'=> $permission->id,
-                'role_id'=> $roleId
+                'permission_id' => $permission->id,
+                'role_id' => $roleId
             ];
 
             // we check if role exists
@@ -125,13 +125,18 @@ class {{ $className }} extends Migration
     {
         foreach($this->permissions as $permission) {
             // we check if permission exists
-            if (! DB::table('permissions')->where(['name'=>$permission, 'guard_name'=>$this->guardName])->exists()) {
+            if (! DB::table('permissions')
+                ->where([
+                    'name' => $permission, 
+                    'guard_name' => $this->guardName
+                ])
+                ->exists()) {
 
                 DB::table('permissions')->insert([
-                    'name'=> $permission,
-                    'guard_name'=> $this->guardName,
-                    'created_at'=> Carbon::now(),
-                    'updated_at'=> Carbon::now()
+                    'name' => $permission,
+                    'guard_name' => $this->guardName,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
                 ]);
             }
         }
