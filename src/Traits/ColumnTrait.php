@@ -41,7 +41,7 @@ trait ColumnTrait
                     'required' => boolval(Schema::getConnection()->getDoctrineColumn($tableName, $col)->getNotnull())
                 ];
             })
-            ->orderBy('name');
+            ->sortBy('name');
     }
 
     /**
