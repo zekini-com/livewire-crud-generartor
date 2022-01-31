@@ -10,7 +10,8 @@ use Illuminate\Validation\ValidationException;
 
 trait AuthenticatesUsers
 {
-    use RedirectsUsers, ThrottlesLogins;
+    use RedirectsUsers;
+    use ThrottlesLogins;
 
     /**
      * Show the application's login form.
@@ -45,7 +46,6 @@ trait AuthenticatesUsers
         }
 
         if ($loggedIn  = $this->attemptLogin($request)) {
-            
             return $this->sendLoginResponse($request);
         }
 
@@ -81,7 +81,6 @@ trait AuthenticatesUsers
      */
     protected function attemptLogin(Request $request)
     {
-      
         return $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
@@ -111,7 +110,6 @@ trait AuthenticatesUsers
         $this->clearLoginAttempts($request);
 
         if ($response = $this->authenticated($request, $this->guard()->user())) {
-
             return $response;
         }
        

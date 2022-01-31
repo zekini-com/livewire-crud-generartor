@@ -58,6 +58,10 @@ class AdminScaffold extends Command
 
         $this->call('jetstream:install --teams', ['stack' => 'livewire']);
 
+        $this->call('livewire-crud-generator:version');
+
+        $this->comment('Congratulations on deploying version '. config('zekini-admin.version'));
+
         return Command::SUCCESS;
     }
 

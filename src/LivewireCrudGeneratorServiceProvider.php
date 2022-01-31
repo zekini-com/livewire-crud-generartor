@@ -17,9 +17,7 @@ use Zekini\CrudGenerator\Mixin\StrMixin;
 use Zekini\CrudGenerator\Providers\CrudServiceProvider;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
-
 {
-
      /**
      * Register any events for your application.
      *
@@ -27,10 +25,8 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
         // my custom str mixin
-       Str::mixin(new StrMixin);
-
+        Str::mixin(new StrMixin);
 
         $this->registerCommands();
 
@@ -39,8 +35,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->publishAdminViews();
 
         $this->setConfigValues();
-
-       
 
         $this->publishAdminControllers();
 
@@ -99,7 +93,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         ], 'controllers');
     }
 
-    
     /**
      * Registers Command
      *
@@ -110,14 +103,13 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $this->commands([
             Commands\AdminScaffold::class,
             Commands\CrudGenerator::class,
+            Commands\VersionCommand::class,
+
             Commands\Generators\GenerateModel::class,
             Commands\Generators\GenerateController::class,
             Commands\Generators\GenerateForm::class,
-
             Commands\Generators\GenerateImport::class,
-           
             Commands\Generators\View\GenerateIndexView::class,
-
             Commands\Generators\GeneratePermission::class,
 
             Commands\Generators\Test\GenerateDatatableTest::class,
@@ -144,7 +136,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         ], 'config');
     }
 
-    
     /**
      * publishResources
      *
@@ -160,9 +151,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         ], 'resources');
        
     }
-    
 
-    
     /**
      * Publishes migration files
      *
@@ -170,7 +159,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-
         $publishableMigrations = [
             'fill_zekini_admin_default.php',
             'create_zekini_admins_table.php',
@@ -185,7 +173,6 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
                 __DIR__ . "/../database/migrations/$migrationFileName" => $this->getMigrationFileName($migrationFileName),
             ], 'migrations');
         }
-        
     }
 
      /**
@@ -207,13 +194,11 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             ->first();
     }
 
-
     protected function setConfigValues()
     {
         config(['activitylog.table_name'=> 'activity_logs']);
     }
 
-    
     /**
      * Setup Middlewares
      *

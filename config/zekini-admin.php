@@ -56,7 +56,7 @@ return [
     |        
     |    ],
     | Search Keys 
-    |  Column name to use for serach
+    |  Column name to use for search
     | 'post' => 'title'
     |
     */
@@ -99,5 +99,5 @@ return [
 
     'search_keys' => [],
 
-    'version' => '1.0',
+    'version' => '1.0.1',
 ];

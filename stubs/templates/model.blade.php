@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 @if($hasDeletedAt)
-    use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 @endif
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Zekini\CrudGenerator\Traits\HasModelRelations;
@@ -14,23 +14,20 @@ use Spatie\Activitylog\LogOptions;
 
 class {{$modelBaseName}} extends Model 
 {
-
-    use 
+    use HasFactory; 
+    use HasModelRelations;
     @if($hasDeletedAt)
-         SoftDeletes,
-     @endif
-     HasFactory, HasModelRelations;
-     @if($modelBaseName !== 'ActivityLog')
-     use LogsActivity;
-     @endif
-    
-   
+    use SoftDeletes;
+    @endif
+    @if($modelBaseName !== 'ActivityLog')
+    use LogsActivity;
+    @endif
+
     protected $fillable = [ 
     @foreach($vissibleColumns as $col)
-    "{{$col['name']}}",
+    '{{$col['name']}}',
     @endforeach
     ];
-
 
     @if($modelBaseName !== 'ActivityLog')
 
@@ -65,37 +62,29 @@ class {{$modelBaseName}} extends Model
         }
     @endif
 
-    
-   
-
-   
-
     // Relationships start here
     @if(count($relations)> 0)
     @foreach($relations as $index=>$relation)
 
-        
-       
-        @php
-            $relationName = Str::getRelationship($relation);
-        @endphp
-        public function {{$relationName}}()
-        {
-        
-            return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class
-            @if(isset($relation['pivot']))
-            , "{{$relation['pivot']}}"
-            @endif
-            @if(isset($relation['foreign_pivot_key']))
-            , "{{$relation['foreign_pivot_key']}}"
-            @endif
-            @if(isset($relation['related_pivot_key']))
-            , "{{$relation['related_pivot_key']}}"
-            @endif
-            );
-        }
+    @php
+        $relationName = Str::getRelationship($relation);
+    @endphp
+    public function {{$relationName}}()
+    {
+    
+        return $this->{{Str::camel($relation['name'])}}({{ucfirst(Str::singular($relation['table']))}}::class
+        @if(isset($relation['pivot']))
+        , "{{$relation['pivot']}}"
+        @endif
+        @if(isset($relation['foreign_pivot_key']))
+        , "{{$relation['foreign_pivot_key']}}"
+        @endif
+        @if(isset($relation['related_pivot_key']))
+        , "{{$relation['related_pivot_key']}}"
+        @endif
+        );
+    }
 
     @endforeach
     @endif
-   
 }

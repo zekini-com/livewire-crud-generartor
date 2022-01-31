@@ -1,20 +1,24 @@
 <?php
+
 namespace Zekini\CrudGenerator\Traits;
 
 use Illuminate\Support\Facades\Schema;
 
 trait ColumnTrait
 {
-
     protected $dontShow = [
         'id',
         'created_at',
         'deleted_at',
-        'updated_at',
         'email_verified_at',
-        'remember_token'
+        'password',
+        'push_token',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+        'updated_at',
     ];
-    
+
     /**
      * Gets column details of table
      *
@@ -26,18 +30,18 @@ trait ColumnTrait
         $blackList = $this->dontShow;
 
         $columns = collect(Schema::getColumnListing($tableName));
-        $columns = $columns->reject(function($col) use($blackList){
+
+        return $columns->reject(function ($col) use ($blackList) {
             return in_array($col, $blackList);
         })
-        ->map(function($col) use($tableName){
-            return [
-                'name'=> $col, 
-                'type'=> Schema::getColumnType($tableName, $col),
-                'required'=> boolval(Schema::getConnection()->getDoctrineColumn($tableName, $col)->getNotnull())
-            ];
-        });
-
-        return $columns;
+            ->map(function ($col) use ($tableName) {
+                return [
+                    'name' => $col,
+                    'type' => Schema::getColumnType($tableName, $col),
+                    'required' => boolval(Schema::getConnection()->getDoctrineColumn($tableName, $col)->getNotnull())
+                ];
+            })
+            ->orderBy('name');
     }
 
     /**
@@ -51,33 +55,33 @@ trait ColumnTrait
         $blackList = $this->dontShow;
 
         $columns = collect(Schema::getColumnListing($tableName));
-        $columns = $columns->reject(function($col) use($blackList){
+        $columns = $columns->reject(function ($col) use ($blackList) {
             return in_array($col, $blackList);
         })
-        ->map(function($col) use($tableName){
-            return [
-                'name'=> $col, 
-                'type'=> Schema::getColumnType($tableName, $col),
-                'required'=> boolval(Schema::getConnection()->getDoctrineColumn($tableName, $col)->getNotnull())
-            ];
-        });
+            ->map(function ($col) use ($tableName) {
+                return [
+                    'name' => $col,
+                    'type' => Schema::getColumnType($tableName, $col),
+                    'required' => boolval(Schema::getConnection()->getDoctrineColumn($tableName, $col)->getNotnull())
+                ];
+            });
 
         return $columns;
     }
 
-     /**
+    /**
      * Gets column details of table
      *
      * @return array
      */
     public function getColumnDetailsWithRelations()
     {
-       $columns = $this->getColumnDetails();
-      
-       return $this->belongsToConfiguration()->pluck('column')->toArray();
+        $columns = $this->getColumnDetails();
+
+        return $this->belongsToConfiguration()->pluck('column')->toArray();
     }
 
-    
+
     /**
      * The model contains a particular column
      *

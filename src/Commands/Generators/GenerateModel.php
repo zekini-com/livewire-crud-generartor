@@ -1,4 +1,5 @@
 <?php
+
 namespace Zekini\CrudGenerator\Commands\Generators;
 
 use Illuminate\Support\Str;
@@ -7,18 +8,17 @@ use Illuminate\Filesystem\Filesystem;
 
 class GenerateModel extends BaseGenerator
 {
-
     protected $classType = 'model';
 
     protected $model;
-    
+
     /**
      * class name
      *
      * @var string
      */
     protected $className;
-    
+
     /**
      * class namespace
      *
@@ -26,7 +26,7 @@ class GenerateModel extends BaseGenerator
      */
     protected $namespace;
 
-     /**
+    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -40,7 +40,6 @@ class GenerateModel extends BaseGenerator
      */
     protected $description = 'Generates model';
 
-    
     /**
      * Get the default namespace for the class.
      *
@@ -49,7 +48,7 @@ class GenerateModel extends BaseGenerator
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'Models\\';
+        return $rootNamespace . 'Models\\';
     }
 
     /**
@@ -68,33 +67,26 @@ class GenerateModel extends BaseGenerator
         $templateContent = $this->replaceContent();
 
         @$this->files->makeDirectory($path = $this->getPathFromNamespace($this->namespace), 0777);
-        $filename = $path.'/'.$this->className.'.php';
-       
+        $filename = $path . '/' . $this->className . '.php';
+
         $this->files->put($filename, $templateContent);
-       
+
         return Command::SUCCESS;
     }
 
-
-     /**
+    /**
      * Get view data
      *
      * @return array
      */
     protected function getViewData()
     {
-       
         return [
             'modelBaseName' => ucfirst($this->className),
-            'hasDeletedAt'=> $this->hasColumn('deleted_at'),
-            'vissibleColumns'=> $this->getColumnDetails(),
-            'relations'=> $this->getRelations() ?? [],
-            'isUser'=> $this->option('user')
+            'hasDeletedAt' => $this->hasColumn('deleted_at'),
+            'vissibleColumns' => $this->getColumnDetails(),
+            'relations' => $this->getRelations() ?? [],
+            'isUser' => $this->option('user')
         ];
     }
-
-   
-    
-
-  
 }
