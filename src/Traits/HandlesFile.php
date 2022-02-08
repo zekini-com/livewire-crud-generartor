@@ -35,17 +35,19 @@ trait HandlesFile
 
     /**
      * Deleted an uploaded file
-     *
-     * @param  array $url
-     * @param  string $disk
-     * @return void
      */
-    public function deleteFile($urls, $disk = null)
+    public function deleteFile(array $urls, string $disk = null): void
     {
         $disk = $disk ?? $this->disk;
 
-        foreach (json_decode($urls) as $url) {
-            if(Storage::disk($disk)->exists($url)){
+        $urls_decoded = json_decode($urls);
+
+        if (blank($urls_decoded)) {
+            return;
+        }
+
+        foreach ($urls_decoded as $url) {
+            if (Storage::disk($disk)->exists($url)) {
                 Storage::disk($disk)->delete($url);
             }
         }
