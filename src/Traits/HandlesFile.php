@@ -36,7 +36,7 @@ trait HandlesFile
     /**
      * Deleted an uploaded file
      */
-    public function deleteFile(array $urls, string $disk = null): void
+    public function deleteFile($urls, string $disk = null): void
     {
         $disk = $disk ?? $this->disk;
 
