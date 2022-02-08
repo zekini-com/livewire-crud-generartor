@@ -1,4 +1,5 @@
 <?php
+
 namespace Zekini\CrudGenerator\Traits;
 
 use Illuminate\Http\UploadedFile;
@@ -6,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 
 trait HandlesFile
 {
-    
     /**
      * Disk to use for image processing
      *
@@ -14,7 +14,6 @@ trait HandlesFile
      */
     protected $disk = 'public';
 
-    
     /**
      * Get File
      *
@@ -23,10 +22,9 @@ trait HandlesFile
      */
     public function getFile($files)
     {
-
         $filesArr = [];
 
-        foreach($files as $file){
+        foreach ($files as $file) {
             $filepath = $file->store($this->disk);
             $filePathArr = explode('/', $filepath);
             $filesArr[] = $filePathArr[array_key_last($filePathArr)];
@@ -34,7 +32,7 @@ trait HandlesFile
 
         return json_encode($filesArr);
     }
-    
+
     /**
      * Deleted an uploaded file
      *
@@ -42,12 +40,14 @@ trait HandlesFile
      * @param  string $disk
      * @return void
      */
-    public function deleteFile($urls, $disk=null)
+    public function deleteFile($urls, $disk = null)
     {
         $disk = $disk ?? $this->disk;
-        foreach(json_decode($urls) as $url){
-            Storage::disk($disk)->delete($url);
+
+        foreach (json_decode($urls) as $url) {
+            if(Storage::disk($disk)->exists($url)){
+                Storage::disk($disk)->delete($url);
+            }
         }
-       
     }
 }

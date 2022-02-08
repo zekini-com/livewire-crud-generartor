@@ -21,20 +21,14 @@ class {{$factoryBaseName}} extends Factory
     public function definition()
     {
         return [
-
             @foreach($fakerAttributes as $attribute)
-           
             @if($isActivityLogModel && in_array($attribute['name'], ['subject_id', 'causer_id']))
-           
-            "{{$attribute['name']}}" => $this->faker->randomDigit(),
-            @continue
-            @endif
+            '{{$attribute['name']}}' => $this->faker->randomDigit(),
+            @continue @endif
             @if($attribute['name'] == 'file' || $attribute['name']== 'image')
-                "{{$attribute['name']}}" => '["img.jpg"]',
+                '{{$attribute['name']}}' => '["img.jpg"]',
             @else
-            
-            "{{$attribute['name']}}"=> {!! $attribute['faker'] !!},
-        
+            '{{$attribute['name']}}' => {!! $attribute['faker'] !!},
             @endif
             @endforeach
         ];
