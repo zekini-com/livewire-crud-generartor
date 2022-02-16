@@ -110,7 +110,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\Generators\GenerateForm::class,
             Commands\Generators\GenerateImport::class,
             Commands\Generators\View\GenerateIndexView::class,
-            Commands\Generators\GeneratePermission::class,
+            // Commands\Generators\GeneratePermission::class,
 
             Commands\Generators\Test\GenerateDatatableTest::class,
             Commands\Generators\Test\GenerateIndexTest::class,
