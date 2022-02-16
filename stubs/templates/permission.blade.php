@@ -50,7 +50,7 @@ class {{ $className }} extends Migration
     protected function setupSuperAdmin()
     {
         // create admin
-        $adminId = DB::table('users')->where('name', 'Administrator')->value('id');
+        $adminId = DB::table('zekini_admins')->where('name', 'Administrator')->first()->id;
 
         $roles = DB::table('roles')->get();
       

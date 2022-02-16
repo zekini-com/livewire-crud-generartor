@@ -28,7 +28,7 @@ return [
     'passwords' => [
         'zekini_admins' => [
             'provider' => 'zekini_admins',
-            'table' => 'password_resets',
+            'table' => 'zekini_admin_password_resets',
             'expire' => 60,
             'throttle' => 60
         ]
@@ -85,7 +85,7 @@ return [
             ]
         ],
 
-        'users' => [
+        'zekini_admins' => [
             [
                 'name' => 'belongs_to_many',
                 'table' => 'roles',
@@ -99,5 +99,5 @@ return [
 
     'search_keys' => [],
 
-    'version' => '1.0.2',
+    'version' => '1.0.1',
 ];

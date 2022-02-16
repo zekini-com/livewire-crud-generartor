@@ -138,7 +138,7 @@ class {{Str::plural($modelBaseName)}} extends Component
 
         $model = {{$modelBaseName}}::create($data);
         @foreach($pivots as $pivot)
-        @if($modelBaseName == 'User')
+        @if($modelBaseName == 'ZekiniAdmin')
         $model->{{$pivot['table']}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
             'model_type' => 'Zekini\CrudGenerator\Models\ZekiniAdmin'
         ]);

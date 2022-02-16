@@ -24,11 +24,6 @@ trait HandlesFile
     {
         $filesArr = [];
 
-        
-        if (blank($files)) {
-            return;
-        }
-
         foreach ($files as $file) {
             $filepath = $file->store($this->disk);
             $filePathArr = explode('/', $filepath);
