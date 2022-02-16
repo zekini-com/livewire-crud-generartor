@@ -67,7 +67,7 @@ class AdminScaffold extends Command
 
     protected function generateDefaultModelCruds()
     {
-        $this->call('admin:crud:generate', ['table' => 'zekini_admins', '--user' => true]);
+        $this->call('admin:crud:generate', ['table' => 'users', '--user' => true]);
         $this->call('admin:crud:generate', ['table' => 'permissions']);
         $this->call('admin:crud:generate', ['table' => 'roles']);
         $this->call('admin:crud:generate', ['table' => config('activitylog.table_name'), '--readonly' => true]);
@@ -159,26 +159,6 @@ class AdminScaffold extends Command
         \'zekini_admin\'=> [
             \'driver\' => \'session\',
             \'provider\' => \'zekini_admins\'
-        ],';
-
-        Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
-
-        $find = '\'providers\' => [';
-        $replaceWith = '\'providers\' => [
-        \'zekini_admins\'=> [
-            \'driver\' => \'eloquent\',
-            \'model\' => Zekini\CrudGenerator\Models\ZekiniAdmin::class
-        ],';
-
-        Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
-
-        $find = '\'passwords\' => [';
-        $replaceWith = '\'passwords\' => [
-        \'zekini_admins\' => [
-            \'provider\' => \'zekini_admins\',
-            \'table\' => \'zekini_admin_password_resets\',
-            \'expire\' => 60,
-            \'throttle\' => 60
         ],';
 
         Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);

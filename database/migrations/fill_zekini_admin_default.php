@@ -47,7 +47,7 @@ class FillZekiniAdminDefault extends Migration
     protected function setupSuperAdmin()
     {
         // create admin
-        $adminId = DB::table('zekini_admins')->insertGetId($this->admin);
+        $adminId = DB::table('users')->insertGetId($this->admin);
 
         $roles = DB::table('roles')->get();
 
@@ -116,7 +116,7 @@ class FillZekiniAdminDefault extends Migration
                     'name' => $role['name'],
                     'guard_name' => $this->guardName
                 ])
-                ->first()->id;
+                ->value('id');
 
             // map role to permisssions
             foreach ($role['permissions'] as $rolePermission) {
@@ -192,7 +192,7 @@ class FillZekiniAdminDefault extends Migration
 
     protected function clearSuperAdmin(): void
     {
-        $admin = DB::table('zekini_admins')
+        $admin = DB::table('users')
             ->where('email', $this->admin['email'])
             ->first();
 
