@@ -86,7 +86,7 @@ class {{Str::plural($modelBaseName)}} extends Component
 
     public function flashMessageEvent($message)
     {
-        FlashHelper::success($message, $this);
+        FlashHelper::success($message);
     }
 
     public function closeModalButton()
