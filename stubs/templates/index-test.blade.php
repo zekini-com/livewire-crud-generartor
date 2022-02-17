@@ -7,14 +7,10 @@ use Tests\TestCase;
 use App\Models\{{$modelBaseName}};
 use App\Http\Livewire\Create{{$modelBaseName}};
 use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\{{$datatableComponent}};
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 class {{$modelBaseName}}Test extends TestCase
 {
-
-    use RefreshDatabase;
-
     /**
      * Test we can create {{$resource}}
      * @group {{$resource}}_test
@@ -28,7 +24,6 @@ class {{$modelBaseName}}Test extends TestCase
 
       $this->actingAs($admin, $guard);
 
-      $this->faker = \Faker\Factory::create();
       $firstData = 'raw_data';
       Livewire::test({{$datatableComponent}}::class)
       @foreach($columnFakerMappings as $index=>$col)
@@ -48,10 +43,10 @@ class {{$modelBaseName}}Test extends TestCase
           @endphp
           ->set('state.{{$pivot["table"]}}', {{ $pivotModelFactory }}::factory()->create()->id)
        @endforeach
-        ->call('submit');
+        ->call('submit')
+        ->assertHasNoErrors();
 
         $this->assertTrue({{ucfirst($modelBaseName)}}::where('{{$columnFakerMappings->first()['name']}}', $firstData)->exists());
-       
     }
 
     /**
@@ -69,7 +64,6 @@ class {{$modelBaseName}}Test extends TestCase
 
       $model = {{$modelBaseName}}::factory()->create();
 
-      $this->faker = \Faker\Factory::create();
       $firstData = 'raw_data';
       Livewire::test({{$datatableComponent}}::class)
       ->call('launch{{ucfirst($modelBaseName)}}EditModal', [$model->id])
@@ -90,13 +84,11 @@ class {{$modelBaseName}}Test extends TestCase
           @endphp
           ->set('state.{{$pivot["table"]}}', {{ $pivotModelFactory }}::factory()->create()->id)
        @endforeach
-        
-        ->call('editSubmit');
+        ->call('editSubmit')
+        ->assertHasNoErrors();
 
         $this->assertTrue({{ucfirst($modelBaseName)}}::where('{{$columnFakerMappings->first()['name']}}', $firstData)->exists());
-       
     }
-
     
     /**
      * Test Required field
@@ -111,7 +103,7 @@ class {{$modelBaseName}}Test extends TestCase
         $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
   
         $this->actingAs($admin, $guard);
-        $this->faker = \Faker\Factory::create();
+
         Livewire::test({{$datatableComponent}}::class)
         @foreach($columnFakerMappings as $index=>$col)
           @if($index == 1)
@@ -147,7 +139,7 @@ class {{$modelBaseName}}Test extends TestCase
         $admin  = {{$adminModel}}::factory()->create();
   
         $this->actingAs($admin, $guard);
-        $this->faker = \Faker\Factory::create();
+
         Livewire::test({{$datatableComponent}}::class)
         @foreach($columnFakerMappings as $index=>$col)
           @if($index == 1)
@@ -169,14 +161,4 @@ class {{$modelBaseName}}Test extends TestCase
           ->call('submit')
           ->assertForbidden();
     }
-
-
-
-
-  
-
-
-
-
-
 }
