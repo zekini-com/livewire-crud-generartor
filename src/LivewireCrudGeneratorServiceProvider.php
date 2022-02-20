@@ -2,19 +2,14 @@
 namespace Zekini\CrudGenerator;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Livewire\LivewireServiceProvider;
-use Spatie\Permission\PermissionServiceProvider;
-use Zekini\CrudGenerator\Http\Middleware\RedirectGuest;
-use Zekini\CrudGenerator\Http\Middleware\RedirectIfAuthenticated;
+use Zekini\CrudGenerator\Http\Middleware\CheckRole;
 use Zekini\CrudGenerator\Mixin\StrMixin;
-use Zekini\CrudGenerator\Providers\CrudServiceProvider;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 {
@@ -104,6 +99,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\AdminScaffold::class,
             Commands\CrudGenerator::class,
             Commands\VersionCommand::class,
+            Commands\GenerateSuperAdmin::class,
 
             Commands\Generators\GenerateModel::class,
             Commands\Generators\GenerateController::class,
@@ -160,12 +156,10 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     protected function publishMigrations()
     {
         $publishableMigrations = [
-            'fill_zekini_admin_default.php',
-            'create_zekini_admins_table.php',
-            'create_zekini_admin_password_resets_table.php',
             'add_softdeletes_to_roles.php',
             'add_softdeletes_to_permissions.php',
-            'add_softdeletes_to_activity_log_table.php'
+            'add_softdeletes_to_activity_log_table.php',
+            'setup_admin_roles_and_permissions.php'
         ];
 
         foreach($publishableMigrations as $migrationFileName) {
@@ -207,9 +201,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     protected function setupMiddlewares()
     {
         $router = $this->app->make(Router::class);
-        $guard = config('zekini-admin.defaults.guard');
-        $router->aliasMiddleware('admin.guest', RedirectGuest::class);
-        $router->aliasMiddleware('admin', RedirectIfAuthenticated::class);
+        $router->aliasMiddleware('role', CheckRole::class);
     }
 
     public function register()

@@ -2,42 +2,30 @@
 
 return [
 
-    'defaults' => [
-        'guard' => 'zekini_admin',
-        'passwords' => 'zekini_admins',
-
-        // used for development
-        'default-email' => 'support@zekini.com',
-        'default-password' => 'password'
+    'defaults'=> [
+        'guard'=> 'web',
+        'role'=> 'admin'
     ],
 
-    'guards' => [
-        'zekini_admin' => [
-            'driver' => 'session',
-            'provider' => 'zekini_admins'
+    'admin_roles'=> [
+
+        [
+            'name'=> 'admin',
+            'permissions'=> ['*']
         ]
     ],
 
-    'providers' => [
-        'zekini_admins' => [
-            'driver' => 'eloquent',
-            'model' => Zekini\CrudGenerator\Models\ZekiniAdmin::class
-        ]
+    'permissions'=> [
+        'administer.user.index',
+        'administer.user.create',
+        'administer.user.edit',
+        'administer.user.delete',
     ],
 
-    'passwords' => [
-        'zekini_admins' => [
-            'provider' => 'zekini_admins',
-            'table' => 'zekini_admin_password_resets',
-            'expire' => 60,
-            'throttle' => 60
-        ]
-    ],
 
     'auth_routes' => [
         'login_redirect' => '/admin',
-        'logout_redirect' => '/admin/login',
-        'password_reset_redirect' => '/admin/login'
+        'logout_redirect' => '/admin/login'
     ],
 
     /*
@@ -85,7 +73,7 @@ return [
             ]
         ],
 
-        'zekini_admins' => [
+        'users' => [
             [
                 'name' => 'belongs_to_many',
                 'table' => 'roles',

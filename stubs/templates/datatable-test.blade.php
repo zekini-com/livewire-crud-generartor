@@ -10,6 +10,7 @@ use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\Datatable\{{$data
 use Livewire\Livewire;
 use App\Imports\{{Str::plural(ucfirst($modelBaseName))}}Import;
 use Maatwebsite\Excel\Facades\Excel;
+use Zekini\CrudGenerator\Factory\AdminFactory;
 
 class {{$modelBaseName}}DatatableTest extends TestCase
 {
@@ -21,7 +22,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     public function test_we_can_destroy_{{strtolower($resource)}}()
     {
       $guard = config('zekini-admin.defaults.guard');
-      $admin  = {{$adminModel}}::factory()->create();
+      $admin  = AdminFactory::create();
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
       $this->actingAs($admin, $guard);
@@ -48,7 +49,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
 
         $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
   
@@ -70,7 +71,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
 
         $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
   

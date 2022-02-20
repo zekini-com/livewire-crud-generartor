@@ -8,6 +8,8 @@ use App\Models\{{$modelBaseName}};
 use App\Http\Livewire\Create{{$modelBaseName}};
 use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\{{$datatableComponent}};
 use Livewire\Livewire;
+use Zekini\CrudGenerator\Factory\AdminFactory;
+
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 class {{$modelBaseName}}Test extends TestCase
 {
@@ -19,7 +21,7 @@ class {{$modelBaseName}}Test extends TestCase
     public function test_we_can_create_{{$resource}}()
     {
       $guard = config('zekini-admin.defaults.guard');
-      $admin  = {{$adminModel}}::factory()->create();
+      $admin  = AdminFactory::create();
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
 
       $this->actingAs($admin, $guard);
@@ -57,7 +59,7 @@ class {{$modelBaseName}}Test extends TestCase
     public function test_we_can_update_{{$resource}}()
     {
       $guard = config('zekini-admin.defaults.guard');
-      $admin  = {{$adminModel}}::factory()->create();
+      $admin  = AdminFactory::create();
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.edit');
 
       $this->actingAs($admin, $guard);
@@ -99,7 +101,7 @@ class {{$modelBaseName}}Test extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
         $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
   
         $this->actingAs($admin, $guard);
@@ -136,7 +138,7 @@ class {{$modelBaseName}}Test extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
   
         $this->actingAs($admin, $guard);
 
