@@ -20,6 +20,7 @@ To run the created migrations
 
 To generate a super admin
 `php artisan admin:superuser`
+ensure user class uses the `HasRoles` spatie trait
 
 To generate crud for default package tables
 `php artisan admin:crud:package-tables`

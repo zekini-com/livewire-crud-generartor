@@ -138,9 +138,9 @@ class {{Str::plural($modelBaseName)}} extends Component
 
         $model = {{$modelBaseName}}::create($data);
         @foreach($pivots as $pivot)
-        @if($modelBaseName == 'ZekiniAdmin')
+        @if($modelBaseName == 'User')
         $model->{{$pivot['table']}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
-            'model_type' => 'Zekini\CrudGenerator\Models\ZekiniAdmin'
+            'model_type' => 'App\Models\User'
         ]);
         @else
         $model->{{$pivot['table']}}()->sync($this->state['{{$pivot['table']}}']);
@@ -165,9 +165,9 @@ class {{Str::plural($modelBaseName)}} extends Component
       
         $model->update($data);
         @foreach($pivots as $pivot)
-        @if($modelBaseName == 'ZekiniAdmin')
+        @if($modelBaseName == 'User')
         $model->{{$pivot['table']}}()->syncWithPivotValues($this->state['{{$pivot['table']}}'], [
-            'model_type' => 'Zekini\CrudGenerator\Models\ZekiniAdmin'
+            'model_type' => 'App\Models\User'
         ]);
         @else
         $model->{{$pivot['table']}}()->sync($this->state['{{$pivot['table']}}']);

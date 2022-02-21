@@ -30,6 +30,6 @@
         }
     },
     "require": {
-        "zekini/laravel-generics": "dev-master"
+        "zekini/laravel-generics": "1.0.1"
     }
 }

@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Zekini\CrudGenerator\Helpers\Utilities;
+use Zekini\CrudGenerator\Traits\ColumnTrait;
 
 class CrudGenerator extends Command
 {
+
+    use ColumnTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -47,6 +51,12 @@ class CrudGenerator extends Command
     public function handle()
     {
         if (!$this->tableExists($this->argument('table'))) {
+            return Command::FAILURE;
+        }
+
+        // all tables must have the deleted_at column
+        if(! $this->hasColumn('deleted_at')) {
+            $this->error('Table must contain a softdeletes column');
             return Command::FAILURE;
         }
        
