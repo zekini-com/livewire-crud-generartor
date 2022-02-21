@@ -105,4 +105,7 @@ A full list of keys is given below
             'test-datatable' => 'Datatable Test',
             'test-index' => 'Index Component Test',
             'factory' => 'Factory class'
+
+## Note
+You are required to add a custom middleware to redirect to admin or users based on the role of the given user
             

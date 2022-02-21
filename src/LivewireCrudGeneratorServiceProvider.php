@@ -206,7 +206,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
         $router = $this->app->make(Router::class);
         $router->aliasMiddleware('role', CheckRole::class);
 
-        $this->registerMiddleware(CheckAdminDashboard::class);
+        //$this->registerMiddleware(CheckAdminDashboard::class);
     }
 
     /**
