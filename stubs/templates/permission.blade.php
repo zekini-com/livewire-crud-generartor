@@ -8,7 +8,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Config\Repository as Config;
-use Illuminate\Support\Collection;
 use Zekini\CrudGenerator\Traits\CreatesPermissionObject;
 use Spatie\Permission\Models\Role;
 
@@ -27,9 +26,9 @@ class {{ $className }} extends Migration
     /**
      * {{ $className }} constructor.
      */
-    public function __construct(Config $config)
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = config();
 
         $this->guardName = $this->config->get('zekini-admin.defaults.guard', 'web');
 
@@ -51,7 +50,7 @@ class {{ $className }} extends Migration
 
         foreach($adminRoles as $roleName) 
         {
-            $role = Role::findByName($roleName, $this->guardName);
+            $role = Role::findByName($roleName['name'], $this->guardName);
             if(! $role) continue;
             $role->givePermissionTo($this->permissions->toArray());
         }
@@ -104,7 +103,7 @@ class {{ $className }} extends Migration
 
         foreach($adminRoles as $roleName) 
         {
-            $role = Role::findByName($roleName, $this->guardName);
+            $role = Role::findByName($roleName['name'], $this->guardName);
             if(! $role) continue;
             $role->revokePermissionTo($this->permissions->toArray());
         }

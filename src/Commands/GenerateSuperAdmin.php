@@ -56,13 +56,15 @@ class GenerateSuperAdmin extends Command
     {
         $this->info("Let's create a superadmin account!");
 
+        if(! method_exists(User::class, 'assignRole')) {
+            $this->error(' Your user model should use the Spatie HasRoles trait');
+            return;
+        }
+
+
         $email = $this->setEmail();
         $password = $this->setPassword();
       
-        if(! method_exists(User::class, 'assignRole')) {
-            $this->error(' Your user model should use the Spatie HasRoles trait');
-        }
-
         $user = User::create([
             'name' => "Admin",
             'email' => $email,

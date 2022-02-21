@@ -48,14 +48,9 @@ class AdminScaffold extends Command
 
         $this->comment('Installing jetstream livewire');
 
-        $this->call('jetstream:install', ['stack' => 'livewire', '--teams'=> true]);
-
-        $this->comment('Generating default model classes');
-
-        $this->generateDefaultModelCruds();
+        $this->call('jetstream:install', ['stack' => 'livewire']);
 
         $this->call('livewire-crud-generator:version');
-
 
         $this->comment('Congratulations on deploying version '. config('zekini-admin.version'));
 
@@ -64,13 +59,7 @@ class AdminScaffold extends Command
         return Command::SUCCESS;
     }
 
-    protected function generateDefaultModelCruds()
-    {
-        $this->call('admin:crud:generate', ['table' => 'users', '--user' => true]);
-        $this->call('admin:crud:generate', ['table' => 'permissions']);
-        $this->call('admin:crud:generate', ['table' => 'roles']);
-        $this->call('admin:crud:generate', ['table' => config('activitylog.table_name'), '--readonly' => true]);
-    }
+   
 
     /**
      * Publish All vendors

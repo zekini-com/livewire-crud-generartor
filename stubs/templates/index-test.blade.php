@@ -9,6 +9,7 @@ use App\Http\Livewire\Create{{$modelBaseName}};
 use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\{{$datatableComponent}};
 use Livewire\Livewire;
 use Zekini\CrudGenerator\Factory\AdminFactory;
+use Spatie\Permission\Models\Role;
 
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 class {{$modelBaseName}}Test extends TestCase
@@ -139,6 +140,12 @@ class {{$modelBaseName}}Test extends TestCase
         $guard = config('zekini-admin.defaults.guard');
       
         $admin  = AdminFactory::create();
+
+        // by default admin has all permissions 
+        $role =  Role::findByName(config('zekini-admin.defaults.role'));
+
+        // by default admin has all permissions 
+        $role->revokePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
   
         $this->actingAs($admin, $guard);
 

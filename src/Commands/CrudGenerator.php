@@ -49,7 +49,7 @@ class CrudGenerator extends Command
         if (!$this->tableExists($this->argument('table'))) {
             return Command::FAILURE;
         }
-
+       
         // if we are generating a single component
         // we stop here and continue
         $component = $this->option('only');

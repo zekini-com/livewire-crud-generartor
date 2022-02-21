@@ -10,6 +10,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Zekini\CrudGenerator\Http\Middleware\CheckRole;
 use Zekini\CrudGenerator\Mixin\StrMixin;
+use Illuminate\Contracts\Http\Kernel;
+use Zekini\CrudGenerator\Http\Middleware\CheckAdminDashboard;
 
 class LivewireCrudGeneratorServiceProvider extends ServiceProvider
 {
@@ -100,6 +102,7 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
             Commands\CrudGenerator::class,
             Commands\VersionCommand::class,
             Commands\GenerateSuperAdmin::class,
+            Commands\GeneratePackageTableCrud::class,
 
             Commands\Generators\GenerateModel::class,
             Commands\Generators\GenerateController::class,
@@ -202,6 +205,19 @@ class LivewireCrudGeneratorServiceProvider extends ServiceProvider
     {
         $router = $this->app->make(Router::class);
         $router->aliasMiddleware('role', CheckRole::class);
+
+        $this->registerMiddleware(CheckAdminDashboard::class);
+    }
+
+    /**
+     * Register Middleware
+     *
+     * @param  string $middleware
+     */
+    protected function registerMiddleware($middleware)
+    {
+        $kernel = $this->app[Kernel::class];
+        $kernel->pushMiddleware($middleware);
     }
 
     public function register()

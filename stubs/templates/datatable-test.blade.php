@@ -11,6 +11,7 @@ use Livewire\Livewire;
 use App\Imports\{{Str::plural(ucfirst($modelBaseName))}}Import;
 use Maatwebsite\Excel\Facades\Excel;
 use Zekini\CrudGenerator\Factory\AdminFactory;
+use Spatie\Permission\Models\Role;
 
 class {{$modelBaseName}}DatatableTest extends TestCase
 {
@@ -51,7 +52,10 @@ class {{$modelBaseName}}DatatableTest extends TestCase
       
         $admin  = AdminFactory::create();
 
-        $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
+        // by default admin has all permissions 
+        $role =  Role::findByName(config('zekini-admin.defaults.role'));
+        $role->revokePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
+        
   
         $this->actingAs($admin, $guard);
 
