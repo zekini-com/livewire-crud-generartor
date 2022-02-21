@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b5569c951add73d7b5268a836909062",
+    "content-hash": "270890601fc83ece71cfc31344f9189a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6195,16 +6195,16 @@
         },
         {
             "name": "zekini/laravel-generics",
-            "version": "v1.0.1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zekini-com/laravel-generics.git",
-                "reference": "d507558cd0aef4933bb0f6ea0dbe560afbb34eb8"
+                "reference": "bf2bf878ee9233b4a49d5cb8435ef13f67e94598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zekini-com/laravel-generics/zipball/d507558cd0aef4933bb0f6ea0dbe560afbb34eb8",
-                "reference": "d507558cd0aef4933bb0f6ea0dbe560afbb34eb8",
+                "url": "https://api.github.com/repos/zekini-com/laravel-generics/zipball/bf2bf878ee9233b4a49d5cb8435ef13f67e94598",
+                "reference": "bf2bf878ee9233b4a49d5cb8435ef13f67e94598",
                 "shasum": ""
             },
             "require": {
@@ -6259,9 +6259,9 @@
             "description": "A simple package to encapsulate all of our generic classes at Zekini to a package we can require in all our projects",
             "support": {
                 "issues": "https://github.com/zekini-com/laravel-generics/issues",
-                "source": "https://github.com/zekini-com/laravel-generics/tree/v1.0.1"
+                "source": "https://github.com/zekini-com/laravel-generics/tree/v1.0.0"
             },
-            "time": "2022-02-21T10:48:12+00:00"
+            "time": "2022-02-21T07:05:18+00:00"
         }
     ],
     "packages-dev": [],
