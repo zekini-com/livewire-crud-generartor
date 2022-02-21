@@ -48,18 +48,18 @@ class AdminScaffold extends Command
 
         $this->comment('Installing jetstream livewire');
 
-        $this->call('jetstream:install --teams', ['stack' => 'livewire']);
+        $this->call('jetstream:install', ['stack' => 'livewire', '--teams'=> true]);
 
         $this->comment('Generating default model classes');
 
         $this->generateDefaultModelCruds();
 
-        $this->call('livewire-crud-generator:superadmin');
-
         $this->call('livewire-crud-generator:version');
 
 
         $this->comment('Congratulations on deploying version '. config('zekini-admin.version'));
+
+        $this->comment('Run php artisan migrate and npm run dev to continue');
 
         return Command::SUCCESS;
     }
@@ -149,6 +149,10 @@ class AdminScaffold extends Command
     
     private static function undoPreviousMigrations(array $tablesArray): void
     {
+        if (!Schema::hasTable('migrations')) { // if no migration exit
+            return;
+        }
+
         foreach ($tablesArray as $table) {
             Schema::dropIfExists($table);
             DB::table('migrations')->where('migration', 'like', '%' . $table . '%')->delete();

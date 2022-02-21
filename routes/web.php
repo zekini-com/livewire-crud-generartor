@@ -11,7 +11,7 @@
 |
 */
 
-Route::middleware(['web', 'admin.guest'])->group(static function () {
+Route::middleware(['web'])->group(static function () {
     Route::namespace('App\Http\Controllers\Admin\Auth')->group(static function () {
         Route::get('/admin/login', 'LoginController@showLoginForm')->name('zekini/livewire-crud-generator::admin/login');
     });

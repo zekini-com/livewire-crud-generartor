@@ -16,7 +16,7 @@ class GenerateSuperAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'livewire-crud-generator {email?} {password?}';
+    protected $signature = 'livewire-crud-generator:admin {email?} {password?}';
 
     /**
      * The console command description.
@@ -55,12 +55,13 @@ class GenerateSuperAdmin extends Command
     public function handle()
     {
         $this->info("Let's create a superadmin account!");
-        if (!$this->tableExists($this->argument('table'))) {
-            return Command::FAILURE;
-        }
 
         $email = $this->setEmail();
         $password = $this->setPassword();
+      
+        if(! method_exists(User::class, 'assignRole')) {
+            $this->error(' Your user model should use the Spatie HasRoles trait');
+        }
 
         $user = User::create([
             'name' => "Admin",
@@ -68,6 +69,10 @@ class GenerateSuperAdmin extends Command
             'email_verified_at'=> true,
             'password'=> Hash::make($password)
         ]);
+
+        $role = $this->config->get('zekini-admin.defaults.role');
+
+        $user->assignRole($role);
 
         $this->info("Your account has been created");
     }

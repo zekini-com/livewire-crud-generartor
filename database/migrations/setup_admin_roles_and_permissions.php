@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Role;
 use Zekini\CrudGenerator\Traits\CreatesPermissionObject;
 
 class SetupAdminRolesAndPermissions extends Migration
@@ -21,9 +22,9 @@ class SetupAdminRolesAndPermissions extends Migration
     protected Collection $roles;
 
 
-    public function __construct(Config $config)
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = config();
 
         $this->guardName = $this->config->get('zekini-admin.defaults.guard', 'web');
 
@@ -51,9 +52,10 @@ class SetupAdminRolesAndPermissions extends Migration
 
             if (!$roleId) $roleId =  $this->getObject($role['name'], 'roles')->id;
             
+            $spatieRole = Role::find($roleId);
 
             // map role to permisssions
-            $role->syncPermissions($this->getRolePermissions($role));
+            $spatieRole->syncPermissions($this->getRolePermissions($role));
            
         }
     }
