@@ -12,7 +12,7 @@
 					<div class="card-body">
 						<h1>Login</h1>
 						<p class="text-medium-emphasis">Sign In to your account</p>
-						<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/login') }}">
+						<form class="form-horizontal" role="form" method="POST" action="{{ url('login') }}">
 						@include('zekini/livewire-crud-generator::admin.auth.includes.messages')
 						{{ csrf_field() }}
 						<div class="input-group mb-3"><span class="input-group-text">

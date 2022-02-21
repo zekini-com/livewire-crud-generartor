@@ -14,7 +14,6 @@
        
             @php
             $tag = "<livewire:$componentName />";
-            $flash = "<livewire:flash-container />";
            
             $endJetstreamDialog = "</x-jet-dialog-modal>";
             $titleSlot = "<x-slot name='title'>";
@@ -24,7 +23,6 @@
             $startJetstreamDialog = "<x-jet-dialog-modal";
 
             @endphp
-            {!! $flash !!}
 
             {!! $tag !!}
 

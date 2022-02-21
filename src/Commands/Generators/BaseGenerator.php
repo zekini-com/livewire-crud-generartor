@@ -103,9 +103,9 @@ abstract class BaseGenerator extends Command
     {
        
         $variables = $this->getViewData();
-
+       
         $view = "zekini/stubs::templates.".$this->classType;
-
+    
         return view($view, $variables)->render();
 
     }

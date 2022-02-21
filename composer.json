@@ -5,14 +5,17 @@
     "license": "MIT",
     "authors": [{
         "name": "Keania Niate Eric",
-        "email": "support@zekini.com"
+        "email": "keania@zekini.com"
     }],
     "minimum-stability": "dev",
 
     "autoload": {
         "psr-4": {
             "Zekini\\CrudGenerator\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {
@@ -27,6 +30,6 @@
         }
     },
     "require": {
-        "zekini/laravel-generics": "1.0.0"
+        "zekini/laravel-generics": "1.0.1"
     }
 }

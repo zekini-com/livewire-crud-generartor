@@ -10,6 +10,8 @@ use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\Datatable\{{$data
 use Livewire\Livewire;
 use App\Imports\{{Str::plural(ucfirst($modelBaseName))}}Import;
 use Maatwebsite\Excel\Facades\Excel;
+use Zekini\CrudGenerator\Factory\AdminFactory;
+use Spatie\Permission\Models\Role;
 
 class {{$modelBaseName}}DatatableTest extends TestCase
 {
@@ -21,7 +23,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     public function test_we_can_destroy_{{strtolower($resource)}}()
     {
       $guard = config('zekini-admin.defaults.guard');
-      $admin  = {{$adminModel}}::factory()->create();
+      $admin  = AdminFactory::create();
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
       $this->actingAs($admin, $guard);
@@ -48,9 +50,12 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
 
-        $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
+        // by default admin has all permissions 
+        $role =  Role::findByName(config('zekini-admin.defaults.role'));
+        $role->revokePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
+        
   
         $this->actingAs($admin, $guard);
 
@@ -70,7 +75,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
 
         $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.delete');
   
