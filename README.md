@@ -15,8 +15,15 @@ The **zekini/livewire-crud-generator** package allows us to generate an admin pa
 To scaffold admin ui and authentication
 `php artisan admin:scaffold`
 
-To run the created migrations and access admin
+To run the created migrations
 `php artisan migrate`
+
+To generate a super admin
+`php artisan admin:superuser`
+
+To generate crud for default package tables
+`php artisan admin:crud:package-tables`
+
 To setup relationship mappings on a model simply go to the zekini-admin config under relationships
 To generate crud for a particular model. Simply create the migration file for that crud and migrate to the database
 
@@ -98,5 +105,3 @@ A full list of keys is given below
             'test-index' => 'Index Component Test',
             'factory' => 'Factory class'
             
-## Flash Message
-This package comes [mattlibera/livewire-flash](https://github.com/mattlibera/livewire-flash) to use our custome flash-message edit your livewire-flash config file change livewire-flash::livewire.flash-message to zekini/livewire-crud-generator::livewire-flash-message

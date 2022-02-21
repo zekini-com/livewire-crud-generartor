@@ -16,7 +16,7 @@ class GenerateSuperAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'livewire-crud-generator:admin {email?} {password?}';
+    protected $signature = 'admin:superuser {email?} {password?}';
 
     /**
      * The console command description.
