@@ -145,7 +145,7 @@ class {{$modelBaseName}}Test extends TestCase
         $role =  Role::findByName(config('zekini-admin.defaults.role'));
 
         // by default admin has all permissions 
-        $role->revokePermissionTo('admin.{{ strtolower($modelDotNotation)}}.index');
+        $role->revokePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
   
         $this->actingAs($admin, $guard);
 

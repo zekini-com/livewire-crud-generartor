@@ -37,7 +37,7 @@ class GeneratePackageTableCrud extends Command
 
     protected function generateDefaultModelCruds():void
     {
-        $this->call('admin:crud:generate', ['table' => 'users', '--user' => true, '--exclude'=> 'models']);
+        $this->call('admin:crud:generate', ['table' => 'users', '--user' => true, '--exclude'=> ['model']]);
         $this->call('admin:crud:generate', ['table' => 'permissions']);
         $this->call('admin:crud:generate', ['table' => 'roles']);
         $this->call('admin:crud:generate', ['table' => config('activitylog.table_name'), '--readonly' => true]);

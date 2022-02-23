@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Validation\Factory as ValidatorFactory;
+use Zekini\CrudGenerator\Traits\ColumnTrait;
 
 class GenerateSuperAdmin extends Command
 {
+
+    use ColumnTrait;
 
     /**
      * The name and signature of the console command.
@@ -64,13 +67,14 @@ class GenerateSuperAdmin extends Command
 
         $email = $this->setEmail();
         $password = $this->setPassword();
-      
-        $user = User::create([
-            'name' => "Admin",
+        
+        $names = $this->getNames();
+        $userAttr = [
             'email' => $email,
             'email_verified_at'=> true,
             'password'=> Hash::make($password)
-        ]);
+        ];
+        $user = User::create(array_merge($names, $userAttr));
 
         $role = $this->config->get('zekini-admin.defaults.role');
 
@@ -87,6 +91,18 @@ class GenerateSuperAdmin extends Command
         }
 
         return true;
+    }
+
+    protected function getNames():array
+    {
+        if ($this->hasColumn('users', 'first_name')) {
+            return [
+                'first_name'=> 'Admin',
+                'last_name'=> 'Admin'
+            ];
+        }
+
+        return ['name'=> 'Admin'];
     }
 
     /**

@@ -22,6 +22,10 @@ trait HandlesFile
      */
     public function getFile($files)
     {
+        if (is_string($files)) {
+            return $files;
+        }
+        
         $filesArr = [];
 
         foreach ($files as $file) {

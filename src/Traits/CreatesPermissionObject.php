@@ -41,9 +41,9 @@ trait CreatesPermissionObject
     }
 
 
-    protected function createObject($objectValue, $type): void
+    protected function createObject($objectValue, $type): int
     {
-        DB::table($type)->insertGetId([
+        return DB::table($type)->insertGetId([
             'name' => $objectValue,
             'guard_name' => $this->guardName,
             'created_at' => Carbon::now(),
