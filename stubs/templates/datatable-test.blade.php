@@ -14,11 +14,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class {{$modelBaseName}}DatatableTest extends TestCase
 {
     /**
-     * Test we can create {{$resource}}
      * @group {{$resource}}_test
-     * @return void
      */
-    public function test_we_can_destroy_{{strtolower($resource)}}()
+    public function testWeCanDestroy{{strtolower($resource)}}(): void
     {
       $guard = config('zekini-admin.defaults.guard');
       $admin  = {{$adminModel}}::factory()->create();
@@ -37,14 +35,10 @@ class {{$modelBaseName}}DatatableTest extends TestCase
        
     }
 
-
-
     /**
-     * Test Access Forbidden
-     *
-     * @return void
+     * @group {{$resource}}_test
      */
-    public function test_access_is_forbidden()
+    public function testAccessIsForbidden(): void
     {
         $guard = config('zekini-admin.defaults.guard');
       
@@ -62,11 +56,9 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     }
 
     /**
-     * Restore sofdelete
-     *
-     * @return void
+     * @group {{$resource}}_test
      */
-    public function test_we_can_restore_soft_deletes()
+    public function testWeCanRestoreSoftDeletes(): void
     {
         $guard = config('zekini-admin.defaults.guard');
       
@@ -85,13 +77,4 @@ class {{$modelBaseName}}DatatableTest extends TestCase
     
           $this->assertTrue({{ucfirst($modelBaseName)}}::where('id', $model->id)->exists());
     }
-
-    
-
-
-   
-
-
-
-
 }
