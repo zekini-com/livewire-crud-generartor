@@ -42,36 +42,24 @@ class AdminScaffold extends Command
      */
     public function handle()
     {
-        // Setup the zekiniAdmin authentication guard
-        $this->setupAdminAuthGuard();
 
         // Create file migration for the default admin user
         $this->publishVendors();
 
-        $this->comment('Email: support@zekini.com');
-        $this->comment('Password: password');
+        $this->comment('Installing jetstream livewire');
 
-        // migrate generated tables
-        $this->call('migrate');
-
-        $this->generateDefaultModelCruds();
-
-        $this->call('jetstream:install --teams', ['stack' => 'livewire']);
+        $this->call('jetstream:install', ['stack' => 'livewire']);
 
         $this->call('livewire-crud-generator:version');
 
         $this->comment('Congratulations on deploying version '. config('zekini-admin.version'));
 
+        $this->comment('Run php artisan migrate and npm run dev to continue');
+
         return Command::SUCCESS;
     }
 
-    protected function generateDefaultModelCruds()
-    {
-        $this->call('admin:crud:generate', ['table' => 'zekini_admins', '--user' => true]);
-        $this->call('admin:crud:generate', ['table' => 'permissions']);
-        $this->call('admin:crud:generate', ['table' => 'roles']);
-        $this->call('admin:crud:generate', ['table' => config('activitylog.table_name'), '--readonly' => true]);
-    }
+   
 
     /**
      * Publish All vendors
@@ -147,45 +135,13 @@ class AdminScaffold extends Command
         }
     }
 
-    /**
-     * We try to setup the admin guards for authentication same thing we will do manually
-     */
-    protected function setupAdminAuthGuard(): void
-    {
-        $pathToFile = config_path('auth.php');
-
-        $find = '\'guards\' => [';
-        $replaceWith = '\'guards\' => [
-        \'zekini_admin\'=> [
-            \'driver\' => \'session\',
-            \'provider\' => \'zekini_admins\'
-        ],';
-
-        Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
-
-        $find = '\'providers\' => [';
-        $replaceWith = '\'providers\' => [
-        \'zekini_admins\'=> [
-            \'driver\' => \'eloquent\',
-            \'model\' => Zekini\CrudGenerator\Models\ZekiniAdmin::class
-        ],';
-
-        Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
-
-        $find = '\'passwords\' => [';
-        $replaceWith = '\'passwords\' => [
-        \'zekini_admins\' => [
-            \'provider\' => \'zekini_admins\',
-            \'table\' => \'zekini_admin_password_resets\',
-            \'expire\' => 60,
-            \'throttle\' => 60
-        ],';
-
-        Utilities::strReplaceInFile($pathToFile, $find, $replaceWith);
-    }
-
+    
     private static function undoPreviousMigrations(array $tablesArray): void
     {
+        if (!Schema::hasTable('migrations')) { // if no migration exit
+            return;
+        }
+
         foreach ($tablesArray as $table) {
             Schema::dropIfExists($table);
             DB::table('migrations')->where('migration', 'like', '%' . $table . '%')->delete();

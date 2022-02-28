@@ -8,6 +8,9 @@ use App\Models\{{$modelBaseName}};
 use App\Http\Livewire\Create{{$modelBaseName}};
 use App\Http\Livewire\{{ucfirst(Str::plural($modelBaseName))}}\{{$datatableComponent}};
 use Livewire\Livewire;
+use Zekini\CrudGenerator\Factory\AdminFactory;
+use Spatie\Permission\Models\Role;
+
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 class {{$modelBaseName}}Test extends TestCase
 {
@@ -17,7 +20,7 @@ class {{$modelBaseName}}Test extends TestCase
   public function testWeCanCreate{{$resource}}(): void
     {
       $guard = config('zekini-admin.defaults.guard');
-      $admin  = {{$adminModel}}::factory()->create();
+      $admin  = AdminFactory::create();
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
 
       $this->actingAs($admin, $guard);
@@ -53,7 +56,7 @@ class {{$modelBaseName}}Test extends TestCase
     public function testWeCanUpdate{{$resource}}(): void
     {
       $guard = config('zekini-admin.defaults.guard');
-      $admin  = {{$adminModel}}::factory()->create();
+      $admin  = AdminFactory::create();
       $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.edit');
 
       $this->actingAs($admin, $guard);
@@ -93,7 +96,7 @@ class {{$modelBaseName}}Test extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
         $admin->givePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
   
         $this->actingAs($admin, $guard);
@@ -127,7 +130,13 @@ class {{$modelBaseName}}Test extends TestCase
     {
         $guard = config('zekini-admin.defaults.guard');
       
-        $admin  = {{$adminModel}}::factory()->create();
+        $admin  = AdminFactory::create();
+
+        // by default admin has all permissions 
+        $role =  Role::findByName(config('zekini-admin.defaults.role'));
+
+        // by default admin has all permissions 
+        $role->revokePermissionTo('admin.{{ strtolower($modelDotNotation)}}.create');
   
         $this->actingAs($admin, $guard);
 

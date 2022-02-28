@@ -86,9 +86,9 @@ class GeneratePermission extends BaseGenerator
         $pathToFile = str_replace('\\', '/', substr($stampedFilename, strpos($stampedFilename, 'database')));
 
         //the new permission
-        $this->call('migrate', [
-            '--path' => $pathToFile
-        ]);
+        //$this->call('migrate', [
+        //    '--path' => $pathToFile
+        //]);
 
         return Command::SUCCESS;
     }
