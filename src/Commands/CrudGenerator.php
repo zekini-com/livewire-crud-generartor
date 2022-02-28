@@ -55,7 +55,7 @@ class CrudGenerator extends Command
         }
 
         // all tables must have the deleted_at column
-        if(! $this->hasColumn('deleted_at')) {
+        if(! Schema::hasColumn($this->argument('table'), 'deleted_at')) {
             $this->error('Table must contain a softdeletes column');
             return Command::FAILURE;
         }

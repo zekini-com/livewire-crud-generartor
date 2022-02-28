@@ -88,10 +88,9 @@ trait ColumnTrait
      * @param  string $col
      * @return boolean
      */
-    public function hasColumn($table=null, $col)
+    public function hasColumn($col)
     {
-        $table = $table ? $table : $this->argument('table');
-        return Schema::hasColumn($table, $col);
+        return Schema::hasColumn($this->argument('table'), $col);
     }
 
 }
