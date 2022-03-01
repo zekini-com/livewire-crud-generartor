@@ -95,7 +95,7 @@ class GenerateSuperAdmin extends Command
 
     protected function getNames():array
     {
-        if ($this->hasColumn('users', 'first_name')) {
+        if (Schema::hasColumn('users', 'first_name')) {
             return [
                 'first_name'=> 'Admin',
                 'last_name'=> 'Admin'
