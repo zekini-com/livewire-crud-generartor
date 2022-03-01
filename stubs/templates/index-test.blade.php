@@ -14,12 +14,10 @@ use Spatie\Permission\Models\Role;
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 class {{$modelBaseName}}Test extends TestCase
 {
-    /**
-     * Test we can create {{$resource}}
-     * @group {{$resource}}_test
-     * @return void
-     */
-    public function test_we_can_create_{{$resource}}()
+  /**
+   * @group {{$resource}}_test
+   */
+  public function testWeCanCreate{{$resource}}(): void
     {
       $guard = config('zekini-admin.defaults.guard');
       $admin  = AdminFactory::create();
@@ -53,11 +51,9 @@ class {{$modelBaseName}}Test extends TestCase
     }
 
     /**
-     * Test we can update {{$resource}}
      * @group {{$resource}}_test
-     * @return void
      */
-    public function test_we_can_update_{{$resource}}()
+    public function testWeCanUpdate{{$resource}}(): void
     {
       $guard = config('zekini-admin.defaults.guard');
       $admin  = AdminFactory::create();
@@ -92,13 +88,11 @@ class {{$modelBaseName}}Test extends TestCase
 
         $this->assertTrue({{ucfirst($modelBaseName)}}::where('{{$columnFakerMappings->first()['name']}}', $firstData)->exists());
     }
-    
+
     /**
-     * Test Required field
-     *
-     * @return void
+     * @group {{$resource}}_test
      */
-    public function test_{{$columnFakerMappings->first()['name']}}_is_required()
+    public function test{{$columnFakerMappings->first()['name']}}IsRequired(): void
     {
         $guard = config('zekini-admin.defaults.guard');
       
@@ -129,13 +123,10 @@ class {{$modelBaseName}}Test extends TestCase
           ->assertHasErrors(['state.{{$columnFakerMappings->first()['name']}}'=> 'required']);
     }
 
-
     /**
-     * Test Access Forbidden
-     *
-     * @return void
+     * @group {{$resource}}_test
      */
-    public function test_access_is_forbidden()
+    public function testAccessIsForbidden(): void
     {
         $guard = config('zekini-admin.defaults.guard');
       

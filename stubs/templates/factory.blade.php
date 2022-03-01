@@ -9,8 +9,6 @@ use {{$factoryModelNamespace}};
 
 @php $isActivityLogModel = ucfirst($modelBaseName) == 'ActivityLog'; @endphp
 
-
-
 class {{$factoryBaseName}} extends Factory
 {
     /**

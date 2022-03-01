@@ -9,11 +9,11 @@ use Zekini\CrudGenerator\Traits\HasRelations;
 
 abstract class BaseGenerator extends Command
 {
+    use ColumnTrait;
 
-    use ColumnTrait, HasRelations;
+    use HasRelations;
 
     protected $hidden = true;
-
 
     protected $classType;
 
@@ -47,7 +47,6 @@ abstract class BaseGenerator extends Command
         $this->files = $files;
     }
 
-
     protected abstract function getViewData();
     
     /**
@@ -70,7 +69,6 @@ abstract class BaseGenerator extends Command
         return Str::studly(Str::singular($this->argument('table')));    
     }
 
-
     protected function getLivewireComponentDir($addedPath=null)
     {
         $namespace = $this->getDefaultNamespace($this->rootNamespace());
@@ -78,7 +76,6 @@ abstract class BaseGenerator extends Command
         return $addedPath ? $path.DIRECTORY_SEPARATOR.$addedPath : $path;
     }
 
-    
     /**
      * Get the path of a file from the namespace
      *
@@ -93,7 +90,6 @@ abstract class BaseGenerator extends Command
         return $namespace;
     }
 
-
      /**
      * Replaces the content in the file
      *
@@ -101,13 +97,11 @@ abstract class BaseGenerator extends Command
      */
     protected function replaceContent()
     {
-       
         $variables = $this->getViewData();
        
         $view = "zekini/stubs::templates.".$this->classType;
     
         return view($view, $variables)->render();
-
     }
 
     /**
@@ -118,24 +112,19 @@ abstract class BaseGenerator extends Command
     protected function getColumnFakerMap()
     {
        $columns = $this->getColumnDetails();
+
        return $columns->map(function($colArr){
            return [
-               'name'=> $colArr['name'],
-               'faker'=> $this->decideFaker($colArr['type'], $colArr['name'])
+               'name' => $colArr['name'],
+               'faker' => $this->decideFaker($colArr['type'], $colArr['name'])
            ];
        });
-        
     }
-
     
     /**
-     * Decide what faker to user
-     *
-     * @param  string $type
-     * @param string $name
-     * @return string
+     * Decide which faker to use
      */
-    protected function decideFaker($type, $name)
+    protected function decideFaker(string $type, string $name): string
     {
         if(Str::isRelation($name)) return "\App\Models\\".ucfirst(Str::relationName($name))."::inRandomOrder()->firstOrFail()->id";
         if ($name == 'name') return '$this->faker->name()';
@@ -143,44 +132,43 @@ abstract class BaseGenerator extends Command
         if ($name == 'image' || $name == 'file') return "[\Illuminate\Http\UploadedFile::fake()->image('file.jpg')]";
         if ($name == preg_match('/phone/', $name)) return '$this->faker->phoneNumber()';
 
+        if (in_array($name, ['avatar', 'logo'])) return '$this->faker->imageUrl()';
+        if (in_array($name, ['content', 'description'])) return '$this->faker->sentence()';
+        if (in_array($name, ['url', 'website'])) return '$this->faker->url()';
+
         $faker = '';
 
         switch($type){
             case 'string':
-                $faker =  '$this->faker->word()';
+                $faker = '$this->faker->word()';
             break;
             case 'boolean':
-                $faker =  '$this->faker->boolean()';
+                $faker = '$this->faker->boolean()';
             break;
             case 'char':
-                $faker =  '$this->faker->randomLetter()';
+                $faker = '$this->faker->randomLetter()';
                 break;
             case 'datetime':
-                $faker =  '$this->faker->dateTime()';
+                $faker = '$this->faker->dateTime()';
                 break;
             case 'float':
             case 'decimal':
-                $faker =  '200.05';
+                $faker = '200.05';
                 break;
             case 'integer':
             case 'bigint':
-                $faker =  '$this->faker->randomNumber()';
+                $faker = '$this->faker->randomNumber()';
                 break;
             case 'text':
-                $faker =  '$this->faker->sentence()';
+                $faker = '$this->faker->sentence()';
             break;
             case 'json':
                 $faker = 'json_encode(["faker_data"])';
             break;
             default: 
-                $faker =  '$this->faker->word()';
+                $faker = '$this->faker->word()';
         }
 
         return $faker;
     }
-    
-
-    
-
-  
 }

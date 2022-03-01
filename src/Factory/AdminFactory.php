@@ -4,28 +4,17 @@ namespace Zekini\CrudGenerator\Factory;
 
 use App\Models\User;
 
-class AdminFactory 
+class AdminFactory
 {
-
-
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public static function create($attributes=null): User
+    public static function create(?array $attributes = null): User
     {
-        $roles = collect(config('zekini-admin.admin_roles'));
-        $user  = User::factory()->create($attributes);
+        $user = User::factory()->create($attributes);
 
-        foreach($roles as $role)
-        {
-            $user->assignRole($role['name']);
-        }
+        collect(config('zekini-admin.admin_roles'))
+            ->each(function ($role) use ($user) {
+                $user->assignRole($role['name']);
+            });
 
-        return $user;
-
+        return User::findOrFail($user->id);
     }
-
-   
 }

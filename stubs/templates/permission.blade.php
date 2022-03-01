@@ -51,7 +51,7 @@ class {{ $className }} extends Migration
         foreach($adminRoles as $roleName) 
         {
             $role = Role::findByName($roleName['name'], $this->guardName);
-            if(! $role) continue;
+
             $role->givePermissionTo($this->permissions->toArray());
         }
     }
