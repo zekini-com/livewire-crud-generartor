@@ -25,7 +25,7 @@ return [
 
     'auth_routes' => [
         'login_redirect' => '/admin',
-        'logout_redirect' => '/admin/login'
+        'logout_redirect' => '/login'
     ],
 
     /*

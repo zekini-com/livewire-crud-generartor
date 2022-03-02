@@ -15,13 +15,10 @@ class AdminFactory
      */
     public static function create($attributes=null): User
     {
-        $roles = collect(config('zekini-admin.admin_roles'));
+        $role = collect(config('zekini-admin.defaults.role'));
         $user  = User::factory()->create($attributes);
 
-        foreach($roles as $role)
-        {
-            $user->assignRole($role['name']);
-        }
+        $user->assignRole($role);
 
         return $user;
 
