@@ -30,6 +30,6 @@
         }
     },
     "require": {
-        "zekini/laravel-generics": "1.0.2"
+        "zekini/laravel-generics": "1.0.3"
     }
 }

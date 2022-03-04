@@ -35,7 +35,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
       Livewire::test({{$datatableComponent}}::class)
         ->call('delete', $model->id);
 
-        $this->assertFalse({{ucfirst($modelBaseName)}}::where('id', $model->id)->exists());
+        $this->assertFalse({{ucfirst($modelBaseName)}}::find($model->id)->exists());
        
     }
 
@@ -88,7 +88,7 @@ class {{$modelBaseName}}DatatableTest extends TestCase
       Livewire::test({{$datatableComponent}}::class)
           ->call('restore', $model->id);
     
-          $this->assertTrue({{ucfirst($modelBaseName)}}::where('id', $model->id)->exists());
+          $this->assertTrue({{ucfirst($modelBaseName)}}::find($model->id)->exists());
     }
 
     
