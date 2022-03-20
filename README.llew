@@ -1,1 +1,3 @@
 composer update --ignore-platform-reqs
+
+git tag 1.0.7 && git push origin --tags

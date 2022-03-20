@@ -3,12 +3,17 @@
     "description": "This helps in scaffolding the necessary CRUD and admin panel for applications",
     "type": "library",
     "license": "MIT",
-    "authors": [{
-        "name": "Keania Niate Eric",
-        "email": "keania@zekini.com"
-    }],
+    "authors": [
+        {
+            "name": "Keania Niate Eric",
+            "email": "keania@zekini.com"
+        },
+        {
+            "name": "Llewellyn du Randt",
+            "email": "llewellyn@zekini.com"
+        }
+    ],
     "minimum-stability": "dev",
-
     "autoload": {
         "psr-4": {
             "Zekini\\CrudGenerator\\": "src/"
@@ -30,6 +35,6 @@
         }
     },
     "require": {
-        "zekini/laravel-generics": "1.0.3"
+        "zekini/laravel-generics": "^1.0.4"
     }
 }
