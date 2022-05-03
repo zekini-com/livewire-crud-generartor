@@ -108,4 +108,7 @@ A full list of keys is given below
 
 ## Note
 You are required to add a custom middleware to redirect to admin or users based on the role of the given user
+
+## Dependency Issues
+if you encounter any dependeny issues when installing package delete composer.lock file and require the package
             
